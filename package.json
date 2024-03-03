@@ -1,6 +1,7 @@
 {
   "name": "loftsoft",
   "version": "0.1.0",
+  "homepage": "https://novemberrain00.github.io/loftsoft/",
   "private": true,
   "dependencies": {
     "@react-email/render": "^0.0.12",
@@ -41,7 +42,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
+
   },
   "eslintConfig": {
     "extends": [
@@ -62,6 +65,7 @@
     ]
   },
   "devDependencies": {
-    "@types/fslightbox-react": "^1.7.7"
+    "@types/fslightbox-react": "^1.7.7",
+    "gh-pages": "^6.1.1"
   }
 }
