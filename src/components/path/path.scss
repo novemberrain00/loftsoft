@@ -1,0 +1,30 @@
+.path {
+    &__link {
+        color: rgba(0, 0, 0, 0.70) !important;
+        font-family: Onest;
+        font-size: 14px;
+        font-weight: 400;
+        margin-left: 5px;
+
+        &::after {
+            content: '/';
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+
+        &_active {
+            color: #000 !important;
+            font-family: Onest;
+            font-size: 14px;
+            font-weight: 400;
+
+            &::after {
+                display: none;
+            }
+        }
+    }
+}

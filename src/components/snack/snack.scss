@@ -1,0 +1,37 @@
+@keyframes snackFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.snack {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    background-color: #292929;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    color: #E4E4E4;
+    animation: snackFadeOut .6s ease 3s forwards;
+
+    &_hidden {
+        display: none;
+    }
+
+    &__closer {
+        color: #2667FF;
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: 400;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

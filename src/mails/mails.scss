@@ -1,0 +1,408 @@
+.mail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 78vw;
+        max-width: 885px;
+    }
+
+    &__btn {
+        padding: 18px 108px;
+        color: #FFF;
+        font-family: Roboto;
+        font-size: 24px;
+        font-weight: 400;
+        border-radius: 25px !important;
+    }
+
+    .features {
+        text-align: center;
+        background-color: #2667FF;
+        padding: 31px 0 25px;
+    
+        &__title {
+            color: #FFF;
+            text-align: center;
+            font-family: Onest;
+            font-size: 24px;
+            font-weight: 400;
+        }
+    
+        &__content {
+            width: 100%;
+            margin-bottom: 20px;
+    
+            tr {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                column-gap: 117px;
+                row-gap: 40px;
+                
+            }
+        }
+    
+        &__item {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            width: 247px;
+            height: 247px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 100%;
+            color: #FFF;
+            font-family: Onest;
+            font-size: 24px;
+            font-weight: 500;
+            gap: 8px;
+    
+            &-icon {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    
+        &__warning {
+            color: #FFF;
+            font-family: Onest;
+            font-size: 24px;
+            font-weight: 400;
+            margin-top: 47px;
+        }
+    }
+    
+    .copyright {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        background: rgba(46, 52, 68, 1);
+        padding: 32px 70px;
+        color: #FFF;
+        font-family: Onest;
+        font-size: 24px;
+        font-weight: 400;
+    
+        &__logo {
+            margin-right: 30px;
+        }
+    
+        &__rights {
+            margin-left: auto;
+        }
+    }
+    
+    
+    .purchase {
+        display: flex;
+        flex-direction: column;
+        gap: 75px;
+    
+        .keys {
+            display: flex;
+            flex-direction: column;
+            color: #000;
+            text-align: center;
+            font-family: Roboto;
+            font-size: 24px;
+            font-weight: 400;
+            gap: 54px;
+            margin-top: 80px;
+    
+            &__item {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                gap: 12px;
+    
+                &-value {
+                    width: max-content;
+                    border-radius: 100px;
+                    background: #F0F0F0;
+                    padding: 21px 74px;
+                    max-width: 80vw;
+                }
+            }
+        }
+    
+        .links {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 41px;
+            gap: 42px;
+    
+            &__item {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                color: #000;
+                font-family: Onest;
+                font-size: 24px;
+                font-weight: 400;
+    
+                &-value {
+                    margin-top: 9px;
+                    color: rgba(38, 103, 255, 1);
+                }
+            }
+        }
+    }
+    
+    .message {
+        margin-bottom: 54px;
+    
+        &__text {
+            padding: 54px 130px 44px;
+            margin: 27px 0;
+            color: #000;
+            text-align: center;
+            font-family: Roboto;
+            font-size: 24px;
+            font-weight: 400;
+            border-radius: 50px;
+            border: 2px solid #B1B1B1;  
+        }
+    }
+
+    .footer {
+        background-color: #f2f2f2;
+        width: 100vw;
+    
+        &__links {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+  }
+
+  .mail__container {
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: 29px;
+        max-width: 571px;
+        margin-top: 81px; 
+
+        &__logo {
+            margin-bottom: 10px;
+        }
+
+        &__title {
+            color: #000;
+            text-align: center;
+            font-family: Roboto;
+            font-size: 48px;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        &__subtitle {
+            color: #606060;
+            text-align: center;
+            font-family: Roboto;
+            font-size: 32px;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .body {
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+    }
+
+}
+
+@media screen and (max-width: 1727px) {
+    .mail {
+        .features {
+            &__item {
+                width: 210px;
+                height: 210px;
+                font-size: 20px;
+            }
+        }
+    }
+    
+}
+
+
+
+
+@media screen and (max-width: 834px) {
+    .copyright {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &__logo {
+            margin: 0;
+        }
+
+        &__rights {
+            margin: 19px 0 0;
+        }
+    }
+
+    .message {
+        &__text {
+            padding: 40px 20px;
+        }
+    }
+
+    .mail {
+        &__btn {
+            padding: 18px 45px;
+        }
+    }
+}
+
+.sending {
+    &__icon {
+        margin: 98px 0 79px;
+    }
+
+    &__title {
+        margin: 0;
+        color: #000;
+        font-family: Onest;
+        font-size: 40px;
+        font-weight: 400;
+        margin-bottom: 59px;
+    }
+
+    &__products {
+        margin-bottom: 97px;
+    }
+
+    &__product {
+        display: flex;
+        border-radius: 50px;
+        background: #F5F5F5;
+        padding: 33px 37px;
+        margin-bottom: 58px;
+        gap: 78px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &-title {
+            color: #000;
+            font-family: Roboto;
+            font-size: 32px;
+            font-weight: 400;
+            margin: 0 0 27px;
+            text-align: left;
+        }
+
+        &-info {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 7px;
+        }
+
+        &-char {
+            color: #000;
+            font-family: Roboto;
+            font-size: 24px;
+            font-weight: 400;
+        }
+
+        &-total {
+            margin-top: 96px;
+            color: #000;
+            font-family: Roboto;
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+}
+
+.reset {
+    &__icon {
+        margin: 128px 0 60px;
+    }
+
+    &__text {
+        color: #000;
+        margin-top: 146px;
+        margin-bottom: 47px;
+        max-width: 498px;
+        font-family: Roboto;
+        font-size: 24px;
+        font-weight: 400;
+    }
+}
+
+
+
+@media screen and (max-width: 800px) {
+    .sending {
+        &__product {
+            flex-direction: column;
+        }
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .mail {
+        .header {
+            &__title {
+                font-size: 32px;
+            }
+
+            &__subtitle {
+                font-size: 24px;
+            }
+        }
+
+        .purchase {
+            .keys {
+                margin-top: 60px;
+    
+                &__item {
+                    &-value {
+                        font-size: 16px;
+                        padding: 21px 40px !important;
+                    }
+                }
+            }
+        }
+    
+        .sending {
+            &__title {
+                font-size: 36px;
+            }
+    
+            &__product {
+                flex-direction: column;
+            }
+        }
+    
+        .reset {
+            &__text {
+                font-size: 20px;
+            }
+        }
+
+        .copyright {
+            &__rights {
+                margin: 19px auto 0;
+            }
+        }
+    }
+}

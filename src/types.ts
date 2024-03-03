@@ -1,0 +1,1 @@
+export type LoaderT = 'idle' | 'processing' | 'done';

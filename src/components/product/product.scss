@@ -1,0 +1,135 @@
+.product {
+    width: min-content;
+    max-height: 390px;
+    width: 290px;
+
+    &__img {
+        border-radius: 25px;
+        height: 233px;
+        width: 100%;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 33%;
+        padding: 13px;
+    }
+
+    &__title {
+        font-size: 20px;
+        font-weight: 500 !important;
+        margin-bottom: 9px !important;
+    }
+
+    &__descr {
+        margin: 9px 0 39px;
+    }
+
+    &__bottom {
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        margin-top: 39px;
+    }
+
+    &__price {
+        font-family: Onest;
+        font-weight: 400;
+        line-height: 1;
+
+        &-old {
+            color: rgba(0, 0, 0, 0.50);
+            font-size: 13px;
+            text-decoration: line-through;
+        }
+
+        &-new {
+            color: #2767FE;
+            font-size: 20px;
+            text-decoration: none;
+        }
+    }
+
+    &__btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 131px;
+        height: 40px;
+        font-family: Onest;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 8px 15px;
+        transition: .3s;
+
+        &:hover {
+            background-color: #ccc !important;
+        }
+
+        &-icon {
+            margin-left: 9px;
+        }
+
+        &-loader {
+            width: 20px;
+            height: 20px;
+            margin: 0 auto;
+        }
+    }
+
+    &__discount-value {
+        width: 49px !important;
+        height: 40px;
+        box-sizing: border-box;
+        font-weight: 400 !important;
+        margin: 0 !important;
+        padding: 8px !important;
+        font-size: 14px !important;
+        border-radius: 10px !important;
+
+    }
+}
+
+@media screen and (max-width: 1727px) {
+    .product {
+        width: 100%;
+
+        &__price {
+            &-old {
+                font-size: 11px;
+            }
+
+            &-new {
+                font-size: 18px;
+            }
+        }
+
+        &__btn {
+            padding: 0 12px;
+            font-size: 12px;
+            width: 115px;
+        }
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .product {
+        width: 290px;
+    }
+}
+
+@media screen and (max-width: 765px) {
+    .product {
+        width: 270px;
+    }
+}
+
+// @media screen and (max-width: 835px){
+//     .product {
+//         &__title {
+//             font-size: 20px;
+//         }
+//     }
+// }

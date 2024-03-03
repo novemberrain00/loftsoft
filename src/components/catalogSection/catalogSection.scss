@@ -1,0 +1,104 @@
+.catalog__section {
+    margin-top: 17px;
+    margin-bottom: 35px;
+    width: 290px;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &-header {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        align-items: center;
+        padding: 20px;
+        border-radius: 25px;
+
+        svg {
+            transition: .6s;
+        }
+
+        &_blue {
+            background: linear-gradient(93deg, #00A4F5 0%, #004BDA 100%);
+            transition: .7s;
+        }
+
+        &_orange {
+            background: linear-gradient(93deg, #F58400 0%, #DA4E00 100%);
+        }
+
+        &_green {
+            background: linear-gradient(93deg, #00C9F5 0%, #00DA30 100%);;
+        }
+
+        &_purple {
+            background: linear-gradient(93deg, #A700F5 0%, #0099DA 100%);
+        }
+
+        &_red {
+            background: linear-gradient(93deg, #F50000 0%, #DA0090 100%);
+        }
+
+        &_yellow {
+            background: linear-gradient(93deg, #F55800 0%, #DAC400 100%);
+        }
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &-name {
+        transition: .6s;
+    }
+
+    &-icon {
+        max-width: 30px;
+    }
+
+    &-list {
+        display: flex;
+        column-gap: 27px;
+        row-gap: 16px;
+        flex-wrap: wrap;
+        padding: 35px 20px 10px  !important; 
+    }
+
+    &-products {
+        max-height: 0px; 
+        background: #fff;
+        margin-top: -20px;
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        overflow: hidden;
+        transition: max-height .9s;
+
+        &_opened {
+            max-height: 200px;
+        }
+    }
+
+    &-product {
+        margin-bottom: 16px;
+    }
+
+    &-link_active {
+        color: #019EF4 !important;
+        font-weight: 700 !important;
+        text-decoration: underline !important; 
+    }
+}
+
+
+@media screen and (max-width: 1280px) {
+    .catalog__section {
+        width: 290px;
+            
+    }
+}

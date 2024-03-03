@@ -1,0 +1,14 @@
+.admin {
+    &__products {
+        margin-top: 51px;
+
+        &-link {
+            color: #000;
+            
+            &:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+}

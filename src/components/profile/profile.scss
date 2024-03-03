@@ -1,0 +1,97 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 20px;
+    gap: 16px;
+    min-height: 687px;
+    padding: 20px 12px;
+
+    &__img {
+        width: 100px;
+        height: 100px;
+        border-radius: 100px;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+
+        &-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 0 9px;
+        }
+    }
+
+    &__name {
+        color: #000;
+        font-family: Roboto;
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    &__btn {
+        height: 40px;
+        padding: 0 25px;
+        color: #2667FF;
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: 400;
+        border: 1px solid #ccc;      
+        border-radius: 100px;
+        background: none;   
+        transition: .2s;
+
+        &:hover {
+            background: rgba(198, 198, 198, .3);
+            cursor: pointer;
+        }
+    }
+
+    &__balance {
+        padding: 20px;
+        background: #E8F4FF;
+        border-radius: 20px;
+        margin-bottom: 20px;
+
+        &-link {
+            margin-bottom: 10px;
+        }
+    }
+
+    &__link {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        color: #000;
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 0 16px;
+
+        &-amount {
+            margin-left: auto;
+        }
+    }
+
+    &__menu {
+        padding: 0 16px;
+        
+        &-item {
+            margin-top: 40px;
+
+            &:last-child {
+                margin-top: 56px;
+            }
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+    }
+}
+

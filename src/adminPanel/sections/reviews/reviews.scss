@@ -1,0 +1,30 @@
+.admin {
+    .reviews {
+        margin-top: 20px;
+
+        &__section {
+            margin-bottom: 38px;
+            &-title {
+                font-family: Roboto;
+                font-size: 16px;
+                font-weight: 400;
+                margin-top: 0;
+                margin-bottom: 20px;
+            }
+
+            &-items {
+                right: 0;
+                left: 345px;
+                padding: 20px;
+                display: flex;
+                gap: 20px;
+                overflow: auto;
+            }
+
+            &-item {
+                position: relative;
+                flex-shrink: 0;
+            }
+        }
+    }
+}
