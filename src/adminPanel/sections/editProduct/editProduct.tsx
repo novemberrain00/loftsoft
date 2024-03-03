@@ -213,7 +213,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         let paramData: string[] = []
         if(curParam.give_type === 'file') {
             const filesArray: File[] = Array.from(curParam?.files);
-
+            console.log(filesArray)
             for(let i in filesArray) {
                 await uploadFile(filesArray[i])
                 .then(data => {

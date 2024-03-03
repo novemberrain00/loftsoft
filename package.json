@@ -1,7 +1,7 @@
 {
   "name": "loftsoft",
   "version": "0.1.0",
-  "homepage": "https://novemberrain00.github.io/loftsoft/",
+  "homepage": "./",
   "private": true,
   "dependencies": {
     "@react-email/render": "^0.0.12",
