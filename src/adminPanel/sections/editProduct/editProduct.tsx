@@ -48,7 +48,8 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         options: [],
         parameters: [],
         subcategory_id: 0,
-        product_photos: []        
+        product_photos: [],
+        initialPhotos: []     
     });
     const [alertMessages, setAlertMessages] = useState({
         options: '',
@@ -80,6 +81,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
     const [isRowAdded, setIsRowAdded] = useState<boolean>(false);
     const [newRow, setNewRow] = useState<string>('');
     const [isSubcatDropdownOpened, setIsSubcatDropdownOpened] = useState<boolean>(false);
+    const [fileSizes, setFileSizes] = useState<number[]>([]);
     const [isDataLoaded, setIsDataLoaded] = useState<{
         product: LoaderT
         txtFiles: LoaderT
@@ -210,10 +212,9 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
     }
 
     const editParam = async () => {
-        let paramData: string[] = []
+        let paramData: string[] = [...curParam.data];
         if(curParam.give_type === 'file') {
             const filesArray: File[] = Array.from(curParam?.files);
-            console.log(filesArray)
             for(let i in filesArray) {
                 await uploadFile(filesArray[i])
                 .then(data => {
@@ -245,7 +246,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             sale_price: '',
             has_sale: false,
             data: [],
-            files: (new DataTransfer()).files,
+            files: {} as FileList,
             description: '',
             give_type: 'hand'
         });
@@ -317,6 +318,158 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 files: newFileList.files
             })
         }
+    }
+
+    const updateProduct = async () => {
+        console.log(productData)
+        const {id, title, card_price, description, options, parameters, product_photos, subcategory_id} = productData;
+
+        if(!title.length) {
+            dispatch(addSnack({text: 'Не заполнено имя товара'}));
+            return;
+        }
+
+        if(!card_price.length) {
+            dispatch(addSnack({text: 'Не заполнена цена'}));
+            return;
+        }
+
+        if(isNaN(+card_price)) {
+            dispatch(addSnack({text: 'Некорректное значение цены'}));
+            return;
+        }
+
+        if(!product_photos.length && id === -1) {
+            dispatch(addSnack({text: 'Не выбрано ни одного фото товара'}));
+            return;
+        }
+
+        let areParamsOk = true;
+        parameters.forEach(param => {
+            if((!param.data?.length) && param.give_type !== 'hand') {
+                dispatch(addSnack({text: `Не установлены ключи для параметра: ${param.title}`}));
+                areParamsOk = false;
+                return;
+            }
+
+            if(isNaN(+param.price) || (param.has_sale && isNaN(+param.sale_price))) {
+                dispatch(addSnack({text: `Некорректное значение цены для параметра: ${param.title}`}));
+                areParamsOk = false;
+                return;
+            }
+
+            if(!param.price) {
+                dispatch(addSnack({text: `Не указана цена для параметра: ${param.title}`}));
+                areParamsOk = false;
+                return;
+            }
+        });
+
+        if(!areParamsOk) return;
+
+        for(let option of options) {
+            await fetch(baseURL + `/option/${option.id}`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: option.title,
+                    value: option.value,
+                    is_pk: option.is_pk
+                })
+            });
+        }
+
+        for(let {id, title, price, has_sale, sale_price, data} of parameters) {
+            await fetch(baseURL + `/parameter/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title,
+                    price,
+                    has_sale,
+                    sale_price
+                })
+            });
+
+            await fetch(baseURL + `/parameter/${id}/data`, {
+                method: 'PATCH',
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+
+        }
+
+        if(product_photos.length) {
+
+            if(product_photos[0]) {
+                await uploadFile(product_photos[0][0]).then(async (data) => {
+                    await fetch(baseURL + `/photo/${productData.initialPhotos[0].id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            "Accept": "application/json",
+                            "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            photo: data.upload,
+                            main: true
+                        })
+                    })
+                })
+            }
+
+            if(!product_photos[1]?.length) return;
+    
+            Array.from(product_photos[1]).forEach(async (item, i) => {
+                await uploadFile(item).then(async (data) => {
+                    await fetch(baseURL + `/photo/${productData.initialPhotos[i].id}`, {
+                        method: 'PATCH',
+                        headers: {
+                            "Accept": "application/json",
+                            "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            photo: data.upload,
+                            main: false
+                        })
+                    })
+                })
+                
+            })
+        }
+
+        
+
+
+
+        // for(let photo of Array.from(product_photos[1])) {
+        //     await fetch(baseURL + `/photo/${productData.initialPhotos[0].id}`, {
+        //         method: 'PATCH',
+        //         headers: {
+        //             "Accept": "application/json",
+        //             "Authorization": 'Bearer ' + getCookie('access_token') as string,
+        //             "Content-Type": "application/json"
+        //         },
+        //         body: JSON.stringify({
+        //             photo
+        //         })
+        //     });
+        // }
+       
     }
 
     const uploadProduct = async () => {
@@ -400,51 +553,48 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             product: 'processing'
         });
 
-        if(id === -1) {
-            await postData('/product', {
-                title: title.trim(),
-                card_price: card_price.trim(),
-                description: description.trim(),
-                options,
-                photos: newPhotosArray.map(item => item.photo),
-                subcategory_id,
-                parameters: paramsArrRef
-            }, true)
-            .then(data => {
-                navigate('/admin/products')
-            })
-            .finally(() => {
-                setIsDataLoaded({
-                    ...isDataLoaded,
-                    product: 'done'
-                });
-            })
-        } else {
-            await fetch(`${baseURL}/product/${id}`, {
-                method: 'PATCH',
-                body: JSON.stringify({
-                    title: title.trim(),
-                    card_price: card_price.trim(),
-                    description: description.trim(),
-                    options,
-                    photos: newPhotosArray.map(item => item.photo),
-                    subcategory_id,
-                    parameters: paramsArrRef
-                }),
-                headers: {
-                    "Accept": "application/json",
-                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
-                    "Content-Type": "application/json"
-                  }
-            })
-            .then(() => {
-                dispatch(addSnack({text: 'Данные успешно обновлены'}))
-                setIsDataLoaded({
-                    ...isDataLoaded,
-                    product: 'done'
-                });
-            })
-        }
+        await postData('/product', {
+            title: title.trim(),
+            card_price: card_price.trim(),
+            description: description.trim(),
+            options,
+            photos: newPhotosArray.map(item => item.photo),
+            subcategory_id,
+            parameters: paramsArrRef
+        }, true)
+        .then(data => {
+            navigate('/admin/products')
+        })
+        .finally(() => {
+            setIsDataLoaded({
+                ...isDataLoaded,
+                product: 'done'
+            });
+        })
+            // await fetch(`${baseURL}/product/${id}`, {
+            //     method: 'PATCH',
+            //     body: JSON.stringify({
+            //         title: title.trim(),
+            //         card_price: card_price.trim(),
+            //         description: description.trim(),
+            //         options,
+            //         photos: newPhotosArray.map(item => item.photo),
+            //         subcategory_id,
+            //         parameters: paramsArrRef
+            //     }),
+            //     headers: {
+            //         "Accept": "application/json",
+            //         "Authorization": 'Bearer ' + getCookie('access_token') as string,
+            //         "Content-Type": "application/json"
+            //       }
+            // })
+            // .then(() => {
+            //     dispatch(addSnack({text: 'Данные успешно обновлены'}))
+            //     setIsDataLoaded({
+            //         ...isDataLoaded,
+            //         product: 'done'
+            //     });
+            // })
         
 
     }
@@ -473,10 +623,11 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         options: data.options,
                         parameters: data.parameters,
                         description: data.description,
-                        product_photos: [
+                        initialPhotos: [
                             data.product_photos[0],
                             ...data.product_photos.splice(1, data.product_photos.length)
                         ],
+                        product_photos: [],
                         subcategory_id: data.subcategory_id
                     })
                 });
@@ -504,12 +655,10 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 if(par.give_type === 'file') {
                     return {
                         ...par,
-                        files: data.filter((item: {parameter_id: number, data: string[]}) => item.parameter_id === par.id)[0].items.map((item: string) => {
-                            return {
-                                name: item,
-                                size: null
-                            }
-                        })
+                        data: [
+                            ...par.data || [],
+                            ...data.filter((item: {parameter_id: number, data: string[]}) => item.parameter_id === par.id)[0].items.map((item: string) => item)
+                        ]
                     }
                 }
 
@@ -530,8 +679,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 ...productData,
                 parameters: paramsArrRef
             });
-
-            console.log(paramsArrRef)
         })
     }, [productData.id]);
  
@@ -555,8 +702,8 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         });        
     }, [editableParam]);
 
-    useEffect(() => console.log(productData), [productData])
-    useEffect(() => console.log(curParam), [curParam])
+   // useEffect(() => console.log(productData), [productData])
+    //useEffect(() => console.log(curParam), [curParam])
 
     const curFiles = curParam?.files || productData.parameters.filter(par => par.id === editableParam)[0]?.files;
 
@@ -926,7 +1073,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     </div>
                     {
                         isDataLoaded.product !== 'processing' ? 
-                            <button onClick={() => uploadProduct()} className="btn admin__btn">
+                            <button onClick={() => productData.id > -1 ? updateProduct() : uploadProduct()} className="btn admin__btn">
                                 <img src={SaveIcon} alt="сохранить" />
                                 Сохранить товар
                             </button> : <Loader additionalClass="editor__loader"/>
@@ -1041,7 +1188,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                     }
                                 </div>
                                 {
-                                    !curFiles?.length && 
+                                    !(curFiles?.length || curParam?.data.length) && 
                                     <>
                                         <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
                                         <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
@@ -1049,10 +1196,21 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                 }
                                 
                                 {
-                                    !!curFiles?.length && 
+                                    !!(curFiles?.length || curParam?.data.length) && 
                                     <div className="editor__files">
                                         {
-                                            Object.keys(curFiles).map((key, i) => {
+                                            (curParam?.data || []).map((key, i) => {
+                                                return (
+                                                    <div key={i} className="editor__file">
+                                                        <a target="blank" href={baseURL + '/uploads/' + key} className="editor__file-name">{key}</a>
+                                                        <span className="editor__file-size">{Math.floor(1000 / 1024 * 1000) / 1000}KB</span>
+                                                        <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                        {
+                                            Object.keys(curFiles || []).map((key, i) => {
                                                 const {name, size} = curFiles[+key];
                                                 return (
                                                     <div key={name} className="editor__file">
@@ -1098,165 +1256,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     </div>
                 </div>
             </div>
-            <div className="editor__col editor__accounts editor__accounts-laptop">
-                <h2 className="editor__title">Данные от аккаунтов</h2>
-                    {
-                        productData.parameters.length && 
-                        <>
-                            <div className="editor__accounts-tabs">
-                                <div 
-                                    onClick={() => {
-                                        setCurParam({
-                                            ...curParam,
-                                            give_type: 'string'
-                                        });
-                                    }}
-                                    className={`editor__accounts-tab ${curParam.give_type === 'string' ? 'editor__accounts-tab_active' : ''}`}
-                                >
-                                    Строки
-                                </div>
-                                <div 
-                                    onClick={() => {
-                                        setCurParam({
-                                            ...curParam,
-                                            give_type: 'hand'
-                                        });
-                                    }}
-                                    className={`editor__accounts-tab ${curParam.give_type === 'hand' ? 'editor__accounts-tab_active' : ''}`}>
-                                    Ручная
-                                </div>
-                                <div 
-                                    onClick={() => {
-                                        setCurParam({
-                                            ...curParam,
-                                            give_type: 'file'
-                                        });
-                                    }}
-                                    className={`editor__accounts-tab ${curParam.give_type === 'file' ? 'editor__accounts-tab_active' : ''}`}
-                                >
-                                    .txt
-                                    
-                                </div>
-                            </div>
-                        </> || ''
-                        
-                    }
-                    <div className="editor__accounts-data">
-                        {
-                            editableParam < 0 && 
-                            <div className="editor__params editor__params_empty">
-                                Выберите параметр для настройки
-                            </div> || ''
-                        }
-                        {
-                           editableParam >= 0 && curParam.give_type === 'string' && 
-                           <div className="editor__params">
-                                <div className="editor__params-header">
-                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
-                                    <img onClick={() => saveKeys()} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить ключи" />
-                                </div>
-                                <div className="editor__params-rows">
-                                    <div className="editor__params-row">№ строки</div>
-                                    {
-                                        curParam.data?.map((key, i) => {
-                                            return (
-                                                <div key={key} className="editor__params-row">
-                                                    {i+1 < 10 ? '0'+(i+1) : i+1}
-                                                    <span className="editor__params-key">{key}</span>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                    {
-                                        isRowAdded && 
-                                        <div className="editor__params-new">
-                                            <button onClick={() => setIsRowAdded(false)} className="btn editor__params-btn">-</button>
-                                            <input 
-                                                onInput={(e) => setNewRow((e.target as HTMLInputElement).value)} 
-                                                autoFocus 
-                                                type="text" 
-                                                className="editor__params-input"
-                                            />
-                                        </div>
-                                    }
-                                </div>
-                                {!isRowAdded && <div onClick={() => setIsRowAdded(true)} className="editor__params-appender">Добавить</div>}
-                                {isRowAdded && <div onClick={() => saveRow()} className="editor__params-appender">Сохранить</div>}
-                            </div>
-                        }
-                        {
-                            editableParam >= 0 && curParam.give_type === 'hand' &&
-                            <div className="editor__params">
-                                <div className="editor__params-header">
-                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
-                                </div>
-                                <h2 className="editor__params-title">Включена ручная <br /> выдача товаров</h2>
-                                <h3 className="editor__params-subtitle">Функции редактора недоступны</h3>
-                            </div>
-                        }
-                        {
-                            editableParam >= 0 && curParam.give_type === 'file' &&
-                            <div className="editor__params">
-                                <div className="editor__params-header">
-                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
-                                    <img onClick={() => {setIsParamPopupOpened(true)}} src={SaveBlueIcon} className="editor__params-saver" alt="Введите данные" />
-                                </div>
-                                {
-                                    !curFiles?.length && 
-                                    <>
-                                        <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
-                                        <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
-                                    </>
-                                }
-                                
-                                {
-                                    !!curFiles?.length && 
-                                    <div className="editor__files">
-                                        {
-                                            Object.keys(curFiles).map((key, i) => {
-                                                const {name, size} = curFiles[+key];
-                                                return (
-                                                    <div key={name} className="editor__file">
-                                                        <a href={baseURL + '/uploads/' + name} className="editor__file-name">{name}</a>
-                                                        <span className="editor__file-size">{Math.floor(size / 1024 * 1000) / 1000}KB</span>
-                                                        <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
-                                                    </div>
-                                                )
-                                            }) || ''
-                                        }
-                                    </div>
-                                }
-                                <div className="editor__params-txt">
-                                    <span className="editor__params-counter">
-                                        {curFiles?.length === 1 ?  'Добавлен' : ''}&nbsp;
-                                        {curFiles?.length as number > 1 ?  'Добавлено' : ''}&nbsp;
-                                        {!!curFiles?.length && curFiles?.length}&nbsp;
-                                        {curFiles?.length === 1 ? 'файл' : ''}
-                                        {(curFiles?.length as number) > 1 && (curFiles?.length as number) < 5 ? 'файла' : ''}
-                                        {(curFiles?.length as number) >= 5 ? 'файлов' : ''}
-                                    </span>
-                                    <label htmlFor="file-sender__input-25" className="file-sender file-sender_small">
-                                        <input 
-                                            onInput={(e) => {
-                                                setCurParam({
-                                                    ...curParam,
-                                                    files: (e.target as HTMLInputElement).files as FileList
-                                                })
-                                            }}
-                                            multiple
-                                            type="file" 
-                                            accept=".txt" 
-                                            id="file-sender__input-25" 
-                                            className="file-sender__input" 
-                                        />
-                                        <img src={UploadIcon} alt="Добавить .txt" />
-                                        Добавить .txt
-                                    </label>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
             <SnackbarContainer>
                 {
                     snacks.map(({text}:SnackI, i:number) => <Snack text={text} key={i+''}/>)

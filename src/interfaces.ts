@@ -174,7 +174,8 @@ interface PostProductI {
         }
     >,
     subcategory_id: number,
-    product_photos: FileList[]
+    product_photos: FileList[],
+    initialPhotos: any[]
 }
 
 interface PartnerI {
