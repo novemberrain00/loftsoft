@@ -142,6 +142,7 @@
         font-weight: 400;
         max-height: 40px;
         margin-right: 53px;
+        margin-left: auto;
 
         &_hidden {
             visibility: hidden;
@@ -233,10 +234,6 @@
         &__discount-value {
             padding: 10px 12px !important;
             font-size: 16px !important;
-        }
-
-        &__btn {
-            margin-left: auto;
         }
     }
 }

@@ -435,7 +435,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
     
             Array.from(product_photos[1]).forEach(async (item, i) => {
                 await uploadFile(item).then(async (data) => {
-                    await fetch(baseURL + `/photo/${productData.initialPhotos[i].id}`, {
+                    await fetch(baseURL + `/photo/${productData.initialPhotos[i+1].id}`, {
                         method: 'PATCH',
                         headers: {
                             "Accept": "application/json",

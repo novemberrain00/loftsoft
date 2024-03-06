@@ -1,10 +1,11 @@
 import { FC, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import BlueCartIcon from "../../assets/images/icons/cart_blue.svg";
 import { RootState } from "../../store";
 import { postData } from "../../services/services";
 import { setUserInfo } from "../../redux/userSlice";
+
+import BlueCartIcon from "../../assets/images/icons/cart_blue.svg";
 
 import './parameter.scss';
 

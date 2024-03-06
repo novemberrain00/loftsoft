@@ -4,9 +4,6 @@ import FsLightbox from "fslightbox-react";
 import RootPage from "../rootPage/rootPage";
 import Path from "../../components/path/path";
 
-import Img1 from '../../assets/images/img/gallery/1.png';
-import Img1Mobile from '../../assets/images/img/gallery/1-mobile.png';
-
 import BlueStar from '../../assets/images/icons/star_blue.svg';
 
 import { convertToLatin, getData, postData } from "../../services/services";
@@ -60,7 +57,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                             path: '/catalog'
                         },
                         {
-                            text: subcategory as string,
+                            text: convertToLatin(subcategory as string),
                             path: `/catalog/${convertToLatin(subcategory as string)}`
                         },
                         {
@@ -73,18 +70,18 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                     <div className="product-page__gallery">
                         <div onClick={() => setToggler(true)} className="product-page__gallery_animated product-page__gallery-active">
                             
-                            {product_photos && <img src={baseURL + '/uploads/' + product_photos[0].photo} alt={title} className="desktop-block product-page__gallery-item" />}
+                            {product_photos && <img src={baseURL + '/uploads/' + product_photos.filter(photo => photo.main)[0]?.photo} alt={title} className="desktop-block product-page__gallery-item" />}
                         </div>
                         <div className="product-page__gallery-items">
                             <FsLightbox
                                 toggler={toggler}
-                                sources={product_photos && [...product_photos.filter(photo => !photo.main).map((photo, i) => {
+                                sources={product_photos && [...product_photos.map((photo, i) => {
                                     return <img 
                                         key={photo.photo}
                                         src={baseURL + '/uploads/' + photo.photo} 
                                         alt={title} className="product-page__gallery-item" 
                                     />
-                                }), Img1]}
+                                })]}
                             />
                             {product_photos && product_photos.filter(photo => !photo.main).map((photo, i) => {
                                 return <img 

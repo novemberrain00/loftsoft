@@ -1,5 +1,5 @@
 .product-page__var {
-    height: 170px;
+    min-height: 170px;
     box-sizing: border-box;
     padding: 35px 35px 32px 25px;
     margin-bottom: 13px;
@@ -12,6 +12,14 @@
         font-size: 20px !important;
         font-weight: 400 !important;
         margin-bottom: 37px !important;
+    }
+
+    &-descr {
+        color: rgba(0, 0, 0, 0.60);
+        font-family: Onest;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
     }
 
     &-cart {
