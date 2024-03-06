@@ -156,7 +156,7 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                     <div className="header__info">
                         <Link to="/profile/cart">
                             <a href="#" className="header__info-item" id="header-cart">
-                                {!shop_cart.length || <span id="header-cart-quantity">{shop_cart.reduce((acc, obj) => acc + obj.quantity, 0)}</span>}
+                                {!shop_cart?.length || <span id="header-cart-quantity">{shop_cart.reduce((acc, obj) => acc + obj.quantity, 0)}</span>}
                                 <img src={CartIcon} alt="корзина" className="header__info-icon"/>
                             </a>
                         </Link>
@@ -188,7 +188,7 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                                 <div className="block header__dropdown">
                                     <div className="header__dropdown-categories">
                                         {
-                                            categories.length && categories.map(({id, title, subcategories, photo}, i) => {
+                                            categories?.length && categories.map(({id, title, subcategories, photo}, i) => {
                                                 return (
                                                     <div 
                                                         key={id}

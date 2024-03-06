@@ -133,7 +133,7 @@ const MainPage: FC<MainPageProps> = () => {
                                 <h2 className="title title_grey">КАТАЛОГ</h2>
                                 <h3 className="promo__catalog-subtitle subtitle">Тут можно найти много всего интересного</h3>
                                 <div className="promo__catalog-items">
-                                { categories.length ? categories.map(({title, photo, subcategories, id}, i) => {
+                                { categories?.length ? categories.map(({title, photo, subcategories, id}, i) => {
                                         const catTitle = title;
                                         return (
                                         <div key={id} className="promo__catalog-item block">
@@ -241,7 +241,7 @@ const MainPage: FC<MainPageProps> = () => {
                             <h2 className="title title_grey">КАТАЛОГ</h2>
                             <h3 className="promo__catalog-subtitle subtitle">Тут можно найти много всего интересного</h3>
                             <div className="promo__catalog-items">
-                                {categories.length ? categories.map(({id, title, photo, subcategories}, i) => {
+                                {categories?.length ? categories.map(({id, title, photo, subcategories}, i) => {
                                         const catTitle = title;
                                         return (
                                         <div key={id} className="promo__catalog-item block">
@@ -327,7 +327,7 @@ const MainPage: FC<MainPageProps> = () => {
                         </div>
                         <h4 className="title reviews__header-title">Отзывы клиентов</h4>
                         <div className="reviews__items-header">
-                            {reviews.length > 300 ?  `> 300 отзывов` : `${reviews.length} отзывов`} 
+                            {reviews?.length > 300 ?  `> 300 отзывов` : `${reviews?.length} отзывов`} 
                             <span>10 последних отзывов</span>
                         </div>
                     </div>
