@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.abece679.css",
-    "main.js": "./static/js/main.dde9e900.js",
+    "main.css": "./static/css/main.4ef1fa7f.css",
+    "main.js": "./static/js/main.a5d62bc0.js",
     "static/media/maxon.svg": "./static/media/maxon.6a8f7a90ca5848cde27258902510b456.svg",
     "static/media/autodesk.svg": "./static/media/autodesk.3e3e1795e925d3511796730195fc3120.svg",
     "static/media/Inter-Bold.ttf": "./static/media/Inter-Bold.0eaf807b1cf0eceabe0f.ttf",
@@ -10,11 +10,6 @@
     "static/media/loftsoft.png": "./static/media/loftsoft.3b5e1c4eb298d5982bdb.png",
     "static/media/Montserrat-Bold.ttf": "./static/media/Montserrat-Bold.50f0257aa1e905f4bfaf.ttf",
     "static/media/Montserrat-Regular.ttf": "./static/media/Montserrat-Regular.24785cc015b27a3e964b.ttf",
-    "static/media/Roboto-BoldItalic.ttf": "./static/media/Roboto-BoldItalic.87d61cea6fe1d235d4a8.ttf",
-    "static/media/Roboto-Italic.ttf": "./static/media/Roboto-Italic.87f3afe16a8c3c370634.ttf",
-    "static/media/Roboto-Medium.ttf": "./static/media/Roboto-Medium.7c8d04cd831df3033c8a.ttf",
-    "static/media/Roboto-Regular.ttf": "./static/media/Roboto-Regular.fc2b5060f7accec5cf74.ttf",
-    "static/media/Roboto-Black.ttf": "./static/media/Roboto-Black.cf56c1b149d0a5e8d7c6.ttf",
     "static/media/puzzle.svg": "./static/media/puzzle.7ce9ea4b9b2235b90a96013c4b16886d.svg",
     "static/media/ALSHauss-Regular.ttf": "./static/media/ALSHauss-Regular.c3b6da49cae3114b2756.ttf",
     "static/media/ALSHauss-Black.ttf": "./static/media/ALSHauss-Black.219fbb7a2d11f313013a.ttf",
@@ -24,7 +19,12 @@
     "static/media/update_banner_bg.jpg": "./static/media/update_banner_bg.ace729efd0b4132c2d47.jpg",
     "static/media/basealt.svg": "./static/media/basealt.89d083f906a149067f284a5906c85fb9.svg",
     "static/media/kaspersky.svg": "./static/media/kaspersky.2e65856ff0b34fdf3005a5c5c0c1cb42.svg",
+    "static/media/Roboto-Italic.woff2": "./static/media/Roboto-Italic.007ccbd3e8708c6afef8.woff2",
+    "static/media/Roboto-BoldItalic.woff2": "./static/media/Roboto-BoldItalic.74126ecd07ad0d25d3f6.woff2",
     "static/media/jetbrains.svg": "./static/media/jetbrains.c8376fc2f074379bfe9129924fd3c5b9.svg",
+    "static/media/Roboto-Medium.woff2": "./static/media/Roboto-Medium.fc0337b9cf1cce2e6e1e.woff2",
+    "static/media/Roboto-Black.woff2": "./static/media/Roboto-Black.ae0c1d409f7d45d81c29.woff2",
+    "static/media/Roboto-Regular.woff2": "./static/media/Roboto-Regular.a25806274237d06e00a6.woff2",
     "static/media/Onest-Medium.ttf": "./static/media/Onest-Medium.fbd1029ceefc29dbe253.ttf",
     "static/media/Onest-Bold.ttf": "./static/media/Onest-Bold.e6f62dc971ba457a32e0.ttf",
     "static/media/Onest-Regular.ttf": "./static/media/Onest-Regular.2f8180f95c9c4f66c68c.ttf",
@@ -33,7 +33,6 @@
     "static/media/update_banner_bg_mobile.png": "./static/media/update_banner_bg_mobile.91643480439752fb53d3.png",
     "static/media/slide3.png": "./static/media/slide3.515cf0325a9805bfb9a5.png",
     "static/media/slide2.png": "./static/media/slide2.ff46aeadde5391b0a1ec.png",
-    "static/media/1.png": "./static/media/1.f14f327e114603632fcc.png",
     "static/media/mwb.svg": "./static/media/mwb.98c82ea856d9bae6696f6ec7bf7aab4e.svg",
     "static/media/microsoft.svg": "./static/media/microsoft.5dbb231dca7e68f1a207c450a4770e45.svg",
     "static/media/ascon.svg": "./static/media/ascon.f5058b663312128d7c41a0a73d4ad489.svg",
@@ -110,11 +109,11 @@
     "static/media/download.svg": "./static/media/download.cec6f2a625a04d851641c6b3d6d4a5b9.svg",
     "static/media/plus_squared.svg": "./static/media/plus_squared.7215d476aba2509e172eaf3ec0efdb74.svg",
     "static/media/logo_mobile.svg": "./static/media/logo_mobile.65b3db2bbbd393b65133e683e70e02bb.svg",
-    "main.abece679.css.map": "./static/css/main.abece679.css.map",
-    "main.dde9e900.js.map": "./static/js/main.dde9e900.js.map"
+    "main.4ef1fa7f.css.map": "./static/css/main.4ef1fa7f.css.map",
+    "main.a5d62bc0.js.map": "./static/js/main.a5d62bc0.js.map"
   },
   "entrypoints": [
-    "static/css/main.abece679.css",
-    "static/js/main.dde9e900.js"
+    "static/css/main.4ef1fa7f.css",
+    "static/js/main.a5d62bc0.js"
   ]
 }
