@@ -74,7 +74,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                 </div>
                 <div className="container product-page__container">
                     <div className="product-page__gallery">
-                        <div onClick={() => setToggler(true)} className="product-page__gallery_animated product-page__gallery-active">
+                        <div onClick={() => setToggler(!toggler)} className="product-page__gallery_animated product-page__gallery-active">
                             {product_photos && <img src={baseURL + '/uploads/' + product_photos[0]?.photo} alt={title} className="desktop-block product-page__gallery-item" />}
                         </div>
                         <div className="product-page__gallery-items">

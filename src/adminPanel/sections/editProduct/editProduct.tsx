@@ -443,8 +443,17 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             if(!product_photos[1]?.length) return;
     
             Array.from(product_photos[1]).forEach(async (item, i) => {
-                await uploadFile(item).then(async (data) => {
-                    await fetch(baseURL + `/photo/${productData.initialPhotos[i+1].id}`, {
+                const curPhoto = productData.initialPhotos[i+1];
+                if(curPhoto === undefined) {
+                    await uploadFile(item)
+                    .then(async (data) => {
+                        await postData(`/product/${id}/photos`, {
+                            photo: data.upload
+                        }, true)
+                    })
+                } else {
+                    await uploadFile(item).then(async (data) => {
+                    await fetch(baseURL + `/photo/${curPhoto.id}`, {
                         method: 'PATCH',
                         headers: {
                             "Accept": "application/json",
@@ -457,6 +466,9 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         })
                     })
                 })
+                }
+
+                
                 
             })
         }
@@ -480,7 +492,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             product: 'done'
         });
 
-        navigate('/admin/products');
+        //navigate('/admin/products');
 
     }
 
