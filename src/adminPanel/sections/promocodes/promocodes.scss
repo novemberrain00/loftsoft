@@ -81,6 +81,11 @@
                 img {
                     width: 24px;
                 }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #c2c0c0;
+                }
             }
         }
 
@@ -104,6 +109,14 @@
                 width: max-content;
                 margin-left: auto;
             }
+        }
+
+        &__emptyness {
+            display: block;
+            margin: 20px auto;
+            width: max-content;
+            font-family: Onest;
+            font-size: 20px;
         }
     }
 }

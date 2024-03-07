@@ -190,6 +190,13 @@ interface ParamDataItemI {
     size: string
 }
 
+interface PostPromocodeI {
+    id: number,
+    name: string
+    activations_count: string
+    sale_percent: string
+}
+
 export type { 
     LinkI, 
     SnackI, 
@@ -203,5 +210,6 @@ export type {
     ReviewI, 
     PostProductI, 
     PartnerI,
-    ParamDataItemI
+    ParamDataItemI,
+    PostPromocodeI
 };
