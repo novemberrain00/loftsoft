@@ -492,7 +492,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             product: 'done'
         });
 
-        //navigate('/admin/products');
+        navigate('/admin/products');
 
     }
 

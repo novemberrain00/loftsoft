@@ -36,7 +36,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
         if(getCookie('access_token')) getUserData();
     }, [])
 
-    return (
+    return getCookie('is_admin') === 'true' ? (
         <div className="admin">
             <aside className={`admin__sidebar ${isSidebarOpened ? 'admin__sidebar_opened' : ''}`}>
                 <div onClick={() => dispatch(closeSidebar())} className="mobile-flex admin__sidebar-closer-wrapper">
@@ -116,7 +116,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                 {children}
             </div>
         </div>
-    );
+    ) : null;
 }
  
 export default AdminPanel;

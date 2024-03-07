@@ -38,9 +38,7 @@ const Router: FC = () => {
         });
     }, []);
 
-    //переделать роуты для каталога
 
-    //console.log(renderToString(<MessageMail/>))
     return (
         <Routes>
             <Route path='/' element={<MainPage/>}/>
@@ -55,22 +53,18 @@ const Router: FC = () => {
             <Route path='/catalog/:subcategory' element={<CatalogPage/>}/>
             <Route path='/catalog/:subcategory/:product' element={<ProductPage/>}/>
             
-            {
-                getCookie('is_admin') === 'true' && 
-                <>
-                    <Route path='/admin' element={<AdminPanel children={<Main/>}/>}/>
-                    <Route path='/admin/categories' element={<AdminPanel children={<Categories/>}/>}/>
-                    <Route path='/admin/subcategories' element={<AdminPanel children={<Subcategories/>}/>}/>
-                    <Route path='/admin/users' element={<AdminPanel children={<Users/>}/>}/>
-                    <Route path='/admin/start' element={<AdminPanel children={<Start/>}/>}/>
-                    <Route path='/admin/tickets' element={<AdminPanel children={<TicketsHistory/>}/>}/>
-                    <Route path='/admin/products/edit/:id' element={<AdminPanel children={<EditProduct title="Редактировать товар"/>}/>}/>
-                    <Route path='/admin/products/add' element={<AdminPanel children={<EditProduct title="Добавить товар"/>}/>}/>
-                    <Route path='/admin/reviews' element={<AdminPanel children={<Reviews/>}/>}/>
-                    <Route path='/admin/promocodes' element={<AdminPanel children={<Promocodes/>}/>}/>
-                    <Route path='/admin/products' element={<AdminPanel children={<Products/>}/>}/>
-                </>
-            }
+            <Route path='/admin' element={<AdminPanel children={<Main/>}/>}/>
+            <Route path='/admin/categories' element={<AdminPanel children={<Categories/>}/>}/>
+            <Route path='/admin/subcategories' element={<AdminPanel children={<Subcategories/>}/>}/>
+            <Route path='/admin/users' element={<AdminPanel children={<Users/>}/>}/>
+            <Route path='/admin/start' element={<AdminPanel children={<Start/>}/>}/>
+            <Route path='/admin/tickets' element={<AdminPanel children={<TicketsHistory/>}/>}/>
+            <Route path='/admin/products/edit/:id' element={<AdminPanel children={<EditProduct title="Редактировать товар"/>}/>}/>
+            <Route path='/admin/products/add' element={<AdminPanel children={<EditProduct title="Добавить товар"/>}/>}/>
+            <Route path='/admin/reviews' element={<AdminPanel children={<Reviews/>}/>}/>
+            <Route path='/admin/promocodes' element={<AdminPanel children={<Promocodes/>}/>}/>
+            <Route path='/admin/products' element={<AdminPanel children={<Products/>}/>}/>
+            
         </Routes>
     )
 };
