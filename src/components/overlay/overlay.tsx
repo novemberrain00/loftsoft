@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 
 import './overlay.scss';
 
@@ -17,8 +17,11 @@ const Overlay: FC<OverlayI> = ({children, closeHandler}) => {
         }
     };
 
-    document.body.style.overflow = 'hidden';
-    document.body.style.height = '100vh';
+    // useEffect(() => {
+    //     document.body.style.overflow = 'hidden';
+    //     document.body.style.height = '100vh';
+    // }, [])
+    
 
     return (
         <div onClick={(e: any) => handleClose(e)} className="overlay">

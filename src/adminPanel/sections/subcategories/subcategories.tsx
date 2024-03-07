@@ -308,7 +308,7 @@ const Subcategories: FC<SubcategoriesPropsI> = () => {
                                                                                 id,
                                                                                 title,
                                                                                 categoryId: category_id,
-                                                                                category: categories.filter(cat => cat.id === category_id)[0].title
+                                                                                category: ''
                                                                             });
                                                                             setSubcategoryAction('edit');
                                                                             setIsPopupOpened(true);

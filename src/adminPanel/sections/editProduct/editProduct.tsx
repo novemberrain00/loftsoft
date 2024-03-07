@@ -213,7 +213,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
 
     const editParam = async () => {
         let paramData: string[] = [...curParam.data];
-        if(curParam.give_type === 'file') {
+        if(curParam.give_type === 'file' && curParam.files) {
             const filesArray: File[] = Array.from(curParam?.files);
             for(let i in filesArray) {
                 await uploadFile(filesArray[i])
@@ -321,7 +321,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
     }
 
     const updateProduct = async () => {
-        console.log(productData)
         const {id, title, card_price, description, options, parameters, product_photos, subcategory_id} = productData;
 
         if(!title.length) {
@@ -366,6 +365,26 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         });
 
         if(!areParamsOk) return;
+
+        // if(!product_photos[0]?.length) {
+        //     dispatch(addSnack({text: 'Не добавлено главное фото товара'}));
+        //     return;
+        // }
+
+        // if(!product_photos[1]?.length) {
+        //     dispatch(addSnack({text: 'Добавьте хотя бы 1 фото товара'}));
+        //     return;
+        // }
+
+        if(product_photos[1]?.length > 4) {
+            dispatch(addSnack({text: 'Добавьте не более 4-х фото'}));
+            return;
+        }
+
+        setIsDataLoaded({
+            ...isDataLoaded,
+            product: 'processing'
+        });
 
         for(let option of options) {
             await fetch(baseURL + `/option/${option.id}`, {
@@ -452,24 +471,27 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             })
         }
 
-        
-
-
-
-        // for(let photo of Array.from(product_photos[1])) {
-        //     await fetch(baseURL + `/photo/${productData.initialPhotos[0].id}`, {
-        //         method: 'PATCH',
-        //         headers: {
-        //             "Accept": "application/json",
-        //             "Authorization": 'Bearer ' + getCookie('access_token') as string,
-        //             "Content-Type": "application/json"
-        //         },
-        //         body: JSON.stringify({
-        //             photo
-        //         })
-        //     });
-        // }
+        await fetch(baseURL + `/product/${id}`, {
+            method: 'PATCH',
+            headers: {
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title,
+                description,
+                card_price
+            })
+        });
        
+        setIsDataLoaded({
+            ...isDataLoaded,
+            product: 'done'
+        });
+
+        navigate('/admin/products');
+
     }
 
     const uploadProduct = async () => {
@@ -571,30 +593,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 product: 'done'
             });
         })
-            // await fetch(`${baseURL}/product/${id}`, {
-            //     method: 'PATCH',
-            //     body: JSON.stringify({
-            //         title: title.trim(),
-            //         card_price: card_price.trim(),
-            //         description: description.trim(),
-            //         options,
-            //         photos: newPhotosArray.map(item => item.photo),
-            //         subcategory_id,
-            //         parameters: paramsArrRef
-            //     }),
-            //     headers: {
-            //         "Accept": "application/json",
-            //         "Authorization": 'Bearer ' + getCookie('access_token') as string,
-            //         "Content-Type": "application/json"
-            //       }
-            // })
-            // .then(() => {
-            //     dispatch(addSnack({text: 'Данные успешно обновлены'}))
-            //     setIsDataLoaded({
-            //         ...isDataLoaded,
-            //         product: 'done'
-            //     });
-            // })
         
 
     }
@@ -701,9 +699,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             give_type: matchedParam?.give_type || 'hand'
         });        
     }, [editableParam]);
-
-   // useEffect(() => console.log(productData), [productData])
-    //useEffect(() => console.log(curParam), [curParam])
 
     const curFiles = curParam?.files || productData.parameters.filter(par => par.id === editableParam)[0]?.files;
 
@@ -1083,7 +1078,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 <div className="editor__col editor__accounts">
                     <h2 className="editor__title">Данные от аккаунтов</h2>
                     {
-                        productData.parameters.length && 
+                        productData.parameters.length && curParam.id > -1 ? 
                         <>
                             <div className="editor__accounts-tabs">
                                 <div 
@@ -1120,7 +1115,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                     
                                 </div>
                             </div>
-                        </> || ''
+                        </> : null
                         
                     }
                     <div className="editor__accounts-data">

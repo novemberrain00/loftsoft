@@ -20,6 +20,7 @@ interface ProductPagePropsI {
 const ProductPage: FC<ProductPagePropsI> = () => {
     const [productData, setProductData] = useState<ProductI>({} as ProductI);
     const [toggler, setToggler] = useState<boolean>(false);
+    const [subcategoryName, setSubcategoryName] = useState<string>('');
 
     const { product, subcategory } = useParams();
 
@@ -29,6 +30,11 @@ const ProductPage: FC<ProductPagePropsI> = () => {
         const getProductData = async () => {
             await getData(`/product/${product}`)
             .then(data => setProductData(data));
+
+            await getData(`/subcategory/${subcategory}`)
+            .then(data => {
+                setSubcategoryName(data.title)
+            })
         }
 
         getProductData();
@@ -57,7 +63,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                             path: '/catalog'
                         },
                         {
-                            text: convertToLatin(subcategory as string),
+                            text: subcategoryName,
                             path: `/catalog/${convertToLatin(subcategory as string)}`
                         },
                         {
@@ -69,7 +75,6 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                 <div className="container product-page__container">
                     <div className="product-page__gallery">
                         <div onClick={() => setToggler(true)} className="product-page__gallery_animated product-page__gallery-active">
-                            
                             {product_photos && <img src={baseURL + '/uploads/' + product_photos.filter(photo => photo.main)[0]?.photo} alt={title} className="desktop-block product-page__gallery-item" />}
                         </div>
                         <div className="product-page__gallery-items">
@@ -88,7 +93,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                                     key={photo.photo}
                                     src={baseURL + '/uploads/' + photo.photo} 
                                     alt={title} className="product-page__gallery-item" 
-                                    onClick={() => setToggler(true)}
+                                    onClick={() => setToggler(!toggler)}
                                 />
                             })}
                         </div>

@@ -164,7 +164,11 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                             <img src={UpdateIcon} alt="обновить" className="header__info-icon"/>
                         </a>
                     
-                        {username && <div onClick={() => setIsProfileOpened(true)} className="header__profile">
+                        {username && <div onClick={() => {
+                                document.body.style.overflowX = 'hidden';
+                                document.body.style.height = '100vh';
+                                setIsProfileOpened(true)
+                            }} className="header__profile">
                             <img src={photo} alt={username} className="header__profile-img" />
                             <span className="header__profile-name">{username}</span>
                             <button className="btn header__profile-price">{balance} ₽</button>

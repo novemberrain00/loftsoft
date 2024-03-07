@@ -112,7 +112,7 @@ const Products: FC<ProductsPropsI> = () => {
                                                                             title={title}
                                                                             length={parameters.length}
                                                                             countItems="параметров"
-                                                                            photo={product_photos[0].photo}
+                                                                            photo={product_photos[0]?.photo}
                                                                             optionsClickHandler={() => {
                                                                                 navigate(`edit/${id}`)
                                                                             }}

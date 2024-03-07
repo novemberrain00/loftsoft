@@ -32,7 +32,7 @@ const LoginForm: FC<LoginFormPropsI> = () => {
                 dispatch(addSnack({text: 'Неверный логин или пароль'}));
                 return;
             } else if(data.detail === 'User not found') {
-                dispatch(addSnack({text: 'Пользователь с таким именем не найден'}));
+                dispatch(addSnack({text: 'Пользователь с таким email не найден'}));
                 return;
             };
 

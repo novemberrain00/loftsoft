@@ -104,10 +104,13 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                         </li>
                     </ul>
                 </nav>
-                <a href="#" className="admin__logout">
-                    <img src={LogoutIcon} alt="Выйти"/>
-                    Выйти
-                </a>
+                <Link to="/">
+                    <a href="#" className="admin__logout">
+                        <img src={LogoutIcon} alt="Выйти"/>
+                        Выйти
+                    </a>
+                </Link>
+                
             </aside>
             <div className="admin__container">
                 {children}

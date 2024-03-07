@@ -24,14 +24,15 @@
     }
 
     &__descr {
+        height: 60px;
         margin: 9px 0 39px;
+        overflow: hidden;
     }
 
     &__bottom {
         justify-content: space-between;
         display: flex;
         align-items: center;
-        margin-top: 39px;
     }
 
     &__price {

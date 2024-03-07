@@ -14,16 +14,6 @@ import ArrowIcon from '../../assets/images/icons/dropdown-arrow-grey.svg';
 import BlueStar from '../../assets/images/icons/star_blue.svg';
 import ArrowRight from '../../assets/images/icons/arrow_right.svg';
 
-import Maxon from '../../assets/images/img/top/maxon.jpg';
-import Jetbrains from '../../assets/images/img/top/jetbrains.jpg';
-import Nanocad from '../../assets/images/img/top/nanocad.jpg';
-import TopWindows from '../../assets/images/img/top/windows.jpg';
-import Box from '../../assets/images/img/catalog/box.png';
-import Bussines from '../../assets/images/img/catalog/bussines.png';
-import Graphics from '../../assets/images/img/catalog/graphics.png';
-import MSoffice from '../../assets/images/img/catalog/msoffice.png';
-import Shield from '../../assets/images/img/catalog/shield.png';
-import Windows from '../../assets/images/img/catalog/windows.png';
 import LoftsoftImg from '../../assets/images/img/loftsoft.png';
 import Puzzle from '../../assets/images/img/puzzle.svg';
 
@@ -40,10 +30,6 @@ import Kaspersky from '../../assets/images/img/brands/kaspersky.svg';
 import MaxonPartners from '../../assets/images/img/brands/maxon.svg';
 import MWB from '../../assets/images/img/brands/mwb.svg';
 import SC from '../../assets/images/img/brands/sc.svg';
-
-import ReviewImg1 from '../../assets/images/img/reviews/1.png';
-import ReviewImg2 from '../../assets/images/img/reviews/2.png';
-import ReviewImg3 from '../../assets/images/img/reviews/3.png';
 
 import Slide1 from '../../assets/images/img/carousel/slide1.png';
 import Slide2 from '../../assets/images/img/carousel/slide2.png';
@@ -90,11 +76,7 @@ const MainPage: FC<MainPageProps> = () => {
         },
       };
 
-    const clipboard = useClipboard({
-        onSuccess: () => {
-            dispatch(addSnack({text: 'Скопировано'}))
-        }
-    });
+    const clipboard = useClipboard();
 
     useEffect(() => {
         getData('/categories?empty_filter=true')

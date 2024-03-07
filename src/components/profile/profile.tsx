@@ -69,7 +69,7 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler}) => {
                             </span>
                         </Link>
                     </li>
-                   {getCookie('access_token') && <li className="profile__menu-item">
+                   {getCookie('is_admin') === "true" && <li className="profile__menu-item">
                         <Link to="/admin">
                             <span className="profile__link">
                                 <img src={DashboartIcon} alt="Перейти в админ-панель" className="profile__link-icon" />

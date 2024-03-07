@@ -609,15 +609,15 @@ a {
 
   .mobile {
     &-flex {
-      display: flex;
+      display: flex !important;
     }
 
     &-block {
-      display: block;
+      display: block !important;
     }
 
     &-grid {
-      display: grid;
+      display: grid !important;
     }
   }
 

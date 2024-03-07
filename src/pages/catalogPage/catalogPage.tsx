@@ -30,7 +30,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     const {subcategory} = useParams();
 
     const [filters, setFilters] = useState({ //false - по возрастанию, true - по убыванию
-        price: true,
+        price: false,
         rating: true,
         sale: false
 
@@ -43,11 +43,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     })
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
-    const clipboard = useClipboard({
-        onSuccess: () => {
-            dispatch(addSnack({text: 'Скопировано'}))
-        }
-    });
+    const clipboard = useClipboard();
 
     const setPathString = (data: CategoryI[]) => {
         const curCategory = data.filter((cat: CategoryI) => {
@@ -79,7 +75,6 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         getData('/categories?empty_filter=true')
         .then(data => {
             setCategories(data)
-            
             setPathString(data);
         });
     }, []);
@@ -101,7 +96,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                         </div>
                         <div className="catalog__banner-footer">
                             <div className="catalog__query">
-                                <h2 className="catalog__query-title title">Найдено 69 товаров по вашему запросу</h2>
+                                <h2 className="catalog__query-title title">Найдено {products.length} товаров по вашему запросу</h2>
                                {
                                     subcategory ? <p className="catalog__banner-category text">
                                         {path.categoryName} / {path.subcategoryName}
@@ -124,9 +119,9 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                                 ...filters,
                                                 price: !filters.price
                                             })}
-                                            className={`block catalog__filter-value ${!filters.price && 'catalog__filter-value_active'}`}
+                                            className={`block catalog__filter-value ${filters.price && 'catalog__filter-value_active'}`}
                                         >
-                                            {!filters.price ? `По\u00A0возрастанию` : 'По убыванию'}
+                                            {filters.price ? `По\u00A0возрастанию` : 'По убыванию'}
                                             <img src={FilterArrowIcon} alt="По убыванию"/>
                                         </span>
                                     </li>

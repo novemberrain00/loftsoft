@@ -46,8 +46,9 @@ const Parameter: FC<ParameterPropsI> = ({id, productId, title, salePrice, price,
 
     useEffect(() => {
         if(quantity > 0) {
-            setIsSwitchOpened(true)
+            setIsSwitchOpened(true);
         } else {
+            setIsSwitchOpened(false);
             return
         }
 
@@ -65,7 +66,7 @@ const Parameter: FC<ParameterPropsI> = ({id, productId, title, salePrice, price,
             <span className="product-page__price">{+salePrice || +price}₽</span>
             {hasSale && <span className="product-page__price product-page__price_old">{+price}₽</span>}
             {hasSale && <span className="product-page__discount-value discount-value">-{salePercent}%</span>}
-            <div className={`product-page__switch ${!isSwitchOpened && 'product-page__switch_hidden'}`}>
+            <div className={`product-page__switch ${!isSwitchOpened ? 'product-page__switch_hidden' : ''}`}>
                 <button className="product-page__switch-btn" disabled={!isDataPosted} onClick={() => {
                     setQuantity(quantity-1)
                 }}>
@@ -83,8 +84,11 @@ const Parameter: FC<ParameterPropsI> = ({id, productId, title, salePrice, price,
                     </svg>
                 </button>
             </div>
-            <button onClick={() => setQuantity(quantity+1)} disabled={!isDataPosted} className="btn product-page__btn">Приобрести</button>
-            <a href="#" className="link product-page__var-cart">
+            <button disabled={!isDataPosted}  className="btn product-page__btn">Приобрести</button>
+            <a onClick={(e) => {
+                e.preventDefault();
+                setQuantity(quantity+1)
+            }} href="#" className="link product-page__var-cart">
                 <img src={BlueCartIcon} alt="в корзину" />
             </a>
         </div>
