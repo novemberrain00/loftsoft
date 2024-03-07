@@ -16,7 +16,7 @@ interface ParameterPropsI {
     salePrice: number
     price: number
     hasSale: boolean
-    salePercent: number | null,
+    salePercent: string | null,
     description: string
 }
  

@@ -11,8 +11,8 @@ import { convertToLatin, getData, postData } from "../../services/services";
 import { ProductI } from "../../interfaces";
 import Parameter from "../../components/parameter/parameter";
 
-import './productPage.scss';
 import { useParams } from "react-router-dom";
+import './productPage.scss';
 
 interface ProductPagePropsI {
 }
@@ -75,7 +75,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                 <div className="container product-page__container">
                     <div className="product-page__gallery">
                         <div onClick={() => setToggler(true)} className="product-page__gallery_animated product-page__gallery-active">
-                            {product_photos && <img src={baseURL + '/uploads/' + product_photos.filter(photo => photo.main)[0]?.photo} alt={title} className="desktop-block product-page__gallery-item" />}
+                            {product_photos && <img src={baseURL + '/uploads/' + product_photos[0]?.photo} alt={title} className="desktop-block product-page__gallery-item" />}
                         </div>
                         <div className="product-page__gallery-items">
                             <FsLightbox
@@ -88,7 +88,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                                     />
                                 })]}
                             />
-                            {product_photos && product_photos.filter(photo => !photo.main).map((photo, i) => {
+                            {product_photos && product_photos.slice(1).map((photo, i) => {
                                 return <img 
                                     key={photo.photo}
                                     src={baseURL + '/uploads/' + photo.photo} 
@@ -136,7 +136,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                         </section>
                         <div className="product-page__vars">
                             {
-                                parameters && parameters.map(({id, title, price, sale_price, has_sale, description}, i) => {
+                                parameters && parameters.map(({id, title, price, sale_price, has_sale, description, sale_percent}, i) => {
                                     return (
                                         <Parameter
                                             key={id}
@@ -146,7 +146,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                                             price={+price}
                                             salePrice={+sale_price}
                                             hasSale={has_sale}
-                                            salePercent={sale_percent}
+                                            salePercent={sale_percent as string}
                                             description={description as string}
                                         />
                                     )

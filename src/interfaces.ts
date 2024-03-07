@@ -45,7 +45,8 @@ interface ProductI {
             product_id?: number,
             data?: string[],
             give_type: string,
-            description: string | null
+            description: string | null,
+            sale_percent?: string
         }
     >,
     subcategory_id: number,
@@ -130,6 +131,7 @@ interface CartItemI {
         product_id: number,
         give_type: string,
         description: string | null
+        sale_percent?: string
     },
     quantity: number
 }
@@ -170,7 +172,7 @@ interface PostProductI {
             data?: string[],
             files?: FileList | string[],
             give_type: string
-            description: string
+            description: string,
         }
     >,
     subcategory_id: number,
