@@ -213,8 +213,15 @@
                 gap: 10px;
             }
 
-            img {
-                max-width: 380px;
+            &-item {
+                max-width: 120px;
+            }
+
+            &-active {
+                img {
+                    width: 100%;
+                    max-width: 380px;
+                }
             }
         }
 

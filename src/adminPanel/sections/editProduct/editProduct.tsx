@@ -366,16 +366,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
 
         if(!areParamsOk) return;
 
-        // if(!product_photos[0]?.length) {
-        //     dispatch(addSnack({text: 'Не добавлено главное фото товара'}));
-        //     return;
-        // }
-
-        // if(!product_photos[1]?.length) {
-        //     dispatch(addSnack({text: 'Добавьте хотя бы 1 фото товара'}));
-        //     return;
-        // }
-
         if(product_photos[1]?.length > 4) {
             dispatch(addSnack({text: 'Добавьте не более 4-х фото'}));
             return;
@@ -1193,7 +1183,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                 {
                                     !!(curFiles?.length || curParam?.data.length) && 
                                     <div className="editor__files">
-                                        {
+                                        { productData.id > -1 ?
                                             (curParam?.data || []).map((key, i) => {
                                                 return (
                                                     <div key={i} className="editor__file">
@@ -1202,7 +1192,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                                         <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
                                                     </div>
                                                 )
-                                            })
+                                            }) : null
                                         }
                                         {
                                             Object.keys(curFiles || []).map((key, i) => {
