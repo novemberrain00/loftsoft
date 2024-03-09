@@ -90,9 +90,12 @@ const Promocodes: FC<PromocodesPropsI> = () => {
                 sale_percent: +sale_percent
             })
         })
-        .then(async () => {
-            getData('/promocodes', true)
-            .then(data => setPromocodes(data))
+        .then((data) => data.json())
+        .then((data: PostPromocodeI) => {
+            const promocodesArrRef: PostPromocodeI[] = promocodes;
+            promocodesArrRef[promocodesArrRef.indexOf(promocodesArrRef.filter(promo => promo.id === id)[0]) ] = data
+
+            setPromocodes(promocodesArrRef as never[])
 
             setIsCreatePromoPopupOpened(false);
         })

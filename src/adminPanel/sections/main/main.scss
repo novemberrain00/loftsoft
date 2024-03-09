@@ -164,7 +164,71 @@
                 }
             }
         }
+    }   
+}
+
+@media screen and (max-width: 1140px) {
+    .admin {
+        .main {
+            display: flex;
+            flex-direction: column;
+
+            &__stats {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            &__sales {
+                width: 92%;
+                &-products {
+                    &::-webkit-scrollbar {
+                        height: 9px;
+                    }
+                }
+
+                &-list {
+                    flex-shrink: 0;
+                    margin-right: 30px;
+                }
+            }
+
+            &__partners {
+                margin-bottom: 25px;
+            }
+        }
     }
-    
+}
+
+@media screen and (max-width: 576px) {
+    .admin {
+        .main {
+            &__stats {
+                &-value {
+                    font-size: 32px;
+                }
+
+                &_horizontal {
+                    flex-direction: column;
+                }
+            }
+
+            &__partners {
+                width: 90vw;
+
+                &-items {
+                    grid-template-columns: repeat(2, 1fr);
+
+                }
+            }
+
+            &__sales {
+                width: 76vw;
+            }
+
+            &__file {
+                width: 90%;
+            }
+        }
+    }
 }
 

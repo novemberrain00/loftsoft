@@ -376,3 +376,26 @@
         }
     }
 }
+
+@media screen and (max-width: 576px) {
+    .admin {
+        .hamburger {
+            width: 35px;
+            height: 35px;
+
+            img {
+                width: 17px;
+            }
+        }
+
+        &__container {
+            padding: 30px 20px 46px;
+        }
+
+        .header {
+            &__buttons {
+                padding-top: 0 !important;
+            }
+        }
+    }
+}

@@ -82,6 +82,11 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                                 <a href="#" className="admin__menu-link">Подкатегории</a>
                             </Link>
                         </li>
+                        <li className="admin__menu-item">
+                            <Link to="/admin/promocodes">
+                                <a href="#" className="admin__menu-link">Промокоды</a>
+                            </Link>
+                        </li>
                     </ul>
                     <h3 className="admin__sidebar-subtitle">Чаты</h3>
                     <ul className="list admin__menu">

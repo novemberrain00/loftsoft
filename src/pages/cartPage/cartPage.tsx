@@ -18,8 +18,11 @@ import EmptyCartImg from '../../assets/images/img/cart/empty.jpg';
 import { RootState } from "../../store";
 
 import CartItem from "../../components/cartItem/cartItem";
-import './cartPage.scss';
 import { useNavigate } from "react-router-dom";
+import { getData } from "../../services/services";
+
+import './cartPage.scss';
+import { addSnack } from "../../redux/snackbarSlice";
 
 interface CartPagePropsI {
     
@@ -28,12 +31,34 @@ interface CartPagePropsI {
 const CartPage: FC<CartPagePropsI> = () => {
     const userData = useSelector((state: RootState) => state.user.userInfo);
     const [activePayment, setActivePayment] = useState('crypto');
+    const [promo, setPromo] = useState<string>('');
+    const [salePercent, setSalePercent] = useState<number>(0);
+    const [alertMessage, setAlertMessage] = useState<string>('');
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     let productWordForm = 'товаров';
     let totalPrice = 0,
         totalAmount = 0,
         totalDiscount = 0;
+
+    const checkPromo = async () => {
+        await getData(`/promocode/${promo}/use`)
+        .then(data => {
+            if(data.detail === "NOT_FOUND") {
+                setAlertMessage('Промокод не существует');
+                setPromo('')
+                return
+            }
+
+            setSalePercent(data.sale_percent);
+
+            dispatch(addSnack({
+                text: 'Промокод успешно применен'
+            }))
+        });
+    }
 
     return (
         <RootPage>
@@ -116,13 +141,26 @@ const CartPage: FC<CartPagePropsI> = () => {
                             <span className="cart__info-row text text_small">На сумму: {totalPrice} руб.</span>
                             <span className="cart__info-row text text_small">Без учёта скидок: {totalDiscount+totalPrice} руб.</span>
                         </div>
-                        <div className="cart__widget">
+                        <div className="cart__promocode cart__widget">
                             <label htmlFor="cart-promo" id="cart-promo-label" className="cart__widget-label cart__promo">
                                 Промокод
-                                <input type="text" id="cart-promo" className="cart__email cart__widget-input" placeholder="Введите промокод"/>
-                                <button className="btn cart__widget-btn cart__promo-btn">
-                                    <img src={RightArrow} alt="промокод" />
-                                </button>
+                                <input 
+                                    onInput={(e) => {
+                                        setAlertMessage('');
+                                        setPromo((e.target as HTMLInputElement).value);
+                                    }}
+                                    value={promo}
+                                    type="text" 
+                                    id="cart-promo" 
+                                    className="cart__promocode cart__widget-input" 
+                                    placeholder={alertMessage || "Введите промокод"}
+                                />
+                                {
+                                    promo.length ? 
+                                    <button onClick={() => checkPromo()} className="btn cart__widget-btn cart__promo-btn">
+                                        <img src={RightArrow} alt="промокод" />
+                                    </button> : null
+                                }
                             </label>
                         </div>
                         <div className="cart__widget cart__payments">
@@ -143,9 +181,9 @@ const CartPage: FC<CartPagePropsI> = () => {
                             </div>
                         </div>
                         <div className="cart__sidebar-footer">
-                            <span className="cart__sidebar-price">К оплате:  {totalPrice} ₽</span>
+                            <span className="cart__sidebar-price">К оплате:  {totalPrice * (1 - salePercent / 100)} ₽</span>
                             <span className="cart__sidebar-discount">Сумма скидок по заказу: {totalDiscount} ₽</span>
-                            <span className="cart__sidebar-discount">Промокод: -2000 ₽</span>
+                            {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
                             <button className="cart__btn cart__sidebar-btn btn">
                                 <img src={WhiteCartIcon} alt="Оплатить" className="cart__btn-icon" />
                                 Оплатить
@@ -156,7 +194,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                         <div className="cart__sidebar-footer">
                             <span className="cart__sidebar-price">К оплате: {totalPrice} ₽</span>
                             <span className="cart__sidebar-discount">Сумма скидок по заказу: {totalDiscount} ₽</span>
-                            <span className="cart__sidebar-discount">Промокод: -2000 ₽</span>
+                            {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
                             <button className="cart__btn cart__sidebar-btn btn">
                                 <img src={WhiteCartIcon} alt="Оплатить" className="cart__btn-icon" />
                                 Оплатить
