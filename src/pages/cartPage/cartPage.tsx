@@ -19,10 +19,11 @@ import { RootState } from "../../store";
 
 import CartItem from "../../components/cartItem/cartItem";
 import { useNavigate } from "react-router-dom";
-import { getData } from "../../services/services";
+import { getData, postData } from "../../services/services";
 
 import './cartPage.scss';
 import { addSnack } from "../../redux/snackbarSlice";
+import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 
 interface CartPagePropsI {
     
@@ -30,13 +31,16 @@ interface CartPagePropsI {
 
 const CartPage: FC<CartPagePropsI> = () => {
     const userData = useSelector((state: RootState) => state.user.userInfo);
-    const [activePayment, setActivePayment] = useState('crypto');
+    const [activePayment, setActivePayment] = useState<'sbp' | 'crypto' | 'site_balance'>('sbp');
     const [promo, setPromo] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [salePercent, setSalePercent] = useState<number>(0);
     const [alertMessage, setAlertMessage] = useState<string>('');
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const orderId = useSelector((state: RootState) => state.order.id);
 
     let productWordForm = 'товаров';
     let totalPrice = 0,
@@ -52,12 +56,46 @@ const CartPage: FC<CartPagePropsI> = () => {
                 return
             }
 
+            if(data.detail === "PROMO_INACTIVE") {
+                setAlertMessage('Промокод неактивен');
+                setPromo('')
+                return
+            }
+
             setSalePercent(data.sale_percent);
 
             dispatch(addSnack({
                 text: 'Промокод успешно применен'
             }))
         });
+    }
+
+    const createOrder = async () => {
+
+        if(+orderId  < 0) {
+            await postData('/order', {
+                promocode: promo,
+                straight: false,
+                email: '',
+                payment_type: activePayment,
+    
+            }, true)
+            .then((data: any) => {
+                console.log('order created')
+                window.localStorage.setItem('timeToPay', '600')
+                dispatch(setPrice({price: data.result_price}))
+                dispatch(setOrderId({id: data.id}))
+                navigate(`order/${data.id}`)
+            })
+        } else {
+            await getData(`/order/${orderId}/check`, true)
+            .then(data => {
+                if(data.detal === 'ORDER_NOT_FOUND') {
+                    return;
+                }
+                navigate(`order/${orderId}`)
+            })
+        }   
     }
 
     return (
@@ -174,7 +212,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                                     <img src={CryptoIcon} alt="Криптовалюта" className="cart__payment-icon" />
                                     Криптовалюта
                                 </div>
-                                <div onClick={() => setActivePayment('site')} className={`cart__payment ${activePayment === 'site' && 'cart__payment_active'}`}>
+                                <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
                                     <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
                                     Баланс на сайте
                                 </div>
@@ -184,7 +222,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                             <span className="cart__sidebar-price">К оплате:  {totalPrice * (1 - salePercent / 100)} ₽</span>
                             <span className="cart__sidebar-discount">Сумма скидок по заказу: {totalDiscount} ₽</span>
                             {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
-                            <button className="cart__btn cart__sidebar-btn btn">
+                            <button onClick={() => createOrder()} className="cart__btn cart__sidebar-btn btn">
                                 <img src={WhiteCartIcon} alt="Оплатить" className="cart__btn-icon" />
                                 Оплатить
                             </button>

@@ -36,11 +36,11 @@ const Promocodes: FC<PromocodesPropsI> = () => {
         const {name, activations_count, sale_percent} = curPromo;
         
         if(!name.length) {
-            setAlertMessage('Введите имя товара');
+            setAlertMessage('Введите промокод');
             return
         }
 
-        if(+sale_percent > 0) {
+        if(+sale_percent <= 0) {
             setAlertMessage('Скидка должна быть больше 0');
             return
         }

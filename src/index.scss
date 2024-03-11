@@ -182,6 +182,10 @@ body, html {
     &:focus {
         outline: none;
     }
+
+    &_rounded {
+      border-radius: 25px;
+    }
   }
 
   &__textarea {

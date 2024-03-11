@@ -265,6 +265,14 @@
     }
 }
 
+@media screen and (max-width: 1727px) {
+    .header {
+        &__container {
+            padding: 14px 0;
+        }
+    }
+}
+
 
 @media screen and (max-width: 1280px) {
     .header {

@@ -10,6 +10,11 @@ import { setUserInfo } from "../redux/userSlice";
 
 import { RootState } from "../store";
 import { closeSidebar } from "../redux/adminSidebarSlice";
+
+import SnackbarContainer from "../components/snackbar/snackbar";
+import Snack from "../components/snack/snack";
+
+import { SnackI } from "../interfaces";
 import './adminPanel.scss';
 
 interface AdminPanelPropsI {
@@ -20,6 +25,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
     const dispatch = useDispatch();
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     const isSidebarOpened = useSelector((state: RootState) => state.adminSidebar.isOpened);
+    const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
 
     useEffect(() => {
         const getUserData = async () => {
@@ -87,6 +93,11 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                                 <a href="#" className="admin__menu-link">Промокоды</a>
                             </Link>
                         </li>
+                        <li className="admin__menu-item">
+                            <Link to="/admin/billing">
+                                <a href="#" className="admin__menu-link">Платежная система</a>
+                            </Link>
+                        </li>
                     </ul>
                     <h3 className="admin__sidebar-subtitle">Чаты</h3>
                     <ul className="list admin__menu">
@@ -120,6 +131,11 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
             <div className="admin__container">
                 {children}
             </div>
+            <SnackbarContainer>
+                {
+                    snacks.map(({text}:SnackI, i:number) => <Snack text={text} key={i+''}/>)
+                }
+            </SnackbarContainer>
         </div>
     ) : null;
 }

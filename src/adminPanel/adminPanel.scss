@@ -348,6 +348,14 @@
     }
 }
 
+@media screen and (max-width: 1727px) {
+    .admin {
+        &__menu {
+            margin-bottom: 24px !important;
+        }
+    }
+}
+
 @media screen and (max-width: 1280px) {
     .admin {
         &__sidebar {

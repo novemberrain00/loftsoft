@@ -27,6 +27,8 @@ import { RootState } from '../../store';
 import Categories from '../../adminPanel/sections/categories/categories';
 import PurchaseMail from '../../mails/purchase';
 import Products from '../../adminPanel/sections/products/products';
+import PaymentPage from '../../pages/paymentPage/paymentPage';
+import BillingData from '../../adminPanel/sections/billingData/billingData';
 
 const Router: FC = () => {
     const [categories, setCategories] = useState<CategoryI[]>([]);
@@ -43,11 +45,14 @@ const Router: FC = () => {
         <Routes>
             <Route path='/' element={<MainPage/>}/>
             <Route path='/terms' element={<TermsPage/>}/>
-            <Route path='/profile/cart' element={<CartPage/>}/>
             <Route path='/reviews' element={<ReviewsPage/>}/>
             <Route path='/auth' element={<AuthPage/>}/>
-            <Route path='/payment/success' element={<SuccessPaymentPage/>}/>
             <Route path='/mail' element={<PurchaseMail/>}/>
+
+            <Route path='/profile/cart' element={<CartPage/>}/>
+            <Route path='/profile/cart/order/:id' element={<PaymentPage/>}/>
+            <Route path='/profile/cart/order/:id/success' element={<SuccessPaymentPage/>}/>
+
 
             <Route path='/catalog' element={<CatalogPage/>}/>
             <Route path='/catalog/:subcategory' element={<CatalogPage/>}/>
@@ -63,8 +68,8 @@ const Router: FC = () => {
             <Route path='/admin/products/add' element={<AdminPanel children={<EditProduct title="Добавить товар"/>}/>}/>
             <Route path='/admin/reviews' element={<AdminPanel children={<Reviews/>}/>}/>
             <Route path='/admin/promocodes' element={<AdminPanel children={<Promocodes/>}/>}/>
-            <Route path='/admin/products' element={<AdminPanel children={<Products/>}/>}/>
-            
+            <Route path='/admin/products' element={<AdminPanel children={<Products/>}/>}/>            
+            <Route path='/admin/billing' element={<AdminPanel children={<BillingData/>}/>}/>            
         </Routes>
     )
 };
