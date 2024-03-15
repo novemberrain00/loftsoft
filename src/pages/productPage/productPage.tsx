@@ -75,7 +75,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                 <div className="container product-page__container">
                     <div className="product-page__gallery">
                         <div onClick={() => setToggler(!toggler)} className="product-page__gallery_animated product-page__gallery-active">
-                            {product_photos && <img src={baseURL + '/uploads/' + product_photos[0]?.photo} alt={title} className="desktop-block product-page__gallery-item" />}
+                            {product_photos && <img src={baseURL + '/uploads/' + product_photos[0]?.photo} alt={title} className="product-page__gallery-item" />}
                         </div>
                         <div className="product-page__gallery-items">
                             <FsLightbox
@@ -103,11 +103,11 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                         <div className="product-page__rate">
                             5.0
                             <div className="product-page__rate-stars">
-                                <img src={BlueStar} alt="Windows 10 OEM" className="product-page__rate-star" />
-                                <img src={BlueStar} alt="Windows 10 OEM" className="product-page__rate-star" />
-                                <img src={BlueStar} alt="Windows 10 OEM" className="product-page__rate-star" />
-                                <img src={BlueStar} alt="Windows 10 OEM" className="product-page__rate-star" />
-                                <img src={BlueStar} alt="Windows 10 OEM" className="product-page__rate-star" />
+                                <img src={BlueStar} alt="rate" className="product-page__rate-star" />
+                                <img src={BlueStar} alt="rate" className="product-page__rate-star" />
+                                <img src={BlueStar} alt="rate" className="product-page__rate-star" />
+                                <img src={BlueStar} alt="rate" className="product-page__rate-star" />
+                                <img src={BlueStar} alt="rate" className="product-page__rate-star" />
                             </div>
                         </div>
                         <section className="product-page__section">

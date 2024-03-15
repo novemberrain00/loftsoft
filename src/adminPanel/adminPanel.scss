@@ -25,6 +25,7 @@
         width: 100%;
         box-sizing: content-box;
         padding: 45px 87px 40px 40px;
+        overflow: hidden;
     }
 
     &__block {
@@ -271,79 +272,6 @@
             flex-direction: column;
             margin-top: 22px;
             gap: 16px;
-        }
-    }
-
-    .ticket {
-        display: flex;
-        gap: 17px;
-
-        &__closer {
-            height: 24px;
-        }
-
-        &__body {
-            position: relative;
-            display: flex;
-            width: max-content;
-            padding: 30px;
-            border-radius: 25px;
-            background: #F5F5F5;
-        }
-
-        &__img {
-            width: 65px;
-            height: 65px;
-            margin-right: 30px;
-        }
-
-        &__info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            margin-right: 80px;
-        }
-
-        &__num {
-            font-family: Onest;
-            font-size: 20px;
-            font-weight: 400;
-        }
-
-        &__name {
-            margin: 0;
-            font-family: Onest;
-            font-size: 32px;
-            font-weight: 500;
-        }
-
-        &__message {
-            font-family: Onest;
-            font-size: 16px;
-            font-weight: 400;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 405px;
-
-            &-title {
-                margin: 10px 0 9px 0;
-                display: flex;
-                justify-content: space-between;
-                align-items: end;
-                font-family: Onest;
-                font-size: 20px;
-                font-weight: 400;
-            }
-        }
-
-        &__delete {
-            color: #000;
-            font-family: Onest;
-            font-size: 20px;
-            font-weight: 400;
-            margin-right: 12px;
-            line-height: 1;
         }
     }
 }

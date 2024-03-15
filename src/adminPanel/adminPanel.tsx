@@ -102,12 +102,12 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                     <h3 className="admin__sidebar-subtitle">Чаты</h3>
                     <ul className="list admin__menu">
                         <li className="admin__menu-item">
-                            <a href="#" className="admin__menu-link">Начало работы</a>
+                            <Link to="/admin/tickets">
+                                <a href="#" className="admin__menu-link">Начало работы</a>
+                            </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/tickets">
-                                <a href="#" className="admin__menu-link">История</a>
-                            </Link>
+                            <a href="#" className="admin__menu-link">История</a>
                         </li>
                         <li className="admin__menu-item">
                             <a href="#" className="admin__menu-link">Уведомления</a>

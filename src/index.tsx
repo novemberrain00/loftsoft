@@ -12,6 +12,9 @@ import './index.scss';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+//document.designMode = 'on';
+
 root.render(
     <BrowserRouter>
       <Provider store={store}>

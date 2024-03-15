@@ -21,9 +21,12 @@ import CartItem from "../../components/cartItem/cartItem";
 import { useNavigate } from "react-router-dom";
 import { getData, postData } from "../../services/services";
 
-import './cartPage.scss';
+import CheckIcon from '../../assets/images/icons/check.svg';
+
 import { addSnack } from "../../redux/snackbarSlice";
 import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
+
+import './cartPage.scss';
 
 interface CartPagePropsI {
     
@@ -36,6 +39,7 @@ const CartPage: FC<CartPagePropsI> = () => {
     const [email, setEmail] = useState<string>('');
     const [salePercent, setSalePercent] = useState<number>(0);
     const [alertMessage, setAlertMessage] = useState<string>('');
+    const [isPromoUsedSuccesfully, setIsPromoUsedSuccesfully] = useState<boolean>(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -64,6 +68,7 @@ const CartPage: FC<CartPagePropsI> = () => {
 
             setSalePercent(data.sale_percent);
 
+            setIsPromoUsedSuccesfully(true)
             dispatch(addSnack({
                 text: 'Промокод успешно применен'
             }))
@@ -182,19 +187,30 @@ const CartPage: FC<CartPagePropsI> = () => {
                         <div className="cart__promocode cart__widget">
                             <label htmlFor="cart-promo" id="cart-promo-label" className="cart__widget-label cart__promo">
                                 Промокод
-                                <input 
-                                    onInput={(e) => {
-                                        setAlertMessage('');
-                                        setPromo((e.target as HTMLInputElement).value);
-                                    }}
-                                    value={promo}
-                                    type="text" 
-                                    id="cart-promo" 
-                                    className="cart__promocode cart__widget-input" 
-                                    placeholder={alertMessage || "Введите промокод"}
-                                />
                                 {
-                                    promo.length ? 
+                                isPromoUsedSuccesfully ? 
+                                    <div 
+                                        id="cart-promo" 
+                                        className="cart__widget-input cart__widget-input_succesfull"
+                                        
+                                    >
+                                        Промокод успешно применен
+                                        <img src={CheckIcon} alt="прокод применен" className="cart__widget-icon"/>
+                                    </div>:
+                                    <input 
+                                        onInput={(e) => {
+                                            setAlertMessage('');
+                                            setPromo((e.target as HTMLInputElement).value);
+                                        }}
+                                        value={promo}
+                                        type="text" 
+                                        id="cart-promo" 
+                                        className={`cart__promocode cart__widget-input ${alertMessage.length > 0 ? 'cart__widget-input_red' : null}`}
+                                        placeholder={alertMessage || "Введите промокод"}
+                                    />
+                                }
+                                {
+                                    promo.length && !isPromoUsedSuccesfully ? 
                                     <button onClick={() => checkPromo()} className="btn cart__widget-btn cart__promo-btn">
                                         <img src={RightArrow} alt="промокод" />
                                     </button> : null

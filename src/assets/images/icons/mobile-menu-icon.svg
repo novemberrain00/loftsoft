@@ -1,0 +1,25 @@
+<svg width="171" height="171" viewBox="0 0 171 171" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 55">
+<g id="burron" filter="url(#filter0_d_318_1674)">
+<circle id="Ellipse 53" cx="85.5" cy="85.5" r="65.5" fill="#2667FF"/>
+</g>
+<g id="Group 41">
+<rect id="Rectangle 346" x="60.3" y="60.3" width="22.5625" height="22.5625" rx="4" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 347" x="60.3" y="88.1375" width="22.5625" height="22.5625" rx="4" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 348" x="88.1375" y="88.1375" width="22.5625" height="22.5625" rx="4" stroke="white" stroke-width="2"/>
+<rect id="Rectangle 349" x="88.1375" y="60.3" width="22.5625" height="22.5625" rx="4" stroke="white" stroke-width="2"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_318_1674" x="0" y="0" width="171" height="171" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="10"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_318_1674"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_318_1674" result="shape"/>
+</filter>
+</defs>
+</svg>

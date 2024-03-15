@@ -45,6 +45,7 @@ import { addSnack } from '../../redux/snackbarSlice';
 import { setUserInfo } from '../../redux/userSlice';
 import HeaderNavItem from '../../components/headerNavItem/headerNavItem';
 
+import MobileMenu from '../../components/mobileMenu/mobileMenu';
 import './rootPage.scss';
 
 interface RootPagePropsI {
@@ -59,19 +60,8 @@ interface ActiveProductDataI {
 
 const RootPage: FC<RootPagePropsI> = ({children}) => {
     const [activeProductData, setActiveProductData] = useState<ActiveProductDataI>({
-        name: 'Операционные системы',
-        items: [
-            {text: 'Windows 11', path:'#'}, 
-            {text: 'Windows 8', path:'#'}, 
-            {text: 'Windows 10', path:'#'}, 
-            {text: 'Windows 7', path:'#'}, 
-            {text: 'Windows Server 2022', path:'#'},
-            {text: 'Windows Server 2019', path:'#'},
-            {text: 'Windows Server 2016', path:'#'},
-            {text: 'Windows Server 2012', path:'#'},
-            {text: 'Windows Server RDS', path:'#'},
-            {text: 'Windows SQL Server', path:'#'}
-        ],
+        name: '',
+        items: [],
         category: 0
     });
 
@@ -123,16 +113,12 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
         shop_cart
     } = userData;
 
-    const clipboard = useClipboard({
-        onSuccess: () => {
-            dispatch(addSnack({text: 'Скопировано'}))
-        }
-    });
+    const clipboard = useClipboard();
 
     return ( 
         <>
-            <header className='header'>
-                {
+            <MobileMenu profileOpener={setIsProfileOpened}/>
+            {
                     isHistoryShowed && <Overlay closeHandler={setIsHistoryShowed}>
                         <History closeHandler={setIsHistoryShowed}/>
                     </Overlay>
@@ -142,6 +128,8 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                         <Profile data={userData} closeHandler={setIsProfileOpened}/>
                     </Overlay>
                 }
+            <header className='header'>
+               
                 <div className="container header__container">
                     <Link to="/">
                         <div className="header__logo">

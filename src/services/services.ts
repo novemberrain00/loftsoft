@@ -107,4 +107,13 @@ const convertToLatin = (str: string): string => {
             .join('');
 }
 
-export { getData, postData, getCookie, uploadFile, updateCurrentUser, convertToLatin, deleteData };
+const timestampToTime =(timestamp: string): string => {
+    const date = new Date(timestamp);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const paddedMinutes = minutes < 10 ? '0' + minutes : minutes.toString();
+    
+    return `${hours}:${paddedMinutes}`;
+}
+
+export { getData, postData, getCookie, uploadFile, updateCurrentUser, convertToLatin, deleteData, timestampToTime };

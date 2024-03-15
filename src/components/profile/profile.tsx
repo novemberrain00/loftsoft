@@ -14,8 +14,8 @@ import ProfileEditor from "../profileEditor/profileEditor";
 import { UserI } from "../../interfaces";
 import { RootState } from "../../store";
 
-import './profile.scss';
 import { getCookie } from "../../services/services";
+import './profile.scss';
 
 interface ProfilePropsI {
     data: UserI

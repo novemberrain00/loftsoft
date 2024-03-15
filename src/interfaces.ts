@@ -197,6 +197,29 @@ interface PostPromocodeI {
     sale_percent: string
 }
 
+interface Attachment {
+    id: number;
+    file: string;
+}
+
+interface Message {
+    id: number;
+    role: string;
+    text: string;
+    created_at: string;
+    attachments: Attachment[];
+}
+
+interface SupportTicketI {
+    id: number;
+    user: UserI;
+    status: string;
+    created_at: string;
+    closed_at: string;
+    messages: Message[];
+    last_message: string;
+}
+
 export type { 
     LinkI, 
     SnackI, 
@@ -211,5 +234,6 @@ export type {
     PostProductI, 
     PartnerI,
     ParamDataItemI,
-    PostPromocodeI
+    PostPromocodeI,
+    SupportTicketI
 };
