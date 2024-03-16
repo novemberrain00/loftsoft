@@ -29,24 +29,36 @@ const Chat: FC<ChatPropsI> = () => {
         }, true)
         .then((data: SupportTicketI[]) => {
             const ticketsListRef = ticketsList;
-            ticketsListRef[ticketsList.indexOf(ticketsList.filter(ticket => ticket.id === data[0].id)[0])+1] = data[0];
-            setTicketsList([...ticketsListRef])
-            setMessage('')
+            ticketsListRef[ticketsList.length-1] = 
+            data[data.indexOf(data.filter(ticket => ticket.id == ticketsListRef[ticketsList.length-1].id)[0])];
+
+            setTicketsList([...ticketsListRef]);
+            setMessage('');
+
+            setTimeout(() => {
+                const chatBody = document.querySelector('.chat__body');
+
+                chatBody!.scrollTop = (chatBody as HTMLElement).scrollHeight;
+            }, 0);
         })
     }
+        
 
     useEffect(() => {
+        
         getData(`/tickets`, true)
-        .then((data: SupportTicketI[]) => setTicketsList(data));
+        .then((data: SupportTicketI[]) => {
+            setTicketsList(data);
+        });
 
-        let delay = 1000;
+        let delay = 3000;
         let timeout: NodeJS.Timeout | null = null;
 
         const updateChat = () => {
             getData(`/tickets`, true)
             .then((data: SupportTicketI[]) => {
                 setTicketsList(data);
-                delay = 1000;
+                delay = 3000;
                 timeout = setTimeout(updateChat, delay);
 
             }).catch(error => {
@@ -63,6 +75,13 @@ const Chat: FC<ChatPropsI> = () => {
             }
         }
     }, []);
+
+    useEffect(() => {
+        if(!isChatOpened) return;
+        
+        const chatBody = document.querySelector('.chat__body');
+        chatBody!.scrollTop = (chatBody as HTMLElement).scrollHeight;
+    }, [isChatOpened])
 
     return (
         <div className="chat-wrapper">

@@ -34,14 +34,18 @@ const Ticket: FC<TicketPropsI> = () => {
         .then((data: SupportTicketI) => {
             setTicket(data);
             setMessage('');
+            setTimeout(() => {
+                document.body.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+            }, 0);
         });
     }
 
-    
 
     useEffect(() => {
         getData(`/ticket/${id}`, true)
-        .then((data: SupportTicketI) => setTicket(data));
+        .then((data: SupportTicketI) => {
+            setTicket(data)
+        });
 
         let delay = 1000;
         let timeout: NodeJS.Timeout | null = null;
@@ -49,14 +53,14 @@ const Ticket: FC<TicketPropsI> = () => {
         const updateChat = () => {
             getData(`/ticket/${id}`, true)
             .then((data: SupportTicketI) => {
-            setTicket(data);
-            delay = 1000;
-            timeout = setTimeout(updateChat, delay);
+                setTicket(data);
+                delay = 1000;
+                timeout = setTimeout(updateChat, delay);
 
-          }).catch(error => {
-            delay = delay * 2;
-            timeout = setTimeout(updateChat, delay);
-          });
+            }).catch(error => {
+                delay = delay * 2;
+                timeout = setTimeout(updateChat, delay);
+            });
         }
     
         updateChat();
