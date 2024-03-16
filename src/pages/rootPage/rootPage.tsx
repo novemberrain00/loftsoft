@@ -247,7 +247,10 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                 </div>
             </header>
             {children}
-            <Chat/>
+            {
+                getCookie('is_admin') === 'false' ? <Chat/> : null
+            }
+            
             <footer className='footer'>
                 <div className="container footer__container">
                     <div className="footer__left">

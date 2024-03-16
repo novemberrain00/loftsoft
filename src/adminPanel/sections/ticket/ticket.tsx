@@ -6,9 +6,10 @@ import BackArrow from '../../../assets/images/icons/arrow_left.svg';
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
-import './ticket.scss'; 
 import { SupportTicketI } from "../../../interfaces";
 import { getData, postData, timestampToTime } from "../../../services/services";
+
+import './ticket.scss'; 
 
 interface TicketPropsI {
 }
@@ -23,17 +24,48 @@ const Ticket: FC<TicketPropsI> = () => {
 
 
     const sendMessage = async () => {
+        if(!message.length) return;
+
         await postData('/tickets/send', {
             id,
             text: message,
             attachments: []
         }, true)
-        .then((data: SupportTicketI) => setTicket(data));
+        .then((data: SupportTicketI) => {
+            setTicket(data);
+            setMessage('');
+        });
     }
+
+    
 
     useEffect(() => {
         getData(`/ticket/${id}`, true)
-        .then((data: SupportTicketI) => setTicket(data))
+        .then((data: SupportTicketI) => setTicket(data));
+
+        let delay = 1000;
+        let timeout: NodeJS.Timeout | null = null;
+
+        const updateChat = () => {
+            getData(`/ticket/${id}`, true)
+            .then((data: SupportTicketI) => {
+            setTicket(data);
+            delay = 1000;
+            timeout = setTimeout(updateChat, delay);
+
+          }).catch(error => {
+            delay = delay * 2;
+            timeout = setTimeout(updateChat, delay);
+          });
+        }
+    
+        updateChat();
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+        }
     }, []);
 
     return (
@@ -62,7 +94,7 @@ const Ticket: FC<TicketPropsI> = () => {
                                         {text}
                                     </div>
                                     <div className="ticket-page__message-bottom">
-                                        <span>{ticket.user.email}</span>
+                                        {role === 'user' ? <span>{ticket.user.email}</span> : null}
                                         <span>{timestampToTime(created_at)}</span>
                                     </div>
                                 </div>                  
@@ -75,6 +107,7 @@ const Ticket: FC<TicketPropsI> = () => {
                         onInput={(e) => setMessage((e.target as HTMLInputElement).value)} 
                         placeholder="Введите ваше сообщение" 
                         className="ticket-page__input"
+                        value={message}
                     ></textarea>
                     <button onClick={(e) => {
                         e.preventDefault();
