@@ -1,4 +1,4 @@
-import { FC, useEffect, useId, useState } from "react";
+import { FC, useEffect, useId, useState, MouseEvent } from "react";
 import { useSelector } from "react-redux";
 
 import HamburgerIcon from '../../assets/images/icons/hamburger.svg';
@@ -61,13 +61,15 @@ const Chat: FC<ChatPropsI> = () => {
     }
 
     const touchMoveHandler = (e: TouchEvent) => {
-        touchEndY = e.touches[0].clientY;    
-        let diffY: number = touchEndY - touchStartY;
-        (menu as HTMLElement).style.transition = `0s`;
+        if(e.touches.length > 0) {
+            touchEndY = e.touches[0].clientY;    
+            let diffY: number = touchEndY - touchStartY;
+            (menu as HTMLElement).style.transition = `0s`;
 
-        if(diffY > 0) {
-            (menu as HTMLElement).style.transform = `translateY(${diffY}px)`;
+            if(diffY > 0) {
+                (menu as HTMLElement).style.transform = `translateY(${diffY}px)`;
 
+            }
         }
     }
 
@@ -76,10 +78,15 @@ const Chat: FC<ChatPropsI> = () => {
         (menu as HTMLElement).style.transition = `.5s`;
 
         if(diffY > 100) {
-            //(menu as HTMLElement).style.transform = 'translateY(100%)';
             setIsMenuOpened(false);
         } else {
             (menu as HTMLElement).style.transform = 'translateY(0%)';
+        }
+    }
+
+    const menuCloseHandler = (e: MouseEvent) => {
+        if((e.target as HTMLElement).classList.contains('chat__menu-overlay')) {
+            setIsMenuOpened(false);
         }
     }
 
@@ -176,7 +183,10 @@ const Chat: FC<ChatPropsI> = () => {
                             <img src={MSGSendIcon} alt="отправить"/>
                         </button>
                     </form>
-                    <div className={`chat__menu-overlay ${isMenuOpened ? 'chat__menu-overlay_opened' : ''}`}>
+                    <div 
+                        className={`chat__menu-overlay ${isMenuOpened ? 'chat__menu-overlay_opened' : ''}`}
+                        onClick={(e: MouseEvent) => menuCloseHandler(e)}
+                    >
                         <nav style={{transform: `translateY(${isMenuOpened ? '0%' : '100%'})`}} className="chat__menu">
                             <div
                                 onTouchStart={(e: any) => touchStartHandler(e)} 
