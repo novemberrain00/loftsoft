@@ -4,12 +4,17 @@ import { useSelector } from "react-redux";
 import HamburgerIcon from '../../assets/images/icons/hamburger.svg';
 import CloserIcon from '../../assets/images/icons/close.svg';
 import MSGSendIcon from '../../assets/images/icons/send.svg';
+import WhatsappIcon from '../../assets/images/icons/whatsapp.svg';
+import TelegramIcon from '../../assets/images/icons/tg.svg';
+import StarIcon from '../../assets/images/icons/star-bg-blue.svg';
+import ClockIcon from '../../assets/images/icons/clock-bg-blue.svg';
+import RulesIcon from '../../assets/images/icons/rules-bg-blue.svg';
+import BackIcon from '../../assets/images/icons/back-bg-blue.svg';
 
-import { getData, postData } from "../../services/services";
-import { RootState } from "../../store";
+import { getData, postData, timestampToTime } from "../../services/services";
 
-import './chat.scss';
 import { SupportTicketI } from "../../interfaces";
+import './chat.scss';
 
 interface ChatPropsI {
     
@@ -19,8 +24,7 @@ const Chat: FC<ChatPropsI> = () => {
     const [isChatOpened, setIsChatOpened] = useState(false);
     const [message, setMessage] = useState<string>('');
     const [ticketsList, setTicketsList] = useState<SupportTicketI[]>([]);
-
-    const userId = useSelector((state: RootState) => state.user.userInfo.id);
+    const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
     const sendMessage = async () => {
         await postData('/tickets/send', {
@@ -28,11 +32,16 @@ const Chat: FC<ChatPropsI> = () => {
             attachments: []
         }, true)
         .then((data: SupportTicketI[]) => {
-            const ticketsListRef = ticketsList;
-            ticketsListRef[ticketsList.length-1] = 
-            data[data.indexOf(data.filter(ticket => ticket.id == ticketsListRef[ticketsList.length-1].id)[0])];
+            if(ticketsList.length > 0) {
+                const ticketsListRef = ticketsList;
+                ticketsListRef[ticketsList.length-1] = 
+                data[data.indexOf(data.filter(ticket => ticket.id == ticketsListRef[ticketsList.length-1].id)[0])];
 
-            setTicketsList([...ticketsListRef]);
+                setTicketsList([...ticketsListRef]);
+            } else {
+                setTicketsList(data)
+            }
+            
             setMessage('');
 
             setTimeout(() => {
@@ -42,7 +51,37 @@ const Chat: FC<ChatPropsI> = () => {
             }, 0);
         })
     }
-        
+    
+    let touchStartY: number = 0;
+    let touchEndY: number = 0;
+    let menu: HTMLElement | null = document.querySelector('.chat__menu');
+
+    const touchStartHandler = (e: TouchEvent) => {
+        touchStartY = e.touches[0].clientY;
+    }
+
+    const touchMoveHandler = (e: TouchEvent) => {
+        touchEndY = e.touches[0].clientY;    
+        let diffY: number = touchEndY - touchStartY;
+        (menu as HTMLElement).style.transition = `0s`;
+
+        if(diffY > 0) {
+            (menu as HTMLElement).style.transform = `translateY(${diffY}px)`;
+
+        }
+    }
+
+    const touchEndHandler = () => {
+        let diffY: number = touchEndY - touchStartY;
+        (menu as HTMLElement).style.transition = `.5s`;
+
+        if(diffY > 100) {
+            //(menu as HTMLElement).style.transform = 'translateY(100%)';
+            setIsMenuOpened(false);
+        } else {
+            (menu as HTMLElement).style.transform = 'translateY(0%)';
+        }
+    }
 
     useEffect(() => {
         
@@ -57,6 +96,14 @@ const Chat: FC<ChatPropsI> = () => {
         const updateChat = () => {
             getData(`/tickets`, true)
             .then((data: SupportTicketI[]) => {
+                if(data[0].messages.length !== ticketsList[0].messages.length) {
+                    setTimeout(() => {
+                        const chatBody = document.querySelector('.chat__body');
+        
+                        chatBody!.scrollTop = (chatBody as HTMLElement).scrollHeight;
+                    }, 0);
+                }
+
                 setTicketsList(data);
                 delay = 3000;
                 timeout = setTimeout(updateChat, delay);
@@ -78,10 +125,10 @@ const Chat: FC<ChatPropsI> = () => {
 
     useEffect(() => {
         if(!isChatOpened) return;
-        
+
         const chatBody = document.querySelector('.chat__body');
         chatBody!.scrollTop = (chatBody as HTMLElement).scrollHeight;
-    }, [isChatOpened])
+    }, [isChatOpened]);
 
     return (
         <div className="chat-wrapper">
@@ -89,22 +136,24 @@ const Chat: FC<ChatPropsI> = () => {
                 isChatOpened ? 
                 <div className="chat">
                     <header className="chat__header">
-                        <div className="chat__hamburger">
+                        <div onClick={() => {
+                            setIsMenuOpened(true);
+                        }} className="chat__hamburger">
                             <img src={HamburgerIcon} alt="меню" />
                         </div>
                         <h5 className="chat__title">Поддержка</h5>
-                        <img onClick={() => setIsChatOpened(false)} src={CloserIcon} alt="закрыть" className="chat__closer"/>
+                        <img  src={CloserIcon} alt="закрыть" className="chat__closer"/>
                     </header>
                     <div className="chat__body">
                         {
                             ticketsList.length ? ticketsList.map((ticket, i) => {
-                                return ticket.messages?.map(({id, role, text}) => {
+                                return ticket.messages?.map(({id, role, text, created_at}) => {
                                     return  (
                                         <div key={id} className={`chat__message ${role === 'admin' ? '' : 'chat__message_mine'}`}>
                                             <p className="chat__message-text">
                                                 {text}
                                             </p>
-                                            <span className="chat__message-time">14:47</span>
+                                            <span className="chat__message-time">{timestampToTime(created_at)}</span>
                                         </div>
                                     ) 
                                 })
@@ -127,6 +176,61 @@ const Chat: FC<ChatPropsI> = () => {
                             <img src={MSGSendIcon} alt="отправить"/>
                         </button>
                     </form>
+                    <div className={`chat__menu-overlay ${isMenuOpened ? 'chat__menu-overlay_opened' : ''}`}>
+                        <nav style={{transform: `translateY(${isMenuOpened ? '0%' : '100%'})`}} className="chat__menu">
+                            <div
+                                onTouchStart={(e: any) => touchStartHandler(e)} 
+                                onTouchMove={(e: any) => touchMoveHandler(e)}
+                                onTouchEnd={() => touchEndHandler()} 
+                                
+                                className="chat__menu-header"
+                            >
+                                <span className="chat__menu-closer"></span>
+                            </div>
+                            <div className="chat__menu-body">
+                                <ul className="chat__menu-list list">
+                                    <li className="chat__menu-item">
+                                        <a href="#" className="chat__menu-link">
+                                            <img src={WhatsappIcon} alt="WhatApp" className="chat__menu-icon" />
+                                            Поддержка в WhatsApp
+                                        </a>
+                                    </li>
+                                    <li className="chat__menu-item">
+                                        <a href="#" className="chat__menu-link">
+                                            <img src={TelegramIcon} alt="Telegram" className="chat__menu-icon" />
+                                            Поддержка в Телеграм
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul className="chat__menu-list chat__menu-list_condensed list">
+                                    <li className="chat__menu-item">
+                                        <a href="#" className="chat__menu-link">
+                                            <img src={StarIcon} alt="Отзывы" className="chat__menu-icon" />
+                                            Отзывы клиентов
+                                        </a>
+                                    </li>
+                                    <li className="chat__menu-item">
+                                        <a href="#" className="chat__menu-link">
+                                            <img src={ClockIcon} alt="График работы поддержки" className="chat__menu-icon" />
+                                            График работы поддержки
+                                        </a>
+                                    </li>
+                                    <li className="chat__menu-item">
+                                        <a href="#" className="chat__menu-link">
+                                            <img src={RulesIcon} alt="Правила магазина" className="chat__menu-icon" />
+                                            Правила магазина
+                                        </a>
+                                    </li>
+                                    <li className="chat__menu-item">
+                                        <a href="#" className="chat__menu-link">
+                                            <img src={BackIcon} alt="Правила возврата" className="chat__menu-icon" />
+                                            Правила возврата
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                     </div>
                 </div> : null
             }
             {

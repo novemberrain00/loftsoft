@@ -21,6 +21,7 @@ interface UsersPropsI {
 const Users: FC<UsersPropsI> = () => {
     const [usersList, setUsersList] = useState<UserI[]>([]);
     const [editPopup, setEditPopup] = useState<'password' | 'login' | 'balance' | ''>('');
+    const [editingUserId, setEditingUserId] = useState<number>(-1);
     const [userData, setUserData] = useState({
         id: -1,
         username: '',
@@ -34,6 +35,10 @@ const Users: FC<UsersPropsI> = () => {
         getData('/users', true)
         .then(data => setUsersList(data));
     }, []);
+
+    const updateUser = async () => {
+        //await fetch(baseURL +)
+    }
 
     const deleteUser = async (id: number) => {
         await deleteData(`/user/${id}`).then(data => {
@@ -66,6 +71,12 @@ const Users: FC<UsersPropsI> = () => {
                                 />
                             </label>
                             <span className="popup__note">Текущий баланс: 1000</span>
+                            <button 
+                                style={{marginTop: '40px'}} 
+                                className="btn popup__btn"
+                            >
+                                Применить
+                            </button>
                         </div>
                     </>
                 }
@@ -122,7 +133,6 @@ const Users: FC<UsersPropsI> = () => {
                 <ul className="list users__list">
                     {
                         usersList && usersList.map(({id, username, email, is_active, is_admin, balance, photo}) => {
-                            console.log(id)
                             return is_admin ? null : (
                                 <li className="users__list-item user">
                                     <img src={baseURL + '/uploads/' + photo} alt="" className="user__avatar" />
@@ -134,13 +144,31 @@ const Users: FC<UsersPropsI> = () => {
                                         </div>
                                     </div>
                                     <div className="user__helpers">
-                                        <button onClick={() => setEditPopup('password')} className="user__helper">
+                                        <button 
+                                            onClick={() => {
+                                                setEditingUserId(id as number)
+                                                setEditPopup('password')
+                                            }} 
+                                            className="user__helper"
+                                        >
                                             <img src={StarsIcon} alt="редактировать" className="user__helper-icon" />
                                         </button>
-                                        <button onClick={() => setEditPopup('login')} className="user__helper">
+                                        <button 
+                                            onClick={() => {
+                                                setEditingUserId(id as number)
+                                                setEditPopup('login')
+                                            }} 
+                                            className="user__helper"
+                                        >
                                             <img src={PenIcon} alt="редактировать" className="user__helper-icon" />
                                         </button>
-                                        <button onClick={() => setEditPopup('balance')} className="user__helper user__helper_blue">
+                                        <button 
+                                            onClick={() => {
+                                                setEditingUserId(id as number)
+                                                setEditPopup('balance')
+                                            }} 
+                                            className="user__helper"
+                                        >
                                             ₽
                                         </button>
                                         <button className="user__helper" onClick={() => deleteUser(id as number)}>

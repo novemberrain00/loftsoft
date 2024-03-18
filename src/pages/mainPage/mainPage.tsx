@@ -36,12 +36,11 @@ import Slide2 from '../../assets/images/img/carousel/slide2.png';
 import Slide3 from '../../assets/images/img/carousel/slide3.png';
 import Slide1Mobile from '../../assets/images/img/carousel/slide1-mobile.png';
 
-
 import Loader from "../../components/loader/loader";
 import Product from "../../components/product/product";
 import Review from "../../components/review/review";
 
-import { CategoryI, ReviewI } from "../../interfaces";
+import { CategoryI, PartnerI, ProductI, ReviewI } from "../../interfaces";
 import { convertToLatin, getData } from "../../services/services";
 
 import { addSnack } from "../../redux/snackbarSlice";
@@ -68,6 +67,8 @@ const MainPage: FC<MainPageProps> = () => {
 
     const [categories, setCategories] = useState<CategoryI[]>([]);
     const [reviews, setReviews] = useState<ReviewI[]>([]);
+    const [products, setProducts] = useState<ProductI[]>([]);
+    const [partners, setPartners] = useState<PartnerI[]>([]);
 
     const pagination = {
         clickable: true,
@@ -81,6 +82,12 @@ const MainPage: FC<MainPageProps> = () => {
     useEffect(() => {
         getData('/categories?empty_filter=true')
         .then(data => setCategories(data));
+
+        getData('/products?rating_sort=true')
+        .then(data => setProducts(data.splice(0, 5)));
+
+        getData('/partners', true)
+        .then(data => setPartners(data));
 
         getData('/reviews')
         .then(data => setReviews(data));
@@ -256,6 +263,31 @@ const MainPage: FC<MainPageProps> = () => {
                             <h3 className="subtitle">На сайте</h3>
                         </div>
                         <div className="top__items">
+                            {
+                                products.map((
+                                {
+                                    id, 
+                                    title, 
+                                    product_photos, 
+                                    description, 
+                                    card_price, 
+                                    card_sale_price, 
+                                    sale_percent, 
+                                    subcategory_id
+                                }) => {
+                                    return <Product
+                                        key={id}
+                                        id={id}
+                                        name={title}
+                                        imgPath={baseURL + '/uploads/' + product_photos[0].photo}
+                                        descr={description}
+                                        priceNew={card_sale_price}
+                                        priceOld={card_price}
+                                        discount={sale_percent}
+                                        url={`/catalog/${subcategory_id}/${id}`}
+                                    />
+                                })
+                            }
                         </div>
                     </section>
                 </div>
@@ -266,32 +298,30 @@ const MainPage: FC<MainPageProps> = () => {
                         </div>
                         <div className="partners__carousel">
                             <div className="partners__carousel-track">
-                               <img src={Microsoft} alt="microsoft" className="partners__carousel-slide" />
-                               <img src={Autodesk} alt="autodesk" className="partners__carousel-slide" />
-                               <img src={Adobe} alt="adobe" className="partners__carousel-slide" />
-                               <img src={MaxonPartners} alt="maxon" className="partners__carousel-slide" />
-                               <img src={Nanosoft} alt="nanosoft" className="partners__carousel-slide" />
-                               <img src={Kaspersky} alt="kaspersky" className="partners__carousel-slide" />
-                               <img src={BIM} alt="BIM" className="partners__carousel-slide" />
-                               <img src={MWB} alt="malwarebytes" className="partners__carousel-slide" />
-                               <img src={JetbrainsPartners} alt="Jetbrains" className="partners__carousel-slide" />
-                               <img src={Basealt} alt="basealt" className="partners__carousel-slide" />
-                               <img src={OneC} alt="1c" className="partners__carousel-slide" />
-                               <img src={SC} alt="security code" className="partners__carousel-slide" />
-                               <img src={Ascon} alt="ascon" className="partners__carousel-slide" />
-                               <img src={Microsoft} alt="microsoft" className="partners__carousel-slide" />
-                               <img src={Autodesk} alt="autodesk" className="partners__carousel-slide" />
-                               <img src={Adobe} alt="adobe" className="partners__carousel-slide" />
-                               <img src={MaxonPartners} alt="maxon" className="partners__carousel-slide" />
-                               <img src={Nanosoft} alt="nanosoft" className="partners__carousel-slide" />
-                               <img src={Kaspersky} alt="kaspersky" className="partners__carousel-slide" />
-                               <img src={BIM} alt="BIM" className="partners__carousel-slide" />
-                               <img src={MWB} alt="malwarebytes" className="partners__carousel-slide" />
-                               <img src={JetbrainsPartners} alt="Jetbrains" className="partners__carousel-slide" />
-                               <img src={Basealt} alt="basealt" className="partners__carousel-slide" />
-                               <img src={OneC} alt="1c" className="partners__carousel-slide" />
-                               <img src={SC} alt="security code" className="partners__carousel-slide" />
-                               <img src={Ascon} alt="ascon" className="partners__carousel-slide" />
+                            {
+                                partners.length ? partners.map(partner => {
+                                    return (
+                                        <img 
+                                            key={partner.id} 
+                                            src={baseURL +'/uploads/'+ partner.photo} 
+                                            alt='Ошибка при загрузке изображения' 
+                                            className="partners__carousel-slide" 
+                                        /> 
+                                    )
+                                }) : null
+                            }
+                            {
+                                partners.length ? partners.map(partner => {
+                                    return (
+                                        <img 
+                                            key={partner.id} 
+                                            src={baseURL +'/uploads/'+ partner.photo} 
+                                            alt='Ошибка при загрузке изображения' 
+                                            className="partners__carousel-slide" 
+                                        /> 
+                                    )
+                                }) : null
+                            }
                             </div>
                         </div>
                 </section>
