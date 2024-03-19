@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import Windows from '../../assets/images/img/history/windows.png';
 import Maxon from '../../assets/images/img/history/maxon.png';
@@ -7,18 +7,41 @@ import Nanocad from '../../assets/images/img/history/nanocad.png';
 import CloseIcon from '../../assets/images/icons/close.svg';
 import AccountIcon from '../../assets/images/icons/account_white.svg';
 
+import { getCookie, getData, timestampToTime } from "../../services/services";
 import './history.scss';
-import { getCookie } from "../../services/services";
+import { OrderI, ReplenishI } from "../../interfaces";
+import Overlay from "../overlay/overlay";
 
 interface HistoryPropsI {
+    isOpened: boolean
     closeHandler: React.Dispatch<React.SetStateAction<boolean>>
-    
 }
  
-const History: FC<HistoryPropsI> = ({closeHandler}) => {
+const History: FC<HistoryPropsI> = ({isOpened, closeHandler}) => {
     const [activeTab, setActiveTab] = useState(0);
+    const [orders, setOrders] = useState<OrderI[]>([]);
+    const [replenishes, setReplenishes] = useState<ReplenishI[]>([]);
 
-    return (
+    useEffect(() => {
+        getData('/user/orders', true) 
+        .then((data: OrderI[]) => setOrders(data));
+
+        getData('/user/replenishes', true)
+        .then((data: ReplenishI[]) => setReplenishes(data));
+    }, []);
+
+    useEffect(() => {
+        if(isOpened) {
+            document.body.style.overflow = 'hidden';
+            document.body.style.height = '100vh';
+        } else {
+            document.body.style.overflow = 'initial';
+            document.body.style.height = 'auto';
+        }
+    }, [isOpened])
+
+    return isOpened ? (
+        <Overlay closeHandler={closeHandler}>
             <div className="history">
                 <div className="history__header">
                     <h2 className="history__title title">История заказов</h2>
@@ -33,12 +56,13 @@ const History: FC<HistoryPropsI> = ({closeHandler}) => {
                             className={`link history__tabs-link ${activeTab ? "history__tabs-link_active" : ''}`}
                             onClick={() => setActiveTab(1)}
                         >
-                                Пополнения
+                            Пополнения
                         </span>
                     </div>
                     <div onClick={() => {
                         document.body.style.overflow = 'initial';
-                        closeHandler(false)
+                        document.querySelector('.overlay')?.classList.add('overlay_disappeared')
+                        setTimeout(()=> closeHandler(false), 300)
                     }} className="history__closer">
                         <img src={CloseIcon} alt="Закрыть"/>
                     </div>
@@ -53,29 +77,48 @@ const History: FC<HistoryPropsI> = ({closeHandler}) => {
                         </button>
                     </div>: ''}
                     <ul className={`list history__items ${!getCookie('access_token') && 'history__items_blured'} ${!activeTab  ? "history__items_active" : ''}`}>
-                        <li className="history__item">
-                            <img src={Windows} alt="Windows 10 Профессиональная" className="history__item-img" />
-                            <div className="history__item-info">
-                                <h3 className="history__item-title title">Windows 10 Профессиональная</h3>
-                                <span className="history__item-char">Код товара: 13</span>
-                                <span className="history__item-char">Кол-во: 1</span>
-                            </div>
-                            <span className="history__item-date">25.08.2023</span>
-                        </li>
+                        {
+                            orders.length ? orders.map((order) => {
+
+                                return order.order_parameters.map(({id, parameter, count}) => {
+                                    const {title} = parameter;
+                                    return (
+                                        <li key={id} className="history__item">
+                                            <img src={Windows} alt="Windows 10 Профессиональная" className="history__item-img" />
+                                            <div className="history__item-info">
+                                                <h3 className="history__item-title title">{title}</h3>
+                                                <span className="history__item-char">Код товара: 13</span>
+                                                <span className="history__item-char">Кол-во: {count}</span>
+                                            </div>
+                                            <span className="history__item-date">{timestampToTime(order.created_datetime)}</span>
+                                        </li>
+                                    )
+                                })
+                            }) : null
+                        }
                     </ul>
                     <ul className={`list history__items ${!getCookie('access_token') && 'history__items_blured'} ${activeTab  ? "history__items_active" : ''}`}>
-                        {getCookie('access_token') ? <li className="history__item">
-                            <div className="history__item-info">
-                                <h3 className="history__item-title history__item-title_blue title">100 ₽</h3>
-                                <span className="history__item-char">ID: 128q6419</span>
-                                <span className="history__item-char">Метод: LAVA</span>
-                            </div>
-                            <span className="history__item-date">25.08.2023</span>
-                        </li>: ''}
+                        {getCookie('access_token') ? 
+
+                            replenishes.length ? replenishes.map(({id, result_price, payment_type, status, created_datetime}) => {
+                                return (
+                                    <li key={id} className="history__item">
+                                        <div className="history__item-info">
+                                            <h3 className="history__item-title history__item-title_blue title">{result_price} ₽</h3>
+                                            <span className="history__item-char">ID: {id}</span>
+                                            <span className="history__item-char">Метод: {payment_type}</span>
+                                        </div>
+                                        <span className="history__item-date">{timestampToTime(created_datetime)}</span>
+                                    </li>
+                                )
+                            }) : null
+
+                        : ''}
                     </ul>
                 </div>
             </div>
-    );
+        </Overlay>
+    ): null;
 }
  
 export default History;

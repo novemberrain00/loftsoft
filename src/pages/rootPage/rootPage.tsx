@@ -1,7 +1,8 @@
 import {FC, useState, useEffect} from 'react';
+import { useClipboard } from 'use-clipboard-copy';
+import { Link } from 'react-router-dom';
 
 import { CategoryI, LinkI, SnackI, SubcategoryI } from '../../interfaces';
-import { Link } from 'react-router-dom';
 
 import Avatar from '../../assets/images/img/ava.png';
 
@@ -17,17 +18,9 @@ import CopyIcon from '../../assets/images/icons/copy.svg';
 import BlueSquareIcon from '../../assets/images/icons/blue-square.svg';
 import AccountIcon from '../../assets/images/icons/account.svg';
 
-import Business from '../../assets/images/img/catalog/bussines.png';
-import Graphics from '../../assets/images/img/catalog/graphics.png';
-import MSoffice from '../../assets/images/img/catalog/msoffice.png';
-import Shield from '../../assets/images/img/catalog/shield.png';
-import Windows from '../../assets/images/img/catalog/windows.png';
-import Box from '../../assets/images/img/catalog/box.png';
-
 import DiscountImg from '../../assets/images/img/discount.png';
 
 import Dropdown from '../../components/dropdown/dropdown';
-import Tabs from '../../components/tabs/tabs';
 import History from '../../components/history/history';
 import Overlay from '../../components/overlay/overlay';
 
@@ -35,17 +28,18 @@ import { useSelector, useDispatch } from "react-redux";
 
 import SnackbarContainer from '../../components/snackbar/snackbar';
 import Snack from '../../components/snack/snack';
-import { RootState } from '../../store';
+import SearchList from '../../components/searchList/searchList';
+import MobileMenu from '../../components/mobileMenu/mobileMenu';
 
 import Profile from '../../components/profile/profile';
 import Chat from '../../components/chat/chat';
-import { convertToLatin, getCookie, getData } from '../../services/services';
-import { useClipboard } from 'use-clipboard-copy';
-import { addSnack } from '../../redux/snackbarSlice';
-import { setUserInfo } from '../../redux/userSlice';
 import HeaderNavItem from '../../components/headerNavItem/headerNavItem';
 
-import MobileMenu from '../../components/mobileMenu/mobileMenu';
+import { RootState } from '../../store';
+import { getCookie, getData } from '../../services/services';
+import { setUserInfo } from '../../redux/userSlice';
+import useDebounce from '../../hooks/useDebounce';
+
 import './rootPage.scss';
 
 interface RootPagePropsI {
@@ -65,9 +59,10 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
         category: 0
     });
 
-    const [isHistoryShowed, setIsHistoryShowed] = useState(false);
-    const [isProfileOpened, setIsProfileOpened] = useState(false); 
+    const [isHistoryShowed, setIsHistoryShowed] = useState<boolean>(false);
+    const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false); 
     const [categories, setCategories] = useState<CategoryI[]>([]);
+    const [seachTerm, setSearchTerm] = useState<string>('');
 
     const dispatch = useDispatch();
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
@@ -114,22 +109,18 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
     } = userData;
 
     const clipboard = useClipboard();
+    const debouncedTerm = useDebounce(seachTerm, 300);
 
     return ( 
         <>
             <MobileMenu profileOpener={setIsProfileOpened}/>
-            {
-                    isHistoryShowed && <Overlay closeHandler={setIsHistoryShowed}>
-                        <History closeHandler={setIsHistoryShowed}/>
-                    </Overlay>
-                }
+                <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
                 {
                     isProfileOpened && <Overlay closeHandler={setIsProfileOpened}>
                         <Profile data={userData} closeHandler={setIsProfileOpened}/>
                     </Overlay>
                 }
             <header className='header'>
-               
                 <div className="container header__container">
                     <Link to="/">
                         <div className="header__logo">
@@ -139,7 +130,14 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                     </Link>
                     <div className="search header__search">
                         <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
-                        <input placeholder="Поиск" type="text" className="search__input header__search-input" />
+                        <input 
+                            onInput={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
+                            onBlur={() => setSearchTerm('')}
+                            placeholder="Поиск" 
+                            type="text" 
+                            className="search__input header__search-input" 
+                        />
+                        <SearchList term={debouncedTerm}/>
                     </div>
                     <div className="header__info">
                         <Link to="/profile/cart">
@@ -151,7 +149,6 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                         <a href="#" onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
                             <img src={UpdateIcon} alt="обновить" className="header__info-icon"/>
                         </a>
-                    
                         {username && <div onClick={() => {
                                 document.body.style.overflowX = 'hidden';
                                 document.body.style.height = '100vh';

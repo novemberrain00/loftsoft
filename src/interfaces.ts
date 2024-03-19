@@ -220,6 +220,51 @@ interface SupportTicketI {
     last_message: string;
 }
 
+interface OrderI {
+    id: number;
+    number: string;
+    promocode: {
+        id: number;
+        name: string;
+        activations_count: number;
+        sale_percent: number;
+    };
+    straight: boolean;
+    result_price: string;
+    created_datetime: string;
+    status: string;
+    email: string;
+    payment_type: string;
+    order_parameters: {
+        id: number;
+        parameter: {
+            id: number;
+            title: string;
+            description: string;
+            price: string;
+            has_sale: boolean;
+            sale_price: string;
+            give_type: string;
+            order_id: number;
+            product_id: number;
+            sale_percent: number;
+        };
+        count: number;
+    }[];
+    user_id: number;
+}
+
+interface ReplenishI {
+    id: number;
+    number: string;
+    result_price: string;
+    payment_type: string;
+    status: string;
+    created_datetime: string;
+    payed_datetime: string;
+    user_id: number;
+}
+
 export type { 
     LinkI, 
     SnackI, 
@@ -235,5 +280,7 @@ export type {
     PartnerI,
     ParamDataItemI,
     PostPromocodeI,
-    SupportTicketI
+    SupportTicketI,
+    OrderI,
+    ReplenishI
 };

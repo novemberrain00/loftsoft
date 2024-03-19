@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
@@ -10,26 +11,42 @@ import PenIcon from "../../../assets/images/icons/pen.svg";
 
 import { UserI } from "../../../interfaces";
 
-import { deleteData, getData } from "../../../services/services";
-import './users.scss';
+import { RootState } from "../../../store";
+import { deleteData, getCookie, getData } from "../../../services/services";
 import Popup from "../../../components/categoryPopup/categoryPopup";
+
+import './users.scss';
 
 interface UsersPropsI {
     
 }
+
+interface UserUpdatedDataI {
+    username?: string,
+    balance: number,
+    password?: string,
+    is_admin: boolean
+}
  
 const Users: FC<UsersPropsI> = () => {
+    const curUser = useSelector((state: RootState) => state.user.userInfo);
+    const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
+
     const [usersList, setUsersList] = useState<UserI[]>([]);
     const [editPopup, setEditPopup] = useState<'password' | 'login' | 'balance' | ''>('');
     const [editingUserId, setEditingUserId] = useState<number>(-1);
-    const [userData, setUserData] = useState({
+    const [alertMessage, setAlertMessage] = useState<string>('');
+    const [userInitialData, setUserInitialData] = useState({
         id: -1,
         username: '',
         password: '',
-        balance: "0"
+        balance: ''
     });
-
-    const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
+    const [userData, setUserData] = useState({
+        username: '',
+        password: '',
+        balance: ''
+    });
 
     useEffect(() => {
         getData('/users', true)
@@ -37,7 +54,47 @@ const Users: FC<UsersPropsI> = () => {
     }, []);
 
     const updateUser = async () => {
-        //await fetch(baseURL +)
+        let data: UserUpdatedDataI = userData.username === userInitialData.username ? {
+            balance: +userData.balance,
+            is_admin: false
+        } : {
+            username: userData.username,
+            balance: +userData.balance,
+            is_admin: false
+        }
+
+        data = userData.password.length ? {
+            ...data,
+            password: userData.password,
+        } : data;
+
+        await fetch(baseURL + `/user/${userInitialData.id}`, {
+            method: 'PATCH',
+            headers: {
+                "Accept": "application/json",
+                "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(async () => {
+            await getData('/users', true)
+            .then(data => setUsersList(data));
+
+            setUserInitialData({
+                id: -1,
+                username: '',
+                balance: '',
+                password: ''
+            });
+
+            setUserData({
+                username: '',
+                balance: '',
+                password: ''
+            });
+            setEditPopup('');
+        })
     }
 
     const deleteUser = async (id: number) => {
@@ -57,7 +114,7 @@ const Users: FC<UsersPropsI> = () => {
             <Popup isPopupOpened={editPopup !== ''} setIsPopupOpened={() => setEditPopup('')}>
                 {
                     editPopup === 'balance'  && <>
-                        <h3 className="title popup__title">Установить баланс <br /> пользователя <b>Axegao</b></h3>
+                        <h3 className="title popup__title">Установить баланс <br /> пользователя <b>{userInitialData.username}</b></h3>
                         <div className="popup__body">
                             <label htmlFor="balance-3406" className="input popup__input">
                                 <span className="input__label">Изменить баланс</span>
@@ -70,9 +127,9 @@ const Users: FC<UsersPropsI> = () => {
                                     className="input__text" 
                                 />
                             </label>
-                            <span className="popup__note">Текущий баланс: 1000</span>
+                            <span className="popup__note">Текущий баланс: {userInitialData.balance}</span>
                             <button 
-                                style={{marginTop: '40px'}} 
+                                onClick={() => updateUser()}
                                 className="btn popup__btn"
                             >
                                 Применить
@@ -82,7 +139,7 @@ const Users: FC<UsersPropsI> = () => {
                 }
                 {
                     editPopup === 'password'  && <>
-                        <h3 className="title popup__title">Установить пароль <br /> пользователя <b>Axegao</b></h3>
+                        <h3 className="title popup__title">Установить пароль <br /> пользователя <b>{userInitialData.username}</b></h3>
                         <div className="popup__body">
                             <label htmlFor="password-3406" className="input popup__input">
                                 <span className="input__label">Изменить пароль</span>
@@ -95,13 +152,19 @@ const Users: FC<UsersPropsI> = () => {
                                     className="input__text" 
                                 />
                             </label>
-                            <button style={{marginTop: '40px'}} className="btn popup__btn">Применить</button>
+                            <button 
+                                className="btn popup__btn"
+                                style={{marginTop: '40px'}}
+                                onClick={() => updateUser()}
+                            >
+                                Применить
+                            </button>
                         </div>
                     </>
                 }
                 {
                     editPopup === 'login'  && <>
-                        <h3 className="title popup__title">Установить логин <br /> пользователя <b>Axegao</b></h3>
+                        <h3 className="title popup__title">Установить логин <br /> пользователя <b>{userInitialData.username}</b></h3>
                         <div className="popup__body">
                             <label htmlFor="login-3406" className="input popup__input">
                                 <span className="input__label">Изменить логин</span>
@@ -114,8 +177,13 @@ const Users: FC<UsersPropsI> = () => {
                                     className="input__text" 
                                 />
                             </label>
-                            <span className="popup__note">Текущий логин: Axegao</span>
-                            <button className="btn popup__btn">Применить</button>
+                            <span className="popup__note">Текущий логин: {userInitialData.username}</span>
+                            <button 
+                                className="btn popup__btn"
+                                onClick={() => updateUser()}
+                            >
+                                Применить
+                            </button>
                         </div>
                     </>
                 }
@@ -146,8 +214,19 @@ const Users: FC<UsersPropsI> = () => {
                                     <div className="user__helpers">
                                         <button 
                                             onClick={() => {
-                                                setEditingUserId(id as number)
-                                                setEditPopup('password')
+                                                setUserInitialData({
+                                                    id: id as number,
+                                                    username,
+                                                    balance,
+                                                    password: ''
+                                                });
+
+                                                setUserData({
+                                                    username,
+                                                    balance,
+                                                    password: ''
+                                                });
+                                                setEditPopup('password');
                                             }} 
                                             className="user__helper"
                                         >
@@ -155,7 +234,18 @@ const Users: FC<UsersPropsI> = () => {
                                         </button>
                                         <button 
                                             onClick={() => {
-                                                setEditingUserId(id as number)
+                                                setUserInitialData({
+                                                    id: id as number,
+                                                    username,
+                                                    balance,
+                                                    password: ''
+                                                });
+
+                                                setUserData({
+                                                    username,
+                                                    balance,
+                                                    password: ''
+                                                });
                                                 setEditPopup('login')
                                             }} 
                                             className="user__helper"
@@ -164,8 +254,19 @@ const Users: FC<UsersPropsI> = () => {
                                         </button>
                                         <button 
                                             onClick={() => {
-                                                setEditingUserId(id as number)
-                                                setEditPopup('balance')
+                                                setUserInitialData({
+                                                    id: id as number,
+                                                    username,
+                                                    balance,
+                                                    password: ''
+                                                });
+
+                                                setUserData({
+                                                    username,
+                                                    balance,
+                                                    password: ''
+                                                });
+                                                setEditPopup('balance');
                                             }} 
                                             className="user__helper"
                                         >

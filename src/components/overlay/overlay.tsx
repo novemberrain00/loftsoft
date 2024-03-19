@@ -13,14 +13,11 @@ const Overlay: FC<OverlayI> = ({children, closeHandler}) => {
         if((e.target as HTMLElement).classList.contains('overlay')) {
             document.body.style.overflow = 'initial';
             document.body.style.height = 'auto';
-            closeHandler(false);
+
+            (e.target as HTMLElement).classList.add('overlay_disappeared')
+            setTimeout(() => closeHandler(false), 300) 
         }
     };
-
-    // useEffect(() => {
-    //     document.body.style.overflow = 'hidden';
-    //     document.body.style.height = '100vh';
-    // }, [])
     
 
     return (

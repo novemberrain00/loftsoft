@@ -6,7 +6,17 @@
     to {
         opacity: 1;
     }
-  }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
   
 
 .overlay {
@@ -21,4 +31,8 @@
     z-index: 150;
     background: rgba(0,0,0,.6);
     animation: fadeIn .3s ease forwards;
+
+    &_disappeared {
+        animation: fadeOut .3s ease forwards;
+    }
 }

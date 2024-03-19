@@ -149,7 +149,7 @@ const Chat: FC<ChatPropsI> = () => {
                             <img src={HamburgerIcon} alt="меню" />
                         </div>
                         <h5 className="chat__title">Поддержка</h5>
-                        <img  src={CloserIcon} alt="закрыть" className="chat__closer"/>
+                        <img onClick={() => setIsChatOpened(false)} src={CloserIcon} alt="закрыть" className="chat__closer"/>
                     </header>
                     <div className="chat__body">
                         {
