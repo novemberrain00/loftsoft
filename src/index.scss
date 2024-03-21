@@ -377,6 +377,15 @@ body, html {
     background-color: #2552bc;
   }
 
+  &:disabled {
+    opacity: .6;
+
+    &:hover {
+      cursor: initial;
+      background-color: #2767FF;
+    }
+  }
+
   &_grey {
     color: #000;
     background: #F1F1F1;

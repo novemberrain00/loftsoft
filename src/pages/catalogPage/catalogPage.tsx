@@ -1,5 +1,6 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useClipboard } from "use-clipboard-copy";
 
 import RootPage from "../rootPage/rootPage";
 import CopyIcon from '../../assets/images/icons/copy.svg';
@@ -9,11 +10,6 @@ import DropdownIcon from "../../assets/images/icons/dropdown-arrow.svg"
 
 import Product from "../../components/product/product";
 import CatalogSection from "../../components/catalogSection/catalogSection";
-
-import { useDispatch } from 'react-redux';
-import { useClipboard } from "use-clipboard-copy";
-
-import { addSnack } from "../../redux/snackbarSlice";
 
 import { convertToLatin, getData } from "../../services/services";
 import { CategoryI, ProductI, SubcategoryI } from "../../interfaces";
@@ -26,7 +22,6 @@ interface CatalogPagePropsI {
 }
  
 const CatalogPage: FC<CatalogPagePropsI> = () => {
-    const dispatch = useDispatch();
     const {subcategory} = useParams();
 
     const [filters, setFilters] = useState({ //false - по возрастанию, true - по убыванию
@@ -40,7 +35,9 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     const [path, setPath] = useState({
         categoryName: '',
         subcategoryName: ''
-    })
+    });
+    const [productsOffset, setProductsOffset] = useState<number>(0);
+    const catalogBodyRef = useRef<HTMLDivElement>(null);
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     const clipboard = useClipboard();
@@ -56,20 +53,19 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         setPath({
             categoryName,
             subcategoryName
-        })
+        });
     }
 
     useEffect(() => {
         if(subcategory === undefined) return;
  
-        getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
-        .then(data => {
-            setProducts(data);
+        getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=${productsOffset}`)
+        .then((data: ProductI[]) => {
+            setProducts([...products, ...data]);
             if(!categories.length) return;
-
             setPathString(categories);
         });
-    }, [subcategory, filters]);
+    }, [subcategory, filters, productsOffset]);
 
     useEffect(() => {
         getData('/categories?empty_filter=true')
@@ -78,6 +74,25 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
             setPathString(data);
         });
     }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+          if (catalogBodyRef.current) {
+            const { scrollHeight, clientHeight } = catalogBodyRef.current;
+            const scrollPosition = (document.querySelector('html')?.scrollTop || 0) + clientHeight;
+            
+            if (scrollPosition > scrollHeight) {
+              setProductsOffset(productsOffset+20);
+            }
+          }
+        };
+    
+        window.addEventListener('scroll', handleScroll);
+    
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }, []);
 
     return (
         <RootPage>
@@ -171,7 +186,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                 }
                             </div>
                         </aside>
-                        <div className="catalog__products">
+                        <div ref={catalogBodyRef} className="catalog__products">
                             {
                                 products.length ? products.map((product, i) => {
                                     return <Product

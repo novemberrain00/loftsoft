@@ -7,13 +7,12 @@ import RootPage from "../rootPage/rootPage";
 import SBPImg from '../../assets/images/icons/sbp_large.svg';
 import { getData, postData } from "../../services/services";
 
-import './paymentPage.scss';
 import { RootState } from "../../store";
 import { addSnack } from "../../redux/snackbarSlice";
+import './paymentPage.scss';
 
 
 interface PaymentPagePropsI {
-    
 }
  
 const PaymentPage: FC<PaymentPagePropsI> = () => {
@@ -25,21 +24,30 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     });
     const [seconds, setSeconds] = useState<number>(+(window.localStorage.getItem('timeToPay') || 600));
     const [isInstructionOpened, setIsInstructionOpened] = useState<boolean>(false);
+    
 
     const {id} = useParams();
     const navigate = useNavigate();
     const orderPrice = useSelector((state: RootState) => state.order.price);
+    const replenishment = useSelector((state: RootState) => state.replenishment);
     const dispatch = useDispatch();
 
+    const totalPrice = replenishment.replenishment.result_price || orderPrice;
+
     const checkOrder = async () => {
-        await getData(`/order/${id}/check`, true)
+        const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
+        await getData(route, true)
         .then(data => {
-            if(data.status === "waiting") {
+            if(data.status.includes("waiting")) {
                 dispatch(addSnack({text: "Ожидается оплата"}));
                 return;
             }
 
-            navigate('success')
+            if(replenishment.replenishment.number.length) {
+                navigate('/');
+            } else {
+                navigate('success');
+            }
         });
     }
 
@@ -49,8 +57,9 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
-
     useEffect(() => {
+        if(!replenishment.replenishment.number.length) return;
+
         const interval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(prevSeconds => prevSeconds - 1);
@@ -61,7 +70,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
                 postData(`/order/${id}/cancel`, {}, true)
                 .then(() => {
                     window.localStorage.removeItem('timneToPay')
-                    navigate('/profile/cart');
+                    navigate(-1);
                 })
             }
         }, 1000);
@@ -79,6 +88,8 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
         }));
     }, []);
 
+    
+
     return (
         <RootPage>
             <div className="container content__container">
@@ -89,7 +100,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
                             <div className="payment__header-left">
                                 <div className="payment__header-info">
                                     <h1 className="payment__header-title">Сумма к переводу:</h1>
-                                    {orderPrice} ₽
+                                    {totalPrice} ₽
                                 </div>
                                 <div className="payment__header-info">
                                     <h1 className="payment__header-title">Время на оплату счёта:</h1>

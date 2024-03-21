@@ -10,6 +10,7 @@ import UpdateIcon from '../../assets/images/icons/update.svg';
 import DashboartIcon from '../../assets/images/icons/dashboard.svg';
 
 import ProfileEditor from "../profileEditor/profileEditor";
+import Overlay from "../overlay/overlay";
 
 import { UserI } from "../../interfaces";
 import { RootState } from "../../store";
@@ -18,11 +19,13 @@ import { getCookie } from "../../services/services";
 import './profile.scss';
 
 interface ProfilePropsI {
+    isOpened: boolean
     data: UserI
     closeHandler: React.Dispatch<React.SetStateAction<boolean>>
+    replenishOpener: React.Dispatch<React.SetStateAction<boolean>>
 }
  
-const Profile: FC<ProfilePropsI> = ({data, closeHandler}) => {
+const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpener}) => {
     const [isEditorOpened, setIsEditorOpened] = useState(false);
     const [editingData, setEditingData] = useState('login');
 
@@ -33,8 +36,8 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler}) => {
         setIsEditorOpened(true);
     }
 
-    return (
-        <>
+    return isOpened ? (
+        <Overlay closeHandler={closeHandler}>
             {!isEditorOpened && <div className="profile">
                 <div className="profile__header">
                     <img src={data.photo} alt={data.username} className="profile__img" />
@@ -49,7 +52,10 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler}) => {
                         <img src={WalletIcon} className="profile__link-icon" alt="Баланс: 107₽"/>
                         Баланс: {userData.balance}₽
                     </div>
-                    <button className="profile__btn">Пополнить</button>
+                    <button onClick={() => {
+                        closeHandler(false)
+                        replenishOpener(true);
+                    }} className="profile__btn">Пополнить</button>
                 </div>
                 <ul className="list profile__menu">
                     <li className="profile__menu-item">
@@ -69,7 +75,7 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler}) => {
                             </span>
                         </Link>
                     </li>
-                   {getCookie('is_admin') === "true" && <li className="profile__menu-item">
+                   {userData.is_admin && <li className="profile__menu-item">
                         <Link to="/admin">
                             <span className="profile__link">
                                 <img src={DashboartIcon} alt="Перейти в админ-панель" className="profile__link-icon" />
@@ -80,8 +86,8 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler}) => {
                 </ul>
             </div>}
             {isEditorOpened && <ProfileEditor editingData={editingData} closeHandler={closeHandler}/>}
-        </>
-    );
+        </Overlay>
+    ): null;
 }
  
 export default Profile;

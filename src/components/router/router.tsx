@@ -54,6 +54,7 @@ const Router: FC = () => {
             <Route path='/profile/cart/order/:id' element={<PaymentPage/>}/>
             <Route path='/profile/cart/order/:id/success' element={<SuccessPaymentPage/>}/>
 
+            <Route path='/profile/replenish' element={<PaymentPage/>}/>
 
             <Route path='/catalog' element={<CatalogPage/>}/>
             <Route path='/catalog/:subcategory' element={<CatalogPage/>}/>

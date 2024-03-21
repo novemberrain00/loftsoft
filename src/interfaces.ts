@@ -265,6 +265,14 @@ interface ReplenishI {
     user_id: number;
 }
 
+interface PaymentI {
+    number: string;
+    result_price: string;
+    payment_type: string;
+    status: string;
+    created_datetime: string;
+}
+
 export type { 
     LinkI, 
     SnackI, 
@@ -282,5 +290,6 @@ export type {
     PostPromocodeI,
     SupportTicketI,
     OrderI,
-    ReplenishI
+    ReplenishI,
+    PaymentI
 };

@@ -41,6 +41,7 @@ import { setUserInfo } from '../../redux/userSlice';
 import useDebounce from '../../hooks/useDebounce';
 
 import './rootPage.scss';
+import ReplenishPopup from '../../components/replenishPopup/replenishPopup';
 
 interface RootPagePropsI {
     children: React.ReactNode
@@ -63,6 +64,7 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
     const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false); 
     const [categories, setCategories] = useState<CategoryI[]>([]);
     const [seachTerm, setSearchTerm] = useState<string>('');
+    const [isReplenishOpened, setIsReplenishOpened] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
@@ -113,13 +115,10 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
 
     return ( 
         <>
+            <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>
             <MobileMenu profileOpener={setIsProfileOpened}/>
-                <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
-                {
-                    isProfileOpened && <Overlay closeHandler={setIsProfileOpened}>
-                        <Profile data={userData} closeHandler={setIsProfileOpened}/>
-                    </Overlay>
-                }
+            <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
+            <Profile isOpened={isProfileOpened} data={userData} replenishOpener={setIsReplenishOpened} closeHandler={setIsProfileOpened}/>
             <header className='header'>
                 <div className="container header__container">
                     <Link to="/">
