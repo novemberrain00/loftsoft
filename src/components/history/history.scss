@@ -82,7 +82,12 @@
         flex-direction: column;
         gap: 10px;
         max-height: 725px;
+        height: 55vh;
         overflow: auto;
+
+        &::-webkit-scrollbar {
+            width: 9px;
+        }
 
         &_active {
             display: flex;

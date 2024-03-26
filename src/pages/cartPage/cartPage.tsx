@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import RootPage from "../rootPage/rootPage";
 
-import CartImg from '../../assets/images/img/cart/1.png';
 import TrashGreyIcon from '../../assets/images/icons/trash_grey.svg'
 import DotsIcon from '../../assets/images/icons/dots-icon.svg';
 import WhiteCartIcon from '../../assets/images/icons/cart_white.svg';
@@ -27,23 +26,26 @@ import { addSnack } from "../../redux/snackbarSlice";
 import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 
 import './cartPage.scss';
+import { setUserInfo } from "../../redux/userSlice";
+import { OrderI } from "../../interfaces";
 
 interface CartPagePropsI {
     
 }
 
 const CartPage: FC<CartPagePropsI> = () => {
-    const userData = useSelector((state: RootState) => state.user.userInfo);
     const [activePayment, setActivePayment] = useState<'sbp' | 'crypto' | 'site_balance'>('sbp');
     const [promo, setPromo] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [salePercent, setSalePercent] = useState<number>(0);
     const [alertMessage, setAlertMessage] = useState<string>('');
     const [isPromoUsedSuccesfully, setIsPromoUsedSuccesfully] = useState<boolean>(false);
+    const [isEmailEntered, setIsEmailEntered] = useState<boolean>(true);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const userData = useSelector((state: RootState) => state.user.userInfo);
     const orderId = useSelector((state: RootState) => state.order.id);
 
     let productWordForm = 'товаров';
@@ -71,36 +73,64 @@ const CartPage: FC<CartPagePropsI> = () => {
             setIsPromoUsedSuccesfully(true)
             dispatch(addSnack({
                 text: 'Промокод успешно применен'
-            }))
+            }));
         });
     }
 
     const createOrder = async () => {
+        if(!email.length || !email.includes('@')) {
+            setIsEmailEntered(false);
+            return
+        }
 
-        if(+orderId  < 0) {
-            await postData('/order', {
-                promocode: promo,
-                straight: false,
-                email: '',
-                payment_type: activePayment,
-    
-            }, true)
-            .then((data: any) => {
-                console.log('order created')
-                window.localStorage.setItem('timeToPay', '600')
-                dispatch(setPrice({price: data.result_price}))
-                dispatch(setOrderId({id: data.id}))
-                navigate(`order/${data.id}`)
-            })
-        } else {
-            await getData(`/order/${orderId}/check`, true)
-            .then(data => {
-                if(data.detal === 'ORDER_NOT_FOUND') {
-                    return;
-                }
-                navigate(`order/${orderId}`)
-            })
-        }   
+        if(orderId !== -1) {
+            navigate(`order/${orderId}`);
+            return;
+        } 
+
+        await postData('/order/', {
+            promocode: promo,
+            straight: false,
+            email,
+            payment_type: activePayment,
+        } ,true)
+        .then((data: OrderI | string) => {
+            if(data === 'NOT_ENOUGH_BALANCE') {
+                setAlertMessage('Недостаточно средств на балансе')
+                return;
+            }
+
+            if(activePayment === 'site_balance') {
+                navigate(`/profile/cart/order/${(data as OrderI).id}/success`);
+                return;
+            } else {
+                dispatch(setOrderId((data as OrderI).id));
+                dispatch(setPrice((data as OrderI).result_price));
+                navigate(`order/${(data as OrderI).id}`);
+            }
+        });
+    }
+
+    const cleanCart = async () => {
+
+        const promises = userData.shop_cart.map(({parameter, product}) => {
+            return postData('/cart/add', {
+                product_id: product.id,
+                parameter_id: parameter.id,
+                count: 0
+            }, true);
+        });
+        
+        Promise.all(promises)
+        .then(() => {
+            dispatch(setUserInfo({
+                ...userData,
+                shop_cart: []
+            }));
+        });
+        
+
+
     }
 
     return (
@@ -114,7 +144,10 @@ const CartPage: FC<CartPagePropsI> = () => {
                             <>
                                 <div className="cart__order-header">
                                     <h2 className="title cart__order-title">Ваш заказ</h2>
-                                    <a href="#" className="link cart__cleaner">
+                                    <a onClick={(e) => {
+                                        e.preventDefault();
+                                        cleanCart()
+                                    }} href="#" className="link cart__cleaner">
                                         Очистить корзину 
                                         <img src={TrashGreyIcon} alt="Очистить корзину" className="cart__cleaner-icon"/>
                                     </a>
@@ -150,7 +183,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                                                     price={price}
                                                     salePrice={sale_price}
                                                     quantity={quantity}
-                                                    img={CartImg}
+                                                    img={product.product_photos[0].photo}
                                                 />
                                             )
                                         })
@@ -176,7 +209,17 @@ const CartPage: FC<CartPagePropsI> = () => {
                         <div className="cart__widget">
                             <label htmlFor="cart-email" className="cart__widget-label">
                                 Ваш E-mail:
-                                <input type="text" id="cart-email" className="cart__email cart__widget-input" placeholder="Введите ваш E-mail" required/>
+                                <input 
+                                    type="text" 
+                                    id="cart-email" 
+                                    onInput={(e) => {
+                                        setIsEmailEntered(true);
+                                        setEmail((e.target as HTMLInputElement).value);
+                                    }}
+                                    className={`cart__email cart__widget-input ${!isEmailEntered ? 'cart__widget-input_red' : 'gg'}`} 
+                                    placeholder="Введите ваш E-mail" 
+                                    required
+                                />
                             </label>
                         </div>
                         <div className="cart__info">
@@ -224,10 +267,10 @@ const CartPage: FC<CartPagePropsI> = () => {
                                     <img src={SBPIcon} alt="СБП" className="cart__payment-icon" />
                                     СБП
                                 </div>
-                                <div onClick={() => setActivePayment('crypto')} className={`cart__payment ${activePayment === 'crypto' && 'cart__payment_active'}`}>
+                                {/* <div onClick={() => setActivePayment('crypto')} className={`cart__payment ${activePayment === 'crypto' && 'cart__payment_active'}`}>
                                     <img src={CryptoIcon} alt="Криптовалюта" className="cart__payment-icon" />
                                     Криптовалюта
-                                </div>
+                                </div> */}
                                 <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
                                     <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
                                     Баланс на сайте
@@ -249,7 +292,25 @@ const CartPage: FC<CartPagePropsI> = () => {
                             <span className="cart__sidebar-price">К оплате: {totalPrice} ₽</span>
                             <span className="cart__sidebar-discount">Сумма скидок по заказу: {totalDiscount} ₽</span>
                             {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
-                            <button className="cart__btn cart__sidebar-btn btn">
+                            <div className="cart__widget cart__payments">
+                                <h5 className="cart__widget-label">Способ оплаты:</h5>
+                                <div className="cart__payments-buttons">
+                                    <div onClick={() => setActivePayment('sbp')} className={`cart__payment ${activePayment === 'sbp' && 'cart__payment_active'}`}>
+                                        <img src={SBPIcon} alt="СБП" className="cart__payment-icon" />
+                                        СБП
+                                    </div>
+                                    <div onClick={() => setActivePayment('crypto')} className={`cart__payment ${activePayment === 'crypto' && 'cart__payment_active'}`}>
+                                        <img src={CryptoIcon} alt="Криптовалюта" className="cart__payment-icon" />
+                                        Криптовалюта
+                                    </div>
+                                    <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
+                                        <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
+                                        Баланс на сайте
+                                    </div>
+                                </div>
+                            </div>
+                            {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
+                            <button onClick={() => createOrder()} className="cart__btn cart__sidebar-btn btn">
                                 <img src={WhiteCartIcon} alt="Оплатить" className="cart__btn-icon" />
                                 Оплатить
                             </button>
@@ -258,18 +319,52 @@ const CartPage: FC<CartPagePropsI> = () => {
                             <div className="cart__widget">
                                 <label htmlFor="cart-email" className="cart__widget-label">
                                     Ваш E-mail:
-                                    <input type="text" id="cart-email" className="cart__email cart__widget-input" placeholder="Введите ваш E-mail" required/>
+                                    <input 
+                                    type="text" 
+                                    id="cart-email" 
+                                    onInput={(e) => {
+                                        setIsEmailEntered(true);
+                                        setEmail((e.target as HTMLInputElement).value);
+                                    }}
+                                    className={`cart__email cart__widget-input ${!isEmailEntered ? 'cart__widget-input_red' : 'gg'}`} 
+                                    placeholder="Введите ваш E-mail" 
+                                    required
+                                />
                                 </label>
                             </div>
-                            <div className="cart__widget">
-                                <label htmlFor="cart-promo" id="cart-promo-label" className="cart__widget-label cart__promo">
-                                    Промокод
-                                    <input type="text" id="cart-promo" className="cart__email cart__widget-input" placeholder="Введите промокод"/>
-                                    <button className="btn cart__widget-btn cart__promo-btn">
+                            <div className="cart__promocode cart__widget">
+                            <label htmlFor="cart-promo" id="cart-promo-label" className="cart__widget-label cart__promo">
+                                Промокод
+                                {
+                                isPromoUsedSuccesfully ? 
+                                    <div 
+                                        id="cart-promo" 
+                                        className="cart__widget-input cart__widget-input_succesfull"
+                                        
+                                    >
+                                        Промокод успешно применен
+                                        <img src={CheckIcon} alt="прокод применен" className="cart__widget-icon"/>
+                                    </div>:
+                                    <input 
+                                        onInput={(e) => {
+                                            setAlertMessage('');
+                                            setPromo((e.target as HTMLInputElement).value);
+                                        }}
+                                        value={promo}
+                                        type="text" 
+                                        id="cart-promo" 
+                                        className={`cart__promocode cart__widget-input ${alertMessage.length > 0 ? 'cart__widget-input_red' : null}`}
+                                        placeholder={alertMessage || "Введите промокод"}
+                                    />
+                                }
+                                {
+                                    promo.length && !isPromoUsedSuccesfully ? 
+                                    <button onClick={() => checkPromo()} className="btn cart__widget-btn cart__promo-btn">
                                         <img src={RightArrow} alt="промокод" />
-                                    </button>
-                                </label>
-                            </div>
+                                    </button> : null
+                                }
+                            </label>
+                        </div>
                             <div className="cart__info">
                                 <span className="cart__info-row text text_small">Ваш заказ: 2 {productWordForm}</span>
                                 <span className="cart__info-row text text_small">На сумму: {totalPrice} руб.</span>

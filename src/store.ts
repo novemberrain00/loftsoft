@@ -4,6 +4,7 @@ import userReducer from './redux/userSlice';
 import adminSidebar from './redux/adminSidebarSlice';
 import orderPriceSlice from './redux/orderPriceSlice';
 import replenishmentSlice from './redux/replenishmentSlice';
+import straightOrder from './redux/straightOrder';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     user: userReducer,
     adminSidebar: adminSidebar,
     order: orderPriceSlice,
-    replenishment: replenishmentSlice
+    replenishment: replenishmentSlice,
+    straightOrder: straightOrder
   },
 })
 

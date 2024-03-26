@@ -655,7 +655,7 @@ a {
     }
 
     &-value {
-      margin: 0 13px;
+      margin: 0 auto 0 0 !important;
     }
   }
 
@@ -739,4 +739,11 @@ a {
       }
     }
   }
+
+  .reviews {
+    &__items {
+      padding-top: 20px;
+    }
+  }
 }
+

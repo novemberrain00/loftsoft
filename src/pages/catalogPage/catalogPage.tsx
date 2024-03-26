@@ -37,6 +37,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         subcategoryName: ''
     });
     const [productsOffset, setProductsOffset] = useState<number>(0);
+    const [areFiltersOpened, setAreFiltersOpened] = useState<boolean>(false);
     const catalogBodyRef = useRef<HTMLDivElement>(null);
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
@@ -57,15 +58,16 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     }
 
     useEffect(() => {
+        console.log(subcategory)
         if(subcategory === undefined) return;
  
-        getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=${productsOffset}`)
+        getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
         .then((data: ProductI[]) => {
-            setProducts([...products, ...data]);
+            setProducts(data);
             if(!categories.length) return;
             setPathString(categories);
         });
-    }, [subcategory, filters, productsOffset]);
+    }, [subcategory, filters]);
 
     useEffect(() => {
         getData('/categories?empty_filter=true')
@@ -120,13 +122,18 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                     </p> 
                                 }
                             </div>
-                            <div className="catalog__filters-opener block mobile-flex">
+                            <div 
+                                onClick={() => setAreFiltersOpened(!areFiltersOpened)} 
+                                className={`catalog__filters-opener ${areFiltersOpened ? 'catalog__filters-opener_active' : ''} block mobile-flex`}
+                            >
                                 Показать фильтры
-                                <img src={DropdownIcon} alt="Показать фильтры"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+<path d="M7 10L12 15L17 10" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                             </div>
                             <div className="catalog__filters">
                                 <h2 className="title desktop-block catalog__query-title">Фильтры</h2>
-                                <ul className="list catalog__filters-items">
+                                <ul className={`list catalog__filters-items ${areFiltersOpened ? "" : "catalog__filters-items_closed"}`}>
                                     <li className="catalog__filter">
                                         По цене:
                                         <span 

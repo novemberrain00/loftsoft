@@ -366,6 +366,45 @@
                 margin-right: 21px;
             }
         }
+
+        &__dropdown {
+            padding: 35px 30px;
+
+            &-title {
+                font-size: 18px;
+            }
+
+            &-products {
+                padding-left: 35px;
+            }
+
+            &-categories {
+                padding-right: 35px;
+            }
+
+            &-category {
+                width: 276px;
+            }
+        }
+
+        &__discount {
+            padding: 0;
+            background-color: #fff;
+
+            &-input {
+                font-size: 16px !important;
+                width: 180px !important;
+            }
+
+            &-icon {
+                display: none;
+            }
+
+            .discount-value {
+                font-size: 16px;
+                padding: 8px 14px !important;
+            }
+        }
     }
 
     .footer {

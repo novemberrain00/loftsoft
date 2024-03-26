@@ -1,0 +1,208 @@
+.purchase {
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 40px;
+    width: 60vw;
+    margin: 0 auto;
+
+    &__title {
+        font-family: Roboto;
+        font-size: 30px;
+        font-weight: 600;
+        margin: 0 0 20px;
+    }
+
+    &__dropdown {
+        position: relative;
+        margin-bottom: 20px;
+
+        &-opener {
+            display: flex;
+            justify-content: space-between;
+            transition: .2s;
+
+            &:hover {
+                cursor: pointer;
+                background-color: rgba($color: #ccc, $alpha: .3);
+            }
+
+        }
+
+        &-list {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            position: absolute;
+            border-radius: 10px;
+            background: #FFF;
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+
+            &_opened {
+                display: flex;
+            }
+        }
+
+        &-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-family: Onest;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 7px 15px;
+
+            &:hover {
+                background-color: rgba($color: #ccc, $alpha: .3);
+                cursor: pointer;
+            }
+
+            &:first-child {
+                padding-top: 14px;
+            }
+
+            &:last-child {
+                padding-bottom: 14px;
+            }
+        }
+
+        &-icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &__form {
+        &-inputs {
+            display: flex;
+        }
+
+        &-inputs {
+            margin: 20px 0 20px;
+            gap: 23px;
+        }
+
+        &-input {
+            color: rgba(0, 0, 0, 0.50);
+            font-family: Onest;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+            padding: 18px 15px;
+            box-sizing: border-box;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.20);
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &-price {
+            font-family: Onest;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        &-alert {
+            font-family: Onest;
+            color: red;
+            font-size: 14px;
+        }
+
+        &-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            border-radius: 25px;
+            background-color: #DFEFFF;
+            padding: 30px;
+        }
+
+        &-bottom {
+            display: flex;
+            align-items: center;
+            gap: 30px;   
+        }
+    }
+
+    &__checkbox-label {
+        font-size: 16px;
+
+        &::before {
+            width: 25px !important;
+            height: 25px !important;
+            border-radius: 5px !important;
+            margin-right: 16px;
+        }
+    }
+
+    &__btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 24px;
+        border-radius: 50px !important;
+        font-size: 16px;
+    }
+
+    &__link {
+        color: #2667FF;
+        font-family: Onest;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .purchase {
+        border-radius: 30px;
+        padding: 24px;
+        width: 72vw;
+
+        &__title {
+            font-size: 24px;
+        }
+
+        &__dropdown {
+            &-opener {
+
+            }
+        }
+
+        &__form {
+            &-inputs {
+                flex-direction: column;
+            }
+
+            &-input {
+                font-size: 14px;
+            }
+
+            &-price {
+                font-size: 20px;
+            }
+
+            &-icon {
+                width: 16px;
+            }
+
+            &-footer {
+                padding: 20px;
+            }
+        }
+
+        &__checkbox {
+            &-label {
+                font-size: 13px;
+
+                &:before {
+                    margin-right: 10px;
+                }
+            }
+        }
+
+        &__link {
+            font-size: 13px;
+        }
+    }
+}

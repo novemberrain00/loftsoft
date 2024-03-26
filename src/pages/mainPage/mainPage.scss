@@ -617,3 +617,13 @@
         }
     }
 }
+
+@media screen and (max-width: 480px) {
+    .reviews {
+        &__bottom {
+            &-button {
+                display: none !important;
+            }
+        }
+    }
+}

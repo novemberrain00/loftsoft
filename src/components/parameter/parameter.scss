@@ -30,6 +30,7 @@
         height: 51px;
         border: 2px solid #2767FE;
         border-radius: 100%;
+        flex-shrink: 0;
     } 
 }
 
@@ -41,6 +42,19 @@
 
         &-cart {
             width: 54px;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .product-page__var {
+        &-cart {
+            width: 40px;
+            height: 40px;
+
+            img {
+                width: 30px;
+            }
         }
     }
 }

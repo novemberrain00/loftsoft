@@ -17,11 +17,11 @@ export const OrderPriceSlice = createSlice({
   initialState,
   reducers: {
     setOrderId: (state: OrderPriceStateI, action) => {
-        state.id = action.payload.id
+        state.id = action.payload
     },
 
     setPrice: (state: OrderPriceStateI, action) => {
-        state.price = action.payload.price;
+        state.price = action.payload;
     }
   },
 })

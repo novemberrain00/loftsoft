@@ -24,7 +24,6 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     });
     const [seconds, setSeconds] = useState<number>(+(window.localStorage.getItem('timeToPay') || 600));
     const [isInstructionOpened, setIsInstructionOpened] = useState<boolean>(false);
-    
 
     const {id} = useParams();
     const navigate = useNavigate();
@@ -58,7 +57,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     };
 
     useEffect(() => {
-        if(!replenishment.replenishment.number.length) return;
+        //if(!replenishment.replenishment.number.length) return;
 
         const interval = setInterval(() => {
             if (seconds > 0) {

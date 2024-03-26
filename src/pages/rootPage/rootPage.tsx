@@ -155,7 +155,7 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                             }} className="header__profile">
                             <img src={photo} alt={username} className="header__profile-img" />
                             <span className="header__profile-name">{username}</span>
-                            <button className="btn header__profile-price">{balance} ₽</button>
+                            <button className="btn header__profile-price">{balance}&nbsp;₽</button>
                         </div>}
 
                         {!username && <Link to="/auth">

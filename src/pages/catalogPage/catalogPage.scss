@@ -94,9 +94,22 @@
             font-size: 14px;
             font-style: normal;
             font-weight: 400;
+            transition: .4s;
 
-            img {
-                width: 12px;
+            &_active {
+                background-color: #2667FF;
+                color: #fff;
+
+                svg {
+                    transform: rotate(180deg);
+                    path {
+                        stroke: white;
+                    }
+                }
+            }
+
+            svg {
+                width: 24px;
             }
         }
     }
@@ -131,8 +144,9 @@
                 background-color: #2667FF;
                 color: #fff;
 
-                img {
+                svg {
                     transform: rotate(180deg);
+                    fill: white;
                 }
             }
         }
@@ -152,6 +166,7 @@
         &__main {
             display: flex;
             flex-direction: column;
+            margin-top: 14px;
         }
 
         &__banner {
@@ -163,7 +178,33 @@
                 align-items: start;
                 padding: 25px 20px 0;
             }
+
+            .discount {
+                &-value {
+                    padding: 11px;
+                    font-size: 14px;
+                }
+            }
         
+        }
+
+        &__filters {
+            margin-top: 32px;
+
+            &-items {
+                flex-wrap: wrap;
+                padding: 20px !important;
+                margin: -20px !important;
+                max-height: 220px;
+                transition: .7s;
+                overflow: hidden;
+
+
+                &_closed {
+                    max-height: 0;
+                    padding: 0 20px !important;
+                }
+            }
         }
 
         &__section {
@@ -178,10 +219,10 @@
 
         &__products {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
             gap: 25px;
             margin-top: 30px;
+            padding: 0 30px;
         }
 
         &__sidebar {
@@ -198,14 +239,6 @@
                 width: 100%;
                 box-shadow: none !important;
                 padding: 0;
-            }
-        }
-
-        &__filters {
-            margin-top: 32px;
-
-            &-items {
-                flex-wrap: wrap;
             }
         }
 
@@ -233,7 +266,6 @@
     .catalog {
         &__section {
             max-width: 290px;
-            width: auto;
 
             &-header {
                 padding: 15px;
@@ -242,6 +274,42 @@
             &-name {
                 font-size: 12px !important;
             }
+        }
+
+        &__banner {
+            &-top {
+                flex-direction: column;
+            }
+
+            &-title {
+                margin-bottom: 12px !important;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 675px) {
+    .catalog {
+        &__section {
+            max-width: 290px;
+            width: 100%;
+
+            &-header {
+                padding: 15px;
+            }
+
+            &-name {
+                font-size: 12px !important;
+            }
+
+            &-icon {
+                max-width: 25px;
+            }
+        }
+
+        &__filter {
+            display: flex;
+            flex-direction: column;
         }
     }
 }
@@ -266,23 +334,17 @@
     }
 }
 
-// @media screen and (max-width: 675px) {
-//     .catalog {
-//         &__section {
-//             max-width: 290px;
-//             width: auto;
+@media screen and (max-width: 380px) {
+    .catalog {
+        &__filter {
+            display: flex;
+            flex-direction: column;
+        }
 
-//             &-header {
-//                 padding: 15px;
-//             }
-
-//             &-name {
-//                 font-size: 12px !important;
-//             }
-
-//             &-icon {
-//                 max-width: 25px;
-//             }
-//         }
-//     }
-// }
+        &__discount {
+            &-input {
+                width: 200px !important;
+            }
+        }
+    }
+}

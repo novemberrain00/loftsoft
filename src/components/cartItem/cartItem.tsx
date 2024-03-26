@@ -8,6 +8,7 @@ import { setUserInfo } from "../../redux/userSlice";
 import { RootState } from "../../store";
 
 import './cartItem.scss';
+import { Link } from "react-router-dom";
 
 interface CartItemPropsI {
     id: number
@@ -24,11 +25,11 @@ interface CartItemPropsI {
 const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img, quantity, productId, giveType}) => {
     const [newQuantity, setNewQuantity] = useState<number>(quantity);
     const [isDataPosted, setIsDataPosted] = useState<boolean>(true);
-    const [paymentType, setPaymentType] = useState(0); //0 - крипта, 1 - сбп
 
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
     const dispatch = useDispatch();
 
+    const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     const postToCart = async () => {
         setIsDataPosted(false);
@@ -57,7 +58,7 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
             </div>
             <div className="cart__item-footer">
                 <div className="cart__item-img">
-                    <img src={img} alt={title}/>
+                    <img src={baseURL + '/uploads/' + img} alt={title}/>
                 </div>
                 <div className="cart__item-body">
                     <p className="text text_large cart__item-name">

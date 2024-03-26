@@ -8,6 +8,7 @@ import { setUserInfo } from "../../redux/userSlice";
 import BlueCartIcon from "../../assets/images/icons/cart_blue.svg";
 
 import './parameter.scss';
+import { setOrder } from "../../redux/straightOrder";
 
 interface ParameterPropsI {
     id: number
@@ -18,14 +19,26 @@ interface ParameterPropsI {
     hasSale: boolean
     salePercent: string | null,
     description: string
+    buyPopupOpener: React.Dispatch<React.SetStateAction<boolean>>
 }
  
-const Parameter: FC<ParameterPropsI> = ({id, productId, title, salePrice, price, hasSale, salePercent, description}) => {
+const Parameter: FC<ParameterPropsI> = ({
+        id, 
+        productId, 
+        title, 
+        salePrice, 
+        price, 
+        hasSale, 
+        salePercent, 
+        description, 
+        buyPopupOpener
+    }) => {
     const [isSwitchOpened, setIsSwitchOpened] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(0);
     const [isDataPosted, setIsDataPosted] = useState<boolean>(true);
 
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
+    const straightOrder = useSelector((state: RootState) => state.straightOrder.straightOrder);
     const dispatch = useDispatch();
 
     const postToCart = async () => {
@@ -84,10 +97,22 @@ const Parameter: FC<ParameterPropsI> = ({id, productId, title, salePrice, price,
                     </svg>
                 </button>
             </div>
-            <button disabled={!isDataPosted}  className="btn product-page__btn">Приобрести</button>
+            <button 
+                disabled={!isDataPosted} 
+                onClick={() => {
+                    dispatch(setOrder({
+                        ...straightOrder,
+                        parameter_id: id,
+                        price: +salePrice || +price,
+                        count: 1
+                    }));
+                    buyPopupOpener(true);
+                }} 
+                className="btn product-page__btn"
+            >Приобрести</button>
             <a onClick={(e) => {
                 e.preventDefault();
-                setQuantity(quantity+1)
+                setQuantity(quantity+1);
             }} href="#" className="link product-page__var-cart">
                 <img src={BlueCartIcon} alt="в корзину" />
             </a>

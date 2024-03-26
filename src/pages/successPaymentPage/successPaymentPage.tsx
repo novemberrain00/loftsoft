@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import RootPage from "../rootPage/rootPage";
 
@@ -11,12 +11,22 @@ import PlusIcon from "../../assets/images/icons/plus_squared.svg";
 import Windows from '../../assets/images/img/catalog/windows.png';
 
 import './successPaymentPage.scss';
+import { OrderI } from "../../interfaces";
+import { useParams } from "react-router-dom";
+import { getData } from "../../services/services";
 
 interface SuccessPaymentPagePropsI {
     
 }
  
 const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
+    const [orderData, setOrderData] = useState<OrderI>({} as OrderI);
+    const { id } = useParams();
+
+    // useEffect(() => {
+    //     getData()
+    // }, [id])
+
     return (
         <RootPage>
             <main className="success">
