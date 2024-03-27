@@ -1,6 +1,8 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
+import { useDispatch } from 'react-redux';
 
 import './categoryPopup.scss';
+import { closeSidebar } from "../../redux/adminSidebarSlice";
 
 interface PopupPropsI {
     isPopupOpened: boolean
@@ -15,6 +17,12 @@ const Popup: FC<PopupPropsI> = ({isPopupOpened, setIsPopupOpened, children}) => 
             setIsPopupOpened(false);
         }
     };
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if(isPopupOpened) dispatch(closeSidebar());
+    }, [isPopupOpened]);
 
     (document.querySelector('html') as HTMLElement).style.overflow = isPopupOpened ? 'hidden' : 'initial';
     (document.querySelector('html') as HTMLElement).style.height = isPopupOpened ? '100vh' : 'auto';

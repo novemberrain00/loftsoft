@@ -273,6 +273,11 @@ interface PaymentI {
     created_datetime: string;
 }
 
+interface TelegramDataI {
+    token: string;
+    telegram_ids: number[];
+}
+
 export type { 
     LinkI, 
     SnackI, 
@@ -291,5 +296,6 @@ export type {
     SupportTicketI,
     OrderI,
     ReplenishI,
-    PaymentI
+    PaymentI,
+    TelegramDataI
 };

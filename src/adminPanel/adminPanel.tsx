@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from "react";
+import { FC, ReactNode, useEffect, useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,12 +16,15 @@ import Snack from "../components/snack/snack";
 
 import { SnackI } from "../interfaces";
 import './adminPanel.scss';
+import Notifications from "./sections/notifications/notifications";
 
 interface AdminPanelPropsI {
     children: ReactNode
 }
  
 const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
+    const [isNotificationsOpened, setIsNotificationsOpened] = useState<boolean>(false);
+
     const dispatch = useDispatch();
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     const isSidebarOpened = useSelector((state: RootState) => state.adminSidebar.isOpened);
@@ -43,6 +46,8 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
     }, [])
 
     return getCookie('is_admin') === 'true' ? (
+        <>
+        <Notifications isPopupOpened={isNotificationsOpened} setIsPopupOpened={setIsNotificationsOpened}/>
         <div className="admin">
             <aside className={`admin__sidebar ${isSidebarOpened ? 'admin__sidebar_opened' : ''}`}>
                 <div onClick={() => dispatch(closeSidebar())} className="mobile-flex admin__sidebar-closer-wrapper">
@@ -57,7 +62,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                     <ul className="list admin__menu">
                         <li className="admin__menu-item">
                             <Link to="/admin">
-                                <a href="#" className="admin__menu-link admin__menu-link_active">Главная страница</a>
+                                <a href="#" className="admin__menu-link">Главная страница</a>
                             </Link>
                         </li>
                     </ul>
@@ -110,13 +115,10 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                             <a href="#" className="admin__menu-link">История</a>
                         </li>
                         <li className="admin__menu-item">
-                            <a href="#" className="admin__menu-link">Уведомления</a>
-                        </li>
-                        <li className="admin__menu-item">
-                            <a href="#" className="admin__menu-link">Ticket#12</a>
-                        </li>
-                        <li className="admin__menu-item">
-                            <a href="#" className="admin__menu-link">Ticket#13</a>
+                            <a onClick={(e: MouseEvent) => {
+                                e.preventDefault();
+                                setIsNotificationsOpened(true)
+                            }} href="#" className="admin__menu-link">Уведомления</a>
                         </li>
                     </ul>
                 </nav>
@@ -137,6 +139,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                 }
             </SnackbarContainer>
         </div>
+        </>
     ) : null;
 }
  

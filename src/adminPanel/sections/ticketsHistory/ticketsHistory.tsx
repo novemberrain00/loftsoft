@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, MouseEvent } from "react";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
@@ -6,8 +6,8 @@ import BackArrow from "../../../assets/images/icons/arrow_left.svg";
 import Avatar from "../../../assets/images/img/ava.png";
 import CloseTicketIcon from "../../../assets/images/icons/close.svg";
 
-import { useNavigate } from "react-router-dom";
-import { getData } from "../../../services/services";
+import { Link, useNavigate } from "react-router-dom";
+import { getData, postData } from "../../../services/services";
 import { SupportTicketI } from "../../../interfaces";
 
 import './ticketsHistory.scss';
@@ -19,6 +19,12 @@ interface TicketsHistoryPropsI {
 const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
     const navigate = useNavigate();
     const [ticketsList, setTicketsList] = useState<SupportTicketI[]>([]);
+
+    const closeTicket = async (e: MouseEvent, id: number) => {
+        e.preventDefault();
+        await postData(`/ticket/${id}/close`, {}, true)
+        .then(() => setTicketsList(ticketsList.filter(ticket => ticket.id !== id)))
+    }
 
     useEffect(() => {
         getData('/tickets/opened', true)
@@ -46,12 +52,14 @@ const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
                                     <div className="ticket__body">
                                         <img src={baseURL + '/uploads/' + user.photo} alt="" className="ticket__img" />
                                         <div className="ticket__info" onClick={() => navigate(`/admin/tickets/${id}`)}>
-                                            <span className="ticket__num">
-                                                Ticket#{id} {status === 'closed' ? `(closed ${closed_at})` : null}
-                                            </span>
+                                            <Link to={`${id}`}>
+                                                <span className="ticket__num">
+                                                    Ticket#{id} {status === 'closed' ? `(closed ${closed_at})` : null}
+                                                </span>
+                                            </Link>
                                             <h4 className="ticket__name">{user.username}</h4>
                                         </div>
-                                        <a href="#" className="ticket__delete">удалить навсегда</a>
+                                        <a href="#" onClick={(e: MouseEvent) => closeTicket(e, id)} className="ticket__delete">удалить навсегда</a>
                                         <img src={CloseTicketIcon} alt="закрыть" className="ticket__closer" />
                                     </div>
                                 </div>

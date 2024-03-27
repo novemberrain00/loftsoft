@@ -1,0 +1,21 @@
+.notifications {
+    margin: 0 auto;
+    width: 290px;
+    box-sizing: border-box;
+
+    &__link {
+        display: block;
+        margin-top: 22px;
+        color: #2667FF;
+        font-family: Roboto;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .notifications {
+        width: 50vw;
+    }
+}
