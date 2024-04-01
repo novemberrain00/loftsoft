@@ -1,25 +1,25 @@
-interface LinkI {
+export interface LinkI {
     text: string
     path: string
 }
 
-interface SnackI {
+export interface SnackI {
     text: string
 }
 
-interface LoginResponseI {
+export interface LoginResponseI {
     access_token?: string
     refresh_token?: string
     detail?: string
 }
 
-interface ShortUserI {
+export interface ShortUserI {
     username?: string
     password?: string
     photo?: string
 }
 
-interface ProductI {
+export interface ProductI {
     id: number,
     title: string,
     description: string,
@@ -62,7 +62,7 @@ interface ProductI {
     
 }
 
-interface UserI {
+export interface UserI {
     id: number | null
     balance: string
     email: string
@@ -75,7 +75,7 @@ interface UserI {
     username: string
 }
 
-interface SubcategoryI {
+export interface SubcategoryI {
     id: number,
     created_datetime: string,
     title: string,
@@ -85,7 +85,7 @@ interface SubcategoryI {
     product_count: number
 }
 
-interface CategoryI {
+export interface CategoryI {
     id: number,
     created_datetime: string,
     title: string,
@@ -95,7 +95,7 @@ interface CategoryI {
     subcategories_count: number
   }
 
-interface CartItemI {
+export interface CartItemI {
     product: {
         id: number
         title: string,
@@ -136,7 +136,7 @@ interface CartItemI {
     quantity: number
 }
 
-interface ReviewI {
+export interface ReviewI {
     id: number
     user: string
     product: string
@@ -148,7 +148,7 @@ interface ReviewI {
     additionalClass?: string
 }
 
-interface PostProductI {
+export interface PostProductI {
     id: number,
     title: string,
     description: string,
@@ -180,122 +180,115 @@ interface PostProductI {
     initialPhotos: any[]
 }
 
-interface PartnerI {
+export interface PartnerI {
     id: number
     photo: string
 }
 
-interface ParamDataItemI {
+export interface ParamDataItemI {
     name: string
     size: string
 }
 
-interface PostPromocodeI {
+export interface PostPromocodeI {
     id: number,
     name: string
     activations_count: string
     sale_percent: string
 }
 
-interface Attachment {
-    id: number;
-    file: string;
+export interface Attachment {
+    id: number
+    file: string
 }
 
-interface Message {
-    id: number;
-    role: string;
-    text: string;
-    created_at: string;
-    attachments: Attachment[];
+export interface Message {
+    id: number
+    role: string
+    text: string
+    created_at: string
+    attachments: Attachment[]
 }
 
-interface SupportTicketI {
-    id: number;
-    user: UserI;
-    status: string;
-    created_at: string;
-    closed_at: string;
-    messages: Message[];
-    last_message: string;
+export interface SupportTicketI {
+    id: number
+    user: UserI
+    status: string
+    created_at: string
+    closed_at: string
+    messages: Message[]
+    last_message: string
 }
 
-interface OrderI {
-    id: number;
-    number: string;
+export interface OrderI {
+    id: number
+    number: string
     promocode: {
-        id: number;
-        name: string;
-        activations_count: number;
-        sale_percent: number;
-    };
-    straight: boolean;
-    result_price: string;
-    created_datetime: string;
-    status: string;
-    email: string;
-    payment_type: string;
+        id: number
+        name: string
+        activations_count: number
+        sale_percent: number
+    }
+    straight: boolean
+    result_price: string
+    created_datetime: string
+    status: string
+    email: string
+    payment_type: string
     order_parameters: {
-        id: number;
+        id: number
         parameter: {
-            id: number;
-            title: string;
-            description: string;
-            price: string;
-            has_sale: boolean;
-            sale_price: string;
-            give_type: string;
-            order_id: number;
-            product_id: number;
-            sale_percent: number;
-        };
+            id: number
+            title: string
+            description: string
+            price: string
+            has_sale: boolean
+            sale_price: string
+            give_type: string
+            order_id: number
+            product_id: number
+            sale_percent: number
+        }
+        count: number
+    }[]
+    user_id: number
+}
+
+export interface PurchaseI {
+    id: number
+    number: string
+    total_price: number
+    order_data:  {
         count: number;
-    }[];
-    user_id: number;
+        give_type: string
+        id: number
+        items: string[]
+        title: string
+    }[]
+
 }
 
-interface ReplenishI {
-    id: number;
-    number: string;
-    result_price: string;
-    payment_type: string;
-    status: string;
-    created_datetime: string;
-    payed_datetime: string;
-    user_id: number;
+export interface ReplenishI {
+    id: number
+    number: string
+    result_price: string
+    payment_type: string
+    status: string
+    created_datetime: string
+    payed_datetime: string
+    user_id: number
 }
 
-interface PaymentI {
-    number: string;
-    result_price: string;
-    payment_type: string;
-    status: string;
-    created_datetime: string;
+export interface PaymentI {
+    number: string
+    result_price: string
+    payment_type: string
+    status: string
+    created_datetime: string
 }
 
-interface TelegramDataI {
-    token: string;
-    telegram_ids: number[];
+export interface TelegramDataI {
+    token: string
+    telegram_ids: number[]
 }
 
-export type { 
-    LinkI, 
-    SnackI, 
-    LoginResponseI, 
-    UserI, 
-    ShortUserI, 
-    ProductI, 
-    SubcategoryI, 
-    CategoryI, 
-    CartItemI, 
-    ReviewI, 
-    PostProductI, 
-    PartnerI,
-    ParamDataItemI,
-    PostPromocodeI,
-    SupportTicketI,
-    OrderI,
-    ReplenishI,
-    PaymentI,
-    TelegramDataI
-};

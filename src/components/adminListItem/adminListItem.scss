@@ -17,6 +17,7 @@
     }
 
     &-info {
+        width: 220px;
         margin-left: 30px;
 
         &-title {
@@ -32,7 +33,6 @@
         &-bottom {
             display: flex;
             gap: 32px;
-            margin-right: 230px;
         }
 
         &-btn {
@@ -79,10 +79,14 @@
         }
     }
 
+    &-drag {
+        display: block;
+        margin: 0 auto;
+    }
+
     &-helpers {
         display: flex;
         gap: 15px;
-        margin-left: auto;
     }
 
     &-helper {
@@ -98,6 +102,28 @@
         &:hover {
             cursor: pointer;
             background-color: #c2c0c0;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin__list {
+        &-img {
+            display: none;
+        }
+
+        &-info {
+            margin-left: 0;
+
+            &-title {
+                img {
+                    display: none;
+                }
+            }
+
+            &-bottom {
+                display: none;
+            }
         }
     }
 }

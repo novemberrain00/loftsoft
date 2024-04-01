@@ -19,15 +19,15 @@ import Popup from "../../../components/categoryPopup/categoryPopup";
 import Snack from "../../../components/snack/snack";
 import SnackbarContainer from "../../../components/snackbar/snackbar";
 
-import { PostProductI, ProductI, SnackI, SubcategoryI } from "../../../interfaces";
+import { PostProductI, SnackI, SubcategoryI } from "../../../interfaces";
 import { getCookie, getData, postData, uploadFile } from "../../../services/services";
 
 import { RootState } from "../../../store";
 import { addSnack } from "../../../redux/snackbarSlice";
 
-import './editProduct.scss';
 import { LoaderT } from "../../../types";
 import Loader from "../../../components/loader/loader";
+import './editProduct.scss';
 
 interface EditProductPropsI {
     title: string
@@ -1077,7 +1077,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     }
                     
                 </div>
-                <div className="editor__col editor__accounts">
+                <div className="editor__col editor__accounts desktop-block">
                     <h2 className="editor__title">Данные от аккаунтов</h2>
                     {
                         productData.parameters.length && curParam.id > -1 ? 
@@ -1246,6 +1246,182 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                         <img src={UploadIcon} alt="Добавить .txt" />
                                         Добавить .txt
                                     </label>
+                                </div>
+                            </div>
+                        }
+                        
+                    </div>
+                </div>
+                <div className="editor__col editor__accounts mobile-block">
+                    <h2 className="editor__title">Данные от аккаунтов</h2>
+                    {
+                        productData.parameters.length && curParam.id > -1 ? 
+                        <>
+                            <div className="editor__accounts-tabs">
+                                <div 
+                                    onClick={() => {
+                                        setCurParam({
+                                            ...curParam,
+                                            give_type: 'string'
+                                        });
+                                    }}
+                                    className={`editor__accounts-tab ${curParam.give_type === 'string' ? 'editor__accounts-tab_active' : ''}`}
+                                >
+                                    Строки
+                                </div>
+                                <div 
+                                    onClick={() => {
+                                        setCurParam({
+                                            ...curParam,
+                                            give_type: 'hand'
+                                        });
+                                    }}
+                                    className={`editor__accounts-tab ${curParam.give_type === 'hand' ? 'editor__accounts-tab_active' : ''}`}>
+                                    Ручная
+                                </div>
+                                <div 
+                                    onClick={() => {
+                                        setCurParam({
+                                            ...curParam,
+                                            give_type: 'file'
+                                        });
+                                    }}
+                                    className={`editor__accounts-tab ${curParam.give_type === 'file' ? 'editor__accounts-tab_active' : ''}`}
+                                >
+                                    .txt
+                                </div>
+                            </div>
+                        </> : null
+                        
+                    }
+                    <div className="editor__accounts-data">
+                        {
+                            editableParam < 0 ? 
+                            <div className="editor__params editor__params_empty">
+                                Выберите параметр для настройки
+                            </div> : ''
+                        }
+                        {
+                           editableParam >= 0 && curParam.give_type === 'string' && 
+                           <div className="editor__params">
+                                <div className="editor__params-header">
+                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
+                                    <img onClick={() => saveKeys()} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить ключи" />
+                                </div>
+                                <div className="editor__params-rows">
+                                    <div className="editor__params-row">№ строки</div>
+                                    {
+                                        curParam.data?.map((key, i) => {
+                                            return (
+                                                <div key={key} className="editor__params-row">
+                                                    {i+1 < 10 ? '0'+(i+1) : i+1}
+                                                    <span className="editor__params-key">{key}</span>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                    {
+                                        isRowAdded && 
+                                        <div className="editor__params-new">
+                                            <button onClick={() => setIsRowAdded(false)} className="btn editor__params-btn">-</button>
+                                            <input 
+                                                onInput={(e) => setNewRow((e.target as HTMLInputElement).value)} 
+                                                autoFocus 
+                                                type="text" 
+                                                className="editor__params-input"
+                                            />
+                                        </div>
+                                    }
+                                </div>
+                                {!isRowAdded && <div onClick={() => setIsRowAdded(true)} className="editor__params-appender">Добавить</div>}
+                                {isRowAdded && <div onClick={() => saveRow()} className="editor__params-appender">Сохранить</div>}
+                            </div>
+                        }
+                        {
+                            editableParam >= 0 && curParam.give_type === 'hand' &&
+                            <div className="editor__params">
+                                <div className="editor__params-header">
+                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
+                                </div>
+                                <h2 className="editor__params-title">Включена ручная <br /> выдача товаров</h2>
+                                <h3 className="editor__params-subtitle">Функции редактора недоступны</h3>
+                            </div>
+                        }
+                        {
+                            editableParam >= 0 && curParam.give_type === 'file' &&
+                            <div className="editor__params">
+                                <div className="editor__params-header">
+                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
+                                    {
+                                        isDataLoaded.txtFiles !== 'processing' ?
+                                        <img onClick={() => {setIsParamPopupOpened(true)}} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить" /> : <Loader/>
+
+                                    }
+                                </div>
+                                <div className="editor__params-content">
+                                    {
+                                        !(curFiles?.length || curParam?.data.length) && 
+                                        <div>
+                                            <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
+                                            <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
+                                        </div>
+                                    }
+                                    
+                                    {
+                                        !!(curFiles?.length || curParam?.data.length) && 
+                                        <div className="editor__files">
+                                            { productData.id > -1 ?
+                                                (curParam?.data || []).map((key, i) => {
+                                                    return (
+                                                        <div key={i} className="editor__file">
+                                                            <a target="blank" href={baseURL + '/uploads/' + key} className="editor__file-name">{key}</a>
+                                                            <span className="editor__file-size">{Math.floor(1000 / 1024 * 1000) / 1000}KB</span>
+                                                            <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
+                                                        </div>
+                                                    )
+                                                }) : null
+                                            }
+                                            {
+                                                Object.keys(curFiles || []).map((key, i) => {
+                                                    const {name, size} = curFiles[+key];
+                                                    return (
+                                                        <div key={name} className="editor__file">
+                                                            <a target="blank" href={baseURL + '/uploads/' + name} className="editor__file-name">{name}</a>
+                                                            <span className="editor__file-size">{Math.floor(size / 1024 * 1000) / 1000}KB</span>
+                                                            <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
+                                                        </div>
+                                                    )
+                                                }) || ''
+                                            }
+                                        </div>
+                                    }
+                                    <div className="editor__params-txt">
+                                        <span className="editor__params-counter">
+                                            {curFiles?.length === 1 ?  'Добавлен' : ''}&nbsp;
+                                            {curFiles?.length as number > 1 ?  'Добавлено' : ''}&nbsp;
+                                            {!!curFiles?.length && curFiles?.length}&nbsp;
+                                            {curFiles?.length === 1 ? 'файл' : ''}
+                                            {(curFiles?.length as number) > 1 && (curFiles?.length as number) < 5 ? 'файла' : ''}
+                                            {(curFiles?.length as number) >= 5 ? 'файлов' : ''}
+                                        </span>
+                                        <label htmlFor="file-sender__input-25" className="file-sender file-sender_small">
+                                            <input 
+                                                onInput={(e) => {
+                                                    setCurParam({
+                                                        ...curParam,
+                                                        files: (e.target as HTMLInputElement).files as FileList
+                                                    })
+                                                }}
+                                                multiple
+                                                type="file" 
+                                                accept=".txt" 
+                                                id="file-sender__input-25" 
+                                                className="file-sender__input" 
+                                            />
+                                            <img src={UploadIcon} alt="Добавить .txt" />
+                                            Добавить .txt
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         }

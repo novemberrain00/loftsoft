@@ -1,7 +1,5 @@
-import React, {FC, useEffect, useState} from 'react';
-import { renderToString } from 'react-dom/server';
+import React, {FC} from 'react';
 import {Routes, Route} from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import MainPage from '../../pages/mainPage/mainPage';
 import CatalogPage from '../../pages/catalogPage/catalogPage';
@@ -20,10 +18,7 @@ import Start from '../../adminPanel/sections/start/start';
 import TicketsHistory from '../../adminPanel/sections/ticketsHistory/ticketsHistory';
 import EditProduct from '../../adminPanel/sections/editProduct/editProduct';
 import Reviews from '../../adminPanel/sections/reviews/reviews';
-import { convertToLatin, getCookie, getData } from '../../services/services';
-import { CategoryI, ProductI } from '../../interfaces';
 import Promocodes from '../../adminPanel/sections/promocodes/promocodes';
-import { RootState } from '../../store';
 import Categories from '../../adminPanel/sections/categories/categories';
 import PurchaseMail from '../../mails/purchase';
 import Products from '../../adminPanel/sections/products/products';
@@ -32,16 +27,6 @@ import BillingData from '../../adminPanel/sections/billingData/billingData';
 import Ticket from '../../adminPanel/sections/ticket/ticket';
 
 const Router: FC = () => {
-    const [categories, setCategories] = useState<CategoryI[]>([]);
-
-    useEffect(() => {
-        getData('/categories')
-        .then(data => {
-            setCategories(data)
-        });
-    }, []);
-
-
     return (
         <Routes>
             <Route path='/' element={<MainPage/>}/>

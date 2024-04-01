@@ -48,7 +48,6 @@ const ProductPage: FC<ProductPagePropsI> = () => {
         options,
         description,
         product_photos,
-        sale_percent
     } = productData;
 
     return (

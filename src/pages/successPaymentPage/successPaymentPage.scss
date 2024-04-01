@@ -88,6 +88,16 @@
                 height: 45px;
                 padding: 0;
                 border-radius: 100px;
+
+                &:hover {
+                    cursor: pointer;
+                    
+                    svg {
+                        path {
+                            fill: #2767FE;
+                        }
+                    }
+                }
             }
         }
 

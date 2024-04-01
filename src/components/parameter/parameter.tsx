@@ -8,7 +8,7 @@ import { setUserInfo } from "../../redux/userSlice";
 import BlueCartIcon from "../../assets/images/icons/cart_blue.svg";
 
 import './parameter.scss';
-import { setOrder } from "../../redux/straightOrder";
+import { setOrder } from "../../redux/straightOrderSlice";
 
 interface ParameterPropsI {
     id: number

@@ -81,3 +81,33 @@
         line-height: 1;
     }
 }
+
+@media screen and (max-width: 1280px) {
+    .ticket {
+        &__closer {
+            margin-left: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ticket {
+        &__img {
+            width: 60px;
+            height: 60px;
+            margin-right: 10px;
+        }
+
+        &__name {
+            font-size: 24px;
+        }
+        
+        &__body {
+            width: 100%;
+        }
+
+        &__info {
+            margin-right: 0;
+        }
+    }
+}

@@ -5,10 +5,12 @@ import SearchIcon from '../../assets/images/icons/search_grey.svg';
 import CartIcon from '../../assets/images/icons/cart_grey.svg';
 import ChatIcon from '../../assets/images/icons/chat_grey.svg';
 import MobileMenuIcon from '../../assets/images/icons/mobile-menu-icon.svg';
+import AccountIcon from '../../assets/images/icons/account.svg';
 
 import { RootState } from "../../store";
 import './mobileMenu.scss';
 import { Link } from "react-router-dom";
+import { getCookie } from "../../services/services";
 
 interface MobileMenuPropsI {
     profileOpener: React.Dispatch<React.SetStateAction<boolean>>
@@ -46,15 +48,28 @@ const MobileMenu: FC<MobileMenuPropsI> = ({profileOpener}) => {
                         <img src={ChatIcon} className="menu__list-icon" alt="чат" />
                     </a>
                 </li>
-                <li onClick={() => {
-                    document.body.style.overflowX = 'hidden';
-                    document.body.style.height = '100vh';
-                    profileOpener(true)
-                }} className="menu__list-item">
-                    <a href="#" className="menu__list-link">
-                        <img src={userPhoto} className="menu__list-icon menu__list-avatar" alt="профиль" />
-                    </a>
-                </li>
+                {
+                    getCookie('access_token') ? (
+                        <li onClick={() => {
+                            document.body.style.overflowX = 'hidden';
+                            document.body.style.height = '100vh';
+                            profileOpener(true)
+                        }} className="menu__list-item">
+                            <a href="#" className="menu__list-link">
+                                <img src={userPhoto} className="menu__list-icon menu__list-avatar" alt="профиль" />
+                            </a>
+                        </li>
+                    ) : (
+                        <li className="menu__list-item">
+                            <Link to="/auth">
+                                <a href="#" className="menu__list-link">
+                                    <img src={AccountIcon} className="menu__list-icon menu__list-avatar" alt="профиль" />
+                                </a>
+                            </Link>
+                        </li>
+                    )
+                }
+                
             </ul>
         </nav>
     );

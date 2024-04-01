@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, MouseEvent, useRef, FormEvent } from "react";
+import { FC, useEffect, useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,12 +10,13 @@ import SBPIcon from "../../assets/images/icons/sbp.svg";
 import WalletIcon from "../../assets/images/icons/wallet_blue.svg";
 
 import { RootState } from "../../store";
-import { resetInputData, setOrder } from "../../redux/straightOrder";
+import { resetInputData, setOrder } from "../../redux/straightOrderSlice";
 import { getData, postData } from "../../services/services";
-import { OrderI } from "../../interfaces";
+import { OrderI, PurchaseI } from "../../interfaces";
 import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 
 import './buyPopup.scss';
+import { setPurchase } from "../../redux/purchaseSlice";
 
 interface BuyPopupPropsI {
     isOpened: boolean
@@ -84,21 +85,24 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
             email,
             straight: true
         }, true)
-        .then((data: OrderI | string) => {
+        .then((data: PurchaseI | string) => {
             if(data === 'NOT_ENOUGH_BALANCE') {
                 setAlertMessage('Недостаточно средств на балансе')
                 return;
             }
 
+            const { id, total_price} = data as PurchaseI;
+
             if(activePayment === 'Баланс сайта') {
-                navigate(`/profile/cart/order/${(data as OrderI).id}/success`);
+                dispatch(setPurchase({...(data as PurchaseI)}));
+                navigate(`/profile/cart/order/${id}/success`);
                 return;
             } else {
-                dispatch(setOrderId((data as OrderI).id));
-                dispatch(setPrice((data as OrderI).result_price));
+                dispatch(setOrderId(id));
+                dispatch(setPrice(total_price));
 
                 window.localStorage.setItem('timeToPay', '600')
-                navigate(`/profile/cart/order/${(data as OrderI).id}`);
+                navigate(`/profile/cart/order/${id}`);
             }
         });
     }

@@ -61,7 +61,9 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                     <h3 className="admin__sidebar-subtitle">Главная</h3>
                     <ul className="list admin__menu">
                         <li className="admin__menu-item">
-                            <Link to="/admin">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin">
                                 <a href="#" className="admin__menu-link">Главная страница</a>
                             </Link>
                         </li>
@@ -69,37 +71,51 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                     <h3 className="admin__sidebar-subtitle">Управление</h3>
                     <ul className="list admin__menu">
                         <li className="admin__menu-item">
-                            <Link to="/admin/users">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/users">
                                 <a href="#" className="admin__menu-link">Пользователи</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/products">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/products">
                                 <a href="#" className="admin__menu-link">Товары</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/reviews">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/reviews">
                                 <a href="#" className="admin__menu-link">Отзывы</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/categories">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/categories">
                                 <a href="#" className="admin__menu-link">Категории</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/subcategories">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/subcategories">
                                 <a href="#" className="admin__menu-link">Подкатегории</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/promocodes">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/promocodes">
                                 <a href="#" className="admin__menu-link">Промокоды</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <Link to="/admin/billing">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/billing">
                                 <a href="#" className="admin__menu-link">Платежная система</a>
                             </Link>
                         </li>
@@ -107,7 +123,9 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                     <h3 className="admin__sidebar-subtitle">Чаты</h3>
                     <ul className="list admin__menu">
                         <li className="admin__menu-item">
-                            <Link to="/admin/tickets">
+                            <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/tickets">
                                 <a href="#" className="admin__menu-link">Начало работы</a>
                             </Link>
                         </li>
@@ -118,7 +136,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                             <a onClick={(e: MouseEvent) => {
                                 e.preventDefault();
                                 setIsNotificationsOpened(true)
-                            }} href="#" className="admin__menu-link">Уведомления</a>
+                            }} href="/" className="admin__menu-link">Уведомления</a>
                         </li>
                     </ul>
                 </nav>

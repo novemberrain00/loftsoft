@@ -105,3 +105,55 @@
         }
     }
 }
+
+@media screen and (max-width: 980px) {
+    .admin {
+        .users {
+            .user {
+                &__char {
+                    font-size: 14px;
+                    padding: 0 14px;
+                }
+
+                &__helper {
+                    font-size: 16px;
+                    &-icon {
+                        width: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin {
+        .users {
+            .user {
+                gap: 16px;
+                flex-direction: column;
+
+                &__name {
+                    text-align: center;
+                    margin-bottom: 16px;
+                }
+
+                &__info {
+                    margin-left: 0;
+                }
+
+                &__helpers {
+                    margin-left: 0;
+                }
+
+                &__char {
+                    background: none;
+                    
+                    &_active {
+                        background: #2667FF;
+                    }
+                }
+            }
+        }
+    }
+}

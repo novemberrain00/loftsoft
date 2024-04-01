@@ -120,3 +120,28 @@
         }
     }
 }
+
+@media screen and (max-width: 480px) {
+    .admin {
+        .promocodes {
+            &__items {
+                &-header {
+                    display: none;
+                }
+            }
+
+            &__item {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+                height: auto;
+                padding: 10px 40px;
+                border-radius: 15px;
+
+                &-helpers {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

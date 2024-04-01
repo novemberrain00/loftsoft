@@ -4,13 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { CategoryI, LinkI, SnackI, SubcategoryI } from '../../interfaces';
 
-import Avatar from '../../assets/images/img/ava.png';
-
 import LogoImg from '../../assets/images/logo/logo.svg';
 import LogoMobileImg from '../../assets/images/logo/logo_mobile.svg';
-
-import TgImg from '../../assets/images/icons/tg.svg';
-import WhatsappImg from '../../assets/images/icons/whatsapp.svg';
 import CartIcon from '../../assets/images/icons/shopping_cart.svg';
 import UpdateIcon from '../../assets/images/icons/update.svg';
 import SearchIcon from '../../assets/images/icons/search.svg';
@@ -22,7 +17,6 @@ import DiscountImg from '../../assets/images/img/discount.png';
 
 import Dropdown from '../../components/dropdown/dropdown';
 import History from '../../components/history/history';
-import Overlay from '../../components/overlay/overlay';
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -244,7 +238,7 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
             </header>
             {children}
             {
-                getCookie('is_admin') === 'false' ? <Chat/> : null
+                userData.is_admin ?  null : <Chat/>
             }
             
             <footer className='footer'>
