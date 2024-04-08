@@ -73,6 +73,49 @@
         }
     }
 
+    &__promocode {
+        position: relative;
+        min-width: 290px;
+
+        &-submitter {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        &-success, &-error {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 10px;
+            color: #fff;
+            font-family: Onest;
+            font-size: 20px;
+            font-style: normal;
+            padding: 0 25px;
+            font-weight: 700;
+
+            img {
+                margin-left: auto;
+            }
+        }
+
+        &-success {
+            background-color: #10BC4C;
+        }
+
+        &-error {
+            color: #FF2727;
+            background-color: #fff;
+            border: 1px solid #FF2727;
+        }
+    }
+
     &__form {
         &-inputs {
             display: flex;
@@ -205,6 +248,13 @@
 
         &__link {
             font-size: 13px;
+        }
+
+
+        &__bottom {
+            &-link {
+                display: none;
+            }
         }
     }
 }

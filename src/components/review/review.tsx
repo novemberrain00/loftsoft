@@ -1,10 +1,7 @@
 import { FC, useState } from "react";
 
 import BlueStarIcon from '../../assets/images/icons/star_blue.svg';
-import TrashIcon from '../../assets/images/icons/trash.svg';
-
 import { ReviewI } from "../../interfaces";
-import { deleteData } from "../../services/services";
 
 import './review.scss';
 import FsLightbox from "fslightbox-react";
@@ -35,24 +32,23 @@ const Review: FC<ReviewI> = ({user, user_photo, product, images, text, created_d
         return `${day} ${month} ${year}`
     }
 
-
-    console.log(images)
-
     return (
+        <>
+        
         <div className={`review block ${additionalClass || ''}`}>
+            <FsLightbox 
+                    toggler={toggler}
+                    sources={images && [...images.map(img => <img src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} />)]}
+                ></FsLightbox>
             <div className="review__header">
                 <img src={baseURL + '/uploads/' + user_photo} alt="" className="review__photo" />
                 <h5 className="review__name">{user}</h5>
                 <span className="review__product">{product}</span>
             </div>
             <div className="review__images">
-                <FsLightbox 
-                    toggler={toggler}
-                    sources={images && [...images.map(img => <img src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} />)]}
-                ></FsLightbox>
                 {
                     images && images.map(img => 
-                        <img onClick={() => setToggler(true)} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />
+                        <img onClick={() => setToggler(!toggler)} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />
                     )
                 }
             </div>
@@ -68,6 +64,7 @@ const Review: FC<ReviewI> = ({user, user_photo, product, images, text, created_d
                 </div>
             </div>
         </div>
+        </>
     );
 }
  

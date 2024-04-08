@@ -4,6 +4,10 @@
     align-items: center;
     flex-direction: column;
 
+    &_mobile {
+        display: none;
+    }
+
     &__container {
         display: flex;
         justify-content: space-between;
@@ -40,6 +44,10 @@
         background: #fff;
         padding: 53px 40px 70px;
         
+        &_mobile {
+            display: none;
+        }
+
         &-title {
             margin-bottom: 20px !important;
         }
@@ -136,6 +144,9 @@
             z-index: 11;
 
             &-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
                 margin-top: 18px;
             }
 
@@ -333,6 +344,13 @@
             padding: 14px 0;
         }
     }
+
+    .checkbox {
+        & + label::before {
+            width: 30px !important;
+            height: 30px !important;
+        }
+    }
 }
 
 
@@ -352,6 +370,13 @@
                 left: 22px;
                 top: 10px;
                 position: absolute;
+            }
+        }
+
+        .search {
+            &__results {
+                right: 0;
+                left: 0;
             }
         }
 
@@ -439,11 +464,66 @@
 @media screen and (max-width: 756px) {
     .header {
         display: none;
+
+        &_mobile {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search {
+            &__results {
+                &-img {
+                    max-width: 50px;
+                }
+
+                &-item {
+                    padding: 14px;
+                }
+
+                &-icon {
+                    width: 12px;
+                }
+            }
+        }
+
+        &__dropdown {
+            width: 300px;
+            min-height: 450px;
+            overflow: hidden;
+            padding: 27px 20px;
+
+            &_mobile {
+                display: flex;
+            }
+
+            &-title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-family: Roboto;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                margin: 0 0 27px;
+            }
+
+            &-categories {
+                padding-right: 0;
+                border: none;
+            }
+
+            &-products {
+                padding: 0;
+            }
+
+            &-category {
+                width: 100%;
+            }
+        }
     }
 
     .container {
         width: 84vw !important;
-        padding-top: 30px;
     }
 }
 

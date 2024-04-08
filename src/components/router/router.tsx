@@ -20,11 +20,11 @@ import EditProduct from '../../adminPanel/sections/editProduct/editProduct';
 import Reviews from '../../adminPanel/sections/reviews/reviews';
 import Promocodes from '../../adminPanel/sections/promocodes/promocodes';
 import Categories from '../../adminPanel/sections/categories/categories';
-import PurchaseMail from '../../mails/purchase';
 import Products from '../../adminPanel/sections/products/products';
 import PaymentPage from '../../pages/paymentPage/paymentPage';
 import BillingData from '../../adminPanel/sections/billingData/billingData';
 import Ticket from '../../adminPanel/sections/ticket/ticket';
+import NotFoundPage from '../../pages/404/notFoundPage';
 
 const Router: FC = () => {
     return (
@@ -33,7 +33,6 @@ const Router: FC = () => {
             <Route path='/terms' element={<TermsPage/>}/>
             <Route path='/reviews' element={<ReviewsPage/>}/>
             <Route path='/auth' element={<AuthPage/>}/>
-            <Route path='/mail' element={<PurchaseMail/>}/>
 
             <Route path='/profile/cart' element={<CartPage/>}/>
             <Route path='/profile/cart/order/:id' element={<PaymentPage/>}/>
@@ -49,7 +48,6 @@ const Router: FC = () => {
             <Route path='/admin/categories' element={<AdminPanel children={<Categories/>}/>}/>
             <Route path='/admin/subcategories' element={<AdminPanel children={<Subcategories/>}/>}/>
             <Route path='/admin/users' element={<AdminPanel children={<Users/>}/>}/>
-            <Route path='/admin/start' element={<AdminPanel children={<Start/>}/>}/>
             <Route path='/admin/products/edit/:id' element={<AdminPanel children={<EditProduct title="Редактировать товар"/>}/>}/>
             <Route path='/admin/products/add' element={<AdminPanel children={<EditProduct title="Добавить товар"/>}/>}/>
             <Route path='/admin/reviews' element={<AdminPanel children={<Reviews/>}/>}/>
@@ -57,8 +55,12 @@ const Router: FC = () => {
             <Route path='/admin/products' element={<AdminPanel children={<Products/>}/>}/>            
             <Route path='/admin/billing' element={<AdminPanel children={<BillingData/>}/>}/>            
             
-            <Route path='/admin/tickets' element={<AdminPanel children={<TicketsHistory/>}/>}/>
+            <Route path='/admin/tickets' element={<AdminPanel children={<Start/>}/>}/>
+            <Route path='/admin/tickets/history' element={<AdminPanel children={<TicketsHistory/>}/>}/>
             <Route path='/admin/tickets/:id' element={<AdminPanel children={<Ticket/>}/>}/>
+            <Route path='/admin/tickets/history/:id' element={<AdminPanel children={<Ticket/>}/>}/>
+
+            <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     )
 };

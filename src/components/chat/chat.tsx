@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, MouseEvent } from "react";
+import { FC, useEffect, useState, MouseEvent, useRef } from "react";
 
 import HamburgerIcon from '../../assets/images/icons/hamburger.svg';
 import CloserIcon from '../../assets/images/icons/close.svg';
@@ -16,11 +16,11 @@ import { SupportTicketI } from "../../interfaces";
 import './chat.scss';
 
 interface ChatPropsI {
-    
+    isChatOpened: boolean
+    setIsChatOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
  
-const Chat: FC<ChatPropsI> = () => {
-    const [isChatOpened, setIsChatOpened] = useState(false);
+const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
     const [message, setMessage] = useState<string>('');
     const [ticketsList, setTicketsList] = useState<SupportTicketI[]>([]);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
@@ -90,7 +90,6 @@ const Chat: FC<ChatPropsI> = () => {
     }
 
     useEffect(() => {
-        
         getData(`/tickets`, true)
         .then((data: SupportTicketI[]) => {
             setTicketsList(data);
@@ -99,8 +98,10 @@ const Chat: FC<ChatPropsI> = () => {
         let delay = 3000;
         let timeout: NodeJS.Timeout | null = null;
 
-        const updateChat = () => {
-            getData(`/tickets`, true)
+        const updateChat = async () => {
+            if(!isChatOpened) return;
+
+            await getData(`/tickets`, true)
             .then((data: SupportTicketI[]) => {
                 if(data[0].messages.length !== ticketsList[0].messages.length) {
                     setTimeout(() => {
@@ -111,17 +112,16 @@ const Chat: FC<ChatPropsI> = () => {
                 }
 
                 setTicketsList(data);
-                delay = 3000;
-                timeout = setTimeout(updateChat, delay);
 
-            }).catch(error => {
-                delay = delay * 2;
+            })
+            .finally(() => {
+                delay = 3000;
                 timeout = setTimeout(updateChat, delay);
             });
         }
     
         updateChat();
-
+        
         return () => {
             if (timeout) {
                 clearTimeout(timeout);
@@ -199,13 +199,13 @@ const Chat: FC<ChatPropsI> = () => {
                             <div className="chat__menu-body">
                                 <ul className="chat__menu-list list">
                                     <li className="chat__menu-item">
-                                        <a href="#" className="chat__menu-link">
+                                        <a href="/" className="chat__menu-link">
                                             <img src={WhatsappIcon} alt="WhatApp" className="chat__menu-icon" />
                                             Поддержка в WhatsApp
                                         </a>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="#" className="chat__menu-link">
+                                        <a href="/" className="chat__menu-link">
                                             <img src={TelegramIcon} alt="Telegram" className="chat__menu-icon" />
                                             Поддержка в Телеграм
                                         </a>
@@ -213,25 +213,25 @@ const Chat: FC<ChatPropsI> = () => {
                                 </ul>
                                 <ul className="chat__menu-list chat__menu-list_condensed list">
                                     <li className="chat__menu-item">
-                                        <a href="#" className="chat__menu-link">
+                                        <a href="/" className="chat__menu-link">
                                             <img src={StarIcon} alt="Отзывы" className="chat__menu-icon" />
                                             Отзывы клиентов
                                         </a>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="#" className="chat__menu-link">
+                                        <a href="/" className="chat__menu-link">
                                             <img src={ClockIcon} alt="График работы поддержки" className="chat__menu-icon" />
                                             График работы поддержки
                                         </a>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="#" className="chat__menu-link">
+                                        <a href="/" className="chat__menu-link">
                                             <img src={RulesIcon} alt="Правила магазина" className="chat__menu-icon" />
                                             Правила магазина
                                         </a>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="#" className="chat__menu-link">
+                                        <a href="/" className="chat__menu-link">
                                             <img src={BackIcon} alt="Правила возврата" className="chat__menu-icon" />
                                             Правила возврата
                                         </a>

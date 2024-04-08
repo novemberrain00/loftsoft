@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'; 
 import { useNavigate } from "react-router-dom";
 
-
 import BackArrow from "../../../assets/images/icons/arrow_left.svg";
 import DropdownArrow from "../../../assets/images/icons/dropdown_white.svg";
 import EditIcon from "../../../assets/images/icons/edit_white.svg";
@@ -16,11 +15,9 @@ import TrashIcon from "../../../assets/images/icons/trash.svg";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 import Popup from "../../../components/categoryPopup/categoryPopup";
-import Snack from "../../../components/snack/snack";
-import SnackbarContainer from "../../../components/snackbar/snackbar";
 
-import { PostProductI, SnackI, SubcategoryI } from "../../../interfaces";
-import { getCookie, getData, postData, uploadFile } from "../../../services/services";
+import { PostProductI, SubcategoryI } from "../../../interfaces";
+import { getData, postData, uploadFile } from "../../../services/services";
 
 import { RootState } from "../../../store";
 import { addSnack } from "../../../redux/snackbarSlice";
@@ -34,7 +31,6 @@ interface EditProductPropsI {
 }
  
 const EditProduct: FC<EditProductPropsI> = ({title}) => {
-    const snacks = useSelector((state: RootState) => state.snackbar.snacksArr)
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     const navigate = useNavigate();
@@ -190,7 +186,8 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     price: curParam.price,
                     sale_price: curParam.sale_price,
                     description: curParam.description,
-                    give_type: curParam.give_type
+                    give_type: curParam.give_type,
+                    data: curParam.data
                 }
             ]
         });
@@ -284,7 +281,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         const paramsArrRef = productData.parameters;
         const {id, title, price, sale_price, has_sale, data, give_type, description} = curParam;
         
-        paramsArrRef[paramsArrRef.indexOf(paramsArrRef.filter(par => par.id === editableParam)[0])] = {
+        paramsArrRef[paramsArrRef.indexOf(paramsArrRef.filter(par => par.id === editableParam)[0])] = give_type !== 'file' ?{
             id,
             title,
             price,
@@ -293,6 +290,15 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             data,
             description,
             give_type
+        } : {
+            id,
+            title,
+            price,
+            sale_price,
+            has_sale,
+            files : curFiles,
+            description,
+            give_type 
         }
 
         setProductData({
@@ -300,7 +306,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             parameters: paramsArrRef
         });
         setEditableParam(id);
-        setIsParamPopupOpened(true);
     }
 
     const removeTxtFile = (i: number) => {
@@ -381,7 +386,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
-                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                    "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
@@ -397,7 +402,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
-                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                    "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
@@ -412,7 +417,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 method: 'PATCH',
                 headers: {
                     "Accept": "application/json",
-                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                    "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data)
@@ -429,7 +434,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         method: 'PATCH',
                         headers: {
                             "Accept": "application/json",
-                            "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                            "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
@@ -457,7 +462,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         method: 'PATCH',
                         headers: {
                             "Accept": "application/json",
-                            "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                            "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify({
@@ -477,13 +482,14 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             method: 'PATCH',
             headers: {
                 "Accept": "application/json",
-                "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 title,
                 description,
-                card_price
+                card_price,
+                subcategory_id
             })
         });
        
@@ -963,7 +969,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         </div>
                         <div className="editor__tags-items">
                             {
-                                productData.options.length && productData.options.map(({id, title, value, is_pk}, i) => {
+                                productData.options.length ? productData.options.map(({id, title, value, is_pk}, i) => {
                                     return (
                                         <div data-id={id || i} key={title} onClick={() => {
                                             setEditableOption(i);
@@ -979,7 +985,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                             <img src={EditBlackIcon} alt={`${title}: ${value}`} className="editor__tag-icon"/>
                                         </div>
                                     )
-                                }) || ''
+                                }) : ''
                             }
                             
                         </div>
@@ -1008,14 +1014,21 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         </div>
                         <div className="editor__tags-items">
                             {
-                                productData.parameters.length && productData.parameters.map(({id, title}, i) => {
+                                productData.parameters.length ? productData.parameters.map(({id, title}, i) => {
                                     return (
-                                        <div key={title} onClick={() => setEditableParam(id)} className="editor__tag">
-                                            {title}
-                                            <img src={EditBlackIcon} alt={title} className="editor__tag-icon"/>
+                                        <div className="editor__tag-wrapper">
+                                            <div key={id} onClick={() => setEditableParam(id)} className="editor__tag editor__param">
+                                                {title}
+                                            </div>
+                                            <button onClick={() => {
+                                                setEditableParam(id)
+                                                setIsParamPopupOpened(true)
+                                            }} className="editor__tag-btn btn">
+                                                <img src={EditIcon} alt="редактировать"/>
+                                            </button>
                                         </div>
                                     )
-                                }) || ''
+                                }) : ''
                             }
                             
                         </div>
@@ -1122,10 +1135,10 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     }
                     <div className="editor__accounts-data">
                         {
-                            editableParam < 0 && 
+                            editableParam < 0 ? 
                             <div className="editor__params editor__params_empty">
                                 Выберите параметр для настройки
-                            </div> || ''
+                            </div> : ''
                         }
                         {
                            editableParam >= 0 && curParam.give_type === 'string' && 
@@ -1180,7 +1193,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                     <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
                                     {
                                         isDataLoaded.txtFiles !== 'processing' ?
-                                        <img onClick={() => {setIsParamPopupOpened(true)}} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить" /> : <Loader/>
+                                        <img onClick={() => saveKeys()} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить" /> : <Loader/>
 
                                     }
                                 </div>
@@ -1429,11 +1442,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     </div>
                 </div>
             </div>
-            <SnackbarContainer>
-                {
-                    snacks.map(({text}:SnackI, i:number) => <Snack text={text} key={i+''}/>)
-                }
-            </SnackbarContainer>
         </>
     );
 }

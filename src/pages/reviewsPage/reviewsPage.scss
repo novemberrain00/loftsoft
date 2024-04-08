@@ -43,8 +43,9 @@
 
     &__wrapper {
         position: relative;
-        padding: 30px 40px 95px;
+        padding: 10px 20px 75px;
         margin: 30px 0 84px;
+        overflow: auto;
 
         &-shadow {
             position: absolute;
@@ -68,6 +69,8 @@
             grid-template-columns: 1fr 1fr;
             grid-column-gap: 40px;
             grid-row-gap: 20px;
+            overflow: auto;
+            padding: 20px;
         }
 
         &-review {
@@ -82,14 +85,15 @@
             &-items {
                 display: flex;
                 flex-direction: column;
+                align-items: center;
                 max-height: 1120px;
-                overflow: hidden;
+                padding: 20px 0;
                 box-shadow: linear-gradient(180deg, rgba(254, 254, 254, 0) -21%, #FEFEFE 53.26%);
+            }
+
+            &-title {
+                margin-bottom: 0;
             }
         }
     }
-}
-
-@media screen and (max-width: 756px) {
-    
 }

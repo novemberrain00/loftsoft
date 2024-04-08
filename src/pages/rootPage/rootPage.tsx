@@ -12,6 +12,7 @@ import SearchIcon from '../../assets/images/icons/search.svg';
 import CopyIcon from '../../assets/images/icons/copy.svg';
 import BlueSquareIcon from '../../assets/images/icons/blue-square.svg';
 import AccountIcon from '../../assets/images/icons/account.svg';
+import BackIcon from '../../assets/images/icons/arrow-left_black.svg';
 
 import DiscountImg from '../../assets/images/img/discount.png';
 
@@ -30,7 +31,7 @@ import Chat from '../../components/chat/chat';
 import HeaderNavItem from '../../components/headerNavItem/headerNavItem';
 
 import { RootState } from '../../store';
-import { getCookie, getData } from '../../services/services';
+import { getData } from '../../services/services';
 import { setUserInfo } from '../../redux/userSlice';
 import useDebounce from '../../hooks/useDebounce';
 
@@ -38,6 +39,7 @@ import './rootPage.scss';
 import ReplenishPopup from '../../components/replenishPopup/replenishPopup';
 
 interface RootPagePropsI {
+    isFooterHidden?:boolean
     children: React.ReactNode
 }
 
@@ -47,7 +49,7 @@ interface ActiveProductDataI {
     category: number
 }
 
-const RootPage: FC<RootPagePropsI> = ({children}) => {
+const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const [activeProductData, setActiveProductData] = useState<ActiveProductDataI>({
         name: '',
         items: [],
@@ -59,6 +61,9 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
     const [categories, setCategories] = useState<CategoryI[]>([]);
     const [seachTerm, setSearchTerm] = useState<string>('');
     const [isReplenishOpened, setIsReplenishOpened] = useState<boolean>(false);
+    const [isChatOpened, setIsChatOpened] = useState<boolean>(false);
+    const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
+    const [isSubcatsOpened, setIsSubcatsOpened] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
@@ -79,7 +84,7 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
 
         }
 
-        if(getCookie('access_token')) getUserData();
+        if(window.localStorage.getItem('access_token')) getUserData();
 
         getData('/categories?empty_filter=true', true)
         .then(data => {
@@ -110,9 +115,110 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
     return ( 
         <>
             <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>
-            <MobileMenu profileOpener={setIsProfileOpened}/>
+            <MobileMenu 
+                chatOpener={setIsChatOpened} 
+                profileOpener={setIsProfileOpened}
+                isDropdownOpened={isDropdownOpened}
+                menuOpener={setIsDropdownOpened}
+            />
             <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
             <Profile isOpened={isProfileOpened} data={userData} replenishOpener={setIsReplenishOpened} closeHandler={setIsProfileOpened}/>
+            <Dropdown 
+                text="Каталог товаров"
+                classList="header__menu-item header__menu-link link"
+                isListOpened={isDropdownOpened}
+                setIsListOpened={setIsDropdownOpened}
+                isMobile={true}
+            >
+                <div className="block header__dropdown header__dropdown_mobile">
+                    {
+                        !isSubcatsOpened ? 
+                        (
+                            <div className="header__dropdown-categories">
+                                <h3 className="header__dropdown-title">Категории</h3>
+                                {
+                                    categories?.length && categories.map(({id, title, subcategories, photo}, i) => {
+                                        return (
+                                            <div 
+                                                key={id}
+                                                className='header__dropdown-category'
+                                                onClick={() => {
+                                                    setActiveProductData({
+                                                        name: title,
+                                                        items: subcategories.map(subcat => {
+                                                            return {
+                                                                text: subcat.title,
+                                                                path: '/catalog/'+ subcat.id
+                                                            }
+                                                        }),
+                                                        category: id
+                                                    })
+                                                    setIsSubcatsOpened(true)
+                                                }}  
+                                            >
+                                                {title}
+                                                <img src={baseURL + '/uploads/' + photo} alt={title} className="header__dropdown-icon" />
+                                            </div>
+                                        )
+                                    })
+                                }
+                                <div style={{marginTop: "65%"}} className="header__discount">
+                                    <div className="header__discount-content">
+                                        <h5 className="text header__discount-title">Ваша персональная скидка</h5>
+                                        <div className="discount header__dropdown-discount">
+                                            <label onClick={clipboard.copy} htmlFor="discount-input" className="discount__input-label">
+                                                <input type="text" ref={clipboard.target} value="OPENSOFT23" className="discount__input header__discount-input" id="discount-input" readOnly/>
+                                                <img src={CopyIcon} alt="скопировать" className="discount__icon"/>
+                                            </label>
+                                            <span className="discount-value">-5%</span>
+                                        </div>
+                                    </div>
+                                    <img src={BlueSquareIcon} alt="ваша персональная скидка" className="header__discount-icon" />
+                                </div>
+                            </div>
+                        ) :
+                        (
+                            <div className="header__dropdown-products">
+                                <h2 className="header__dropdown-title title">
+                                    <img src={BackIcon} onClick={() => setIsSubcatsOpened(false)} alt="Назад" />
+                                    {activeProductData.name}
+                                </h2>
+                                <ul className="list header__dropdown-list">
+                                    {
+                                        activeProductData.items.map(({text, path}, i) => {
+                                            return (
+                                                <li key={text} className="header__dropdown-item">
+                                                    <Link to={path}>
+                                                        <a href={path} className="header__dropdown-link text text_small link">{text}</a>
+                                                    </Link>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ul>
+                            </div>
+                        )
+                    }
+                    
+                    
+                    
+                </div>
+            </Dropdown>
+            <header className="header header_mobile">
+                <div className="container header__container content__container">
+                    <div className="search header__search">
+                        <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
+                        <input 
+                            onInput={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
+                            onBlur={() => setSearchTerm('')}
+                            placeholder="Поиск" 
+                            type="text" 
+                            className="search__input header__search-input" 
+                        />
+                        <SearchList term={debouncedTerm}/>
+                    </div>
+                </div>
+            </header>
             <header className='header'>
                 <div className="container header__container">
                     <Link to="/">
@@ -134,30 +240,36 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                     </div>
                     <div className="header__info">
                         <Link to="/profile/cart">
-                            <a href="#" className="header__info-item" id="header-cart">
+                            <a href="/" className="header__info-item" id="header-cart">
                                 {!shop_cart?.length || <span id="header-cart-quantity">{shop_cart.reduce((acc, obj) => acc + obj.quantity, 0)}</span>}
                                 <img src={CartIcon} alt="корзина" className="header__info-icon"/>
                             </a>
                         </Link>
-                        <a href="#" onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
-                            <img src={UpdateIcon} alt="обновить" className="header__info-icon"/>
+                        <a href="/" onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
+                            <img src={UpdateIcon} alt="история" className="header__info-icon"/>
                         </a>
-                        {username && <div onClick={() => {
-                                document.body.style.overflowX = 'hidden';
-                                document.body.style.height = '100vh';
-                                setIsProfileOpened(true)
-                            }} className="header__profile">
-                            <img src={photo} alt={username} className="header__profile-img" />
-                            <span className="header__profile-name">{username}</span>
-                            <button className="btn header__profile-price">{balance}&nbsp;₽</button>
-                        </div>}
+                        {
+                            username && 
+                                <div onClick={() => {
+                                        document.body.style.overflowX = 'hidden';
+                                        document.body.style.height = '100vh';
+                                        setIsProfileOpened(true)
+                                    }} className="header__profile">
+                                    <img src={photo} alt={username} className="header__profile-img" />
+                                    <span className="header__profile-name">{username}</span>
+                                    <button className="btn header__profile-price">{balance}&nbsp;₽</button>
+                                </div>
+                        }
 
-                        {!username && <Link to="/auth">
-                            <div className="header__auth text">
-                                <img className="header__auth-icon" src={AccountIcon} alt="Авторизация" />
-                                Авторизация
-                            </div>
-                        </Link>}
+                        {
+                            !username && 
+                                <Link to="/auth">
+                                    <div className="header__auth text">
+                                        <img className="header__auth-icon" src={AccountIcon} alt="Авторизация" />
+                                        Авторизация
+                                    </div>
+                                </Link>
+                        }
                     </div>
                 </div>
                 <div className="container header__container">
@@ -166,6 +278,8 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                             <Dropdown 
                                 text="Каталог товаров"
                                 classList="header__menu-item header__menu-link link"
+                                isListOpened={isDropdownOpened}
+                                setIsListOpened={setIsDropdownOpened}
                             >
                                 <div className="block header__dropdown">
                                     <div className="header__dropdown-categories">
@@ -227,9 +341,6 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
                                     </div>
                                 </div>
                             </Dropdown>
-                            <li className="header__menu-item">
-                                <a href="#" className="link header__menu-link">Поставщикам</a>
-                            </li>
                             <HeaderNavItem text='Отзывы' path='/reviews'/>
                             <HeaderNavItem text='Правила' path='/terms'/>
                         </ul>
@@ -238,63 +349,86 @@ const RootPage: FC<RootPagePropsI> = ({children}) => {
             </header>
             {children}
             {
-                userData.is_admin ?  null : <Chat/>
+                userData.is_admin || !window.localStorage.getItem('access_token') ?  
+                    null : 
+                    <Chat isChatOpened={isChatOpened} setIsChatOpened={setIsChatOpened}/>
             }
             
-            <footer className='footer'>
-                <div className="container footer__container">
-                    <div className="footer__left">
-                        <div className="footer__logo">
-                            <img src={LogoImg} alt="loftsoft" className="footer__logo-img" />
+            {
+                isFooterHidden ? null : 
+                (
+                    <footer className='footer'>
+                        <div className="container footer__container">
+                            <div className="footer__left">
+                                <div className="footer__logo">
+                                    <img src={LogoImg} alt="loftsoft" className="footer__logo-img" />
+                                </div>
+                                <div className="footer__descr">
+                                    Магазин лицензий для цифровых продуктов <br />
+                                    <Link to="/"><a href="/" className="link link_blue">www.loftsoft.com</a></Link>
+                                </div>
+                                <img src={DiscountImg} alt="Оставьте отзыв, и получите скидку!" className="mobile-block footer__discount" />
+                            </div>
+                            <div className="footer__right">
+                                <nav className="footer__menu">
+                                    <ul className="footer__menu-list list">
+                                        <li className="footer__menu-item">
+                                            <Link to="/">
+                                                <a href="/" className="footer__menu-link link">Главная страница</a>
+                                            </Link>
+                                        </li>
+                                        <li className="footer__menu-item">
+                                            <Link to="/">
+                                                <a href="/" className="footer__menu-link link">Стать поставщиком</a>
+                                            </Link>
+                                        </li>
+                                        <li className="footer__menu-item">
+                                            <Link to="/">
+                                                <a href="/" className="footer__menu-link link">Реферальная программа</a>
+                                            </Link>
+                                        </li>
+                                        <li className="footer__menu-item">
+                                            <Link to="/reviews">
+                                                <a href="/" className="footer__menu-link link">Оставить отзыв</a>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <nav className="footer__menu">
+                                    <ul className="footer__menu-list list">
+                                        <li className="footer__menu-item">
+                                            <Link to="/terms">
+                                                <a href="/" className="footer__menu-link link">Как купить</a>
+                                            </Link>
+                                        </li>
+                                        <li className="footer__menu-item">
+                                            <Link to="/terms">
+                                                <a href="/" className="footer__menu-link link">FAQ</a>
+                                            </Link>
+                                        </li>
+                                        <li className="footer__menu-item">
+                                            <Link to="/terms">
+                                                <a href="/" className="footer__menu-link link">Правила возврата</a>
+                                            </Link>
+                                        </li>
+                                        <li className="footer__menu-item">
+                                            <Link to="/terms">
+                                                <a href="/" className="footer__menu-link link">Правила магазина</a>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                <img src={DiscountImg} alt="Оставьте отзыв, и получите скидку!" className="desktop-block footer__discount" />
+                            </div>
                         </div>
-                        <div className="footer__descr">
-                            Магазин лицензий для цифровых продуктов <br />
-                            <Link to="/"><a href="/" className="link link_blue">www.loftsoft.com</a></Link>
-                        </div>
-                        <img src={DiscountImg} alt="Оставьте отзыв, и получите скидку!" className="mobile-block footer__discount" />
-                    </div>
-                    <div className="footer__right">
-                        <nav className="footer__menu">
-                            <ul className="footer__menu-list list">
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">Стать поставщиком</a>
-                                </li>
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">Партнерская программа</a>
-                                </li>
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">API сервиса</a>
-                                </li>
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">Все категории</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <nav className="footer__menu">
-                            <ul className="footer__menu-list list">
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">Как купить?</a>
-                                </li>
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">FAQ</a>
-                                </li>
-                                <li className="footer__menu-item">
-                                    <a href="#" className="footer__menu-link link">Поддержка магазина</a>
-                                </li>
-                                <li className="footer__menu-item">
-                                    <Link to="/terms"><a href="#" className="footer__menu-link link">Правила магазина</a></Link>
-                                </li>
-                            </ul>
-                        </nav>
-                        <img src={DiscountImg} alt="Оставьте отзыв, и получите скидку!" className="desktop-block footer__discount" />
-                    </div>
-                </div>
-                <SnackbarContainer>
-                    {
-                        snacks.map(({text}:SnackI, i:number) => <Snack text={text} key={i+''}/>)
-                    }
-                </SnackbarContainer>
-            </footer>
+                        <SnackbarContainer>
+                            {
+                                snacks.map(({text}:SnackI, i:number) => <Snack text={text} key={i+''}/>)
+                            }
+                        </SnackbarContainer>
+                    </footer>
+                )
+            }
         </>
     );
 }

@@ -1,11 +1,10 @@
 import {FC, useEffect, useRef, useState} from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
 
 import RootPage from "../rootPage/rootPage";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Scrollbar, Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Autoplay, Pagination, Navigation, Scrollbar } from 'swiper/modules';
 
 import { useClipboard } from 'use-clipboard-copy';
 
@@ -16,20 +15,6 @@ import ArrowRight from '../../assets/images/icons/arrow_right.svg';
 
 import LoftsoftImg from '../../assets/images/img/loftsoft.png';
 import Puzzle from '../../assets/images/img/puzzle.svg';
-
-import Microsoft from '../../assets/images/img/brands/microsoft.svg';
-import Nanosoft from '../../assets/images/img/brands/nanosoft.svg';
-import OneC from '../../assets/images/img/brands/1c.svg';
-import Adobe from '../../assets/images/img/brands/adobe.svg';
-import Ascon from '../../assets/images/img/brands/ascon.svg';
-import Autodesk from '../../assets/images/img/brands/autodesk.svg';
-import Basealt from '../../assets/images/img/brands/basealt.svg';
-import BIM from '../../assets/images/img/brands/bim.svg';
-import JetbrainsPartners from '../../assets/images/img/brands/jetbrains.svg';
-import Kaspersky from '../../assets/images/img/brands/kaspersky.svg';
-import MaxonPartners from '../../assets/images/img/brands/maxon.svg';
-import MWB from '../../assets/images/img/brands/mwb.svg';
-import SC from '../../assets/images/img/brands/sc.svg';
 
 import Slide1 from '../../assets/images/img/carousel/slide1.png';
 import Slide2 from '../../assets/images/img/carousel/slide2.png';
@@ -42,8 +27,6 @@ import Review from "../../components/review/review";
 
 import { CategoryI, PartnerI, ProductI, ReviewI } from "../../interfaces";
 import { convertToLatin, getData } from "../../services/services";
-
-import { addSnack } from "../../redux/snackbarSlice";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -59,9 +42,8 @@ interface MainPageProps {
 }
  
 const MainPage: FC<MainPageProps> = () => {
-    const dispatch = useDispatch();
-    const prevRef = useRef(null);
-    const nextRef = useRef(null);
+    const prevRef = useRef<HTMLButtonElement>(null);
+    const nextRef = useRef<HTMLButtonElement>(null);
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
@@ -92,6 +74,8 @@ const MainPage: FC<MainPageProps> = () => {
         getData('/reviews')
         .then(data => setReviews(data));
     }, [])
+
+    console.log(nextRef, prevRef)
 
     return (
         <RootPage>
@@ -154,7 +138,9 @@ const MainPage: FC<MainPageProps> = () => {
                                 <h2 className="banner__title title">WINDOWS 11</h2>
                                 <h3 className="subtitle subtitle_black">Обновитесь уже сейчас!</h3>
                                 <div className="sale">
-                                    <button className="btn sale__btn">Перейти</button>
+                                    <Link to='/catalog/38/47' target="_blank">
+                                        <button className="btn sale__btn">Перейти</button>
+                                    </Link>
                                     <div className="discount-value sale__value">-40%</div>
                                 </div>
                             </div>
@@ -216,7 +202,9 @@ const MainPage: FC<MainPageProps> = () => {
                                 <h2 className="banner__title title">WINDOWS 11</h2>
                                 <h3 className="promo__right-subtitle subtitle subtitle_black">Обновитесь уже сейчас!</h3>
                                 <div className="sale">
-                                    <button className="btn sale__btn">Перейти</button>
+                                    <Link to='/catalog/38/47' target="_blank">
+                                        <button className="btn sale__btn">Перейти</button>
+                                    </Link>
                                     <div className="discount-value sale__value">-40%</div>
                                 </div>
                             </div>
@@ -344,24 +332,27 @@ const MainPage: FC<MainPageProps> = () => {
                         </div>
                     </div>
                     <Swiper
-                            slidesPerView={2}
-                            spaceBetween={20}
-                            breakpoints={{
-                                1280: {
-                                    slidesPerView: 2
-                                }
+                        slidesPerView={1}
+                        spaceBetween={40}
+                        scrollbar={{
+                            hide: false
+                        }}
+                        navigation={{
+                            prevEl: prevRef.current,
+                            nextEl: nextRef.current,
                             }}
-                            navigation={true}
-                            scrollbar={{
-                                hide: false
-                            }}
-                            onInit={(swiper: any) => {
-                                swiper.params.navigation.prevEl = prevRef.current;
-                                swiper.params.navigation.nextEl = nextRef.current;
-                                swiper.params.scrollbar.draggable = true;
-                                swiper.navigation.init();
-                                swiper.navigation.update();
-                              }}
+                        onBeforeInit={(swiper: any) => {
+                            swiper.params.navigation.prevEl = prevRef.current;
+                            swiper.params.navigation.nextEl = nextRef.current;
+                        }}
+                        breakpoints={{
+                            1280: {
+                                slidesPerView: 3
+                            },
+                            756: {
+                                slidesPerView: 2
+                            }
+                        }}
                             modules={[Navigation, Scrollbar]}
                             className="reviews__items"
                         >

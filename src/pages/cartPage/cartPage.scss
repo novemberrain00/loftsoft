@@ -44,6 +44,10 @@
             display: flex;
             flex-direction: column;
             max-width: 150px;
+
+            img {
+                width: 120px;
+            }
         }
 
         &-name {
@@ -162,7 +166,7 @@
 
         &-img {
             display: block;
-            width: 100%;
+            width: 64%;
             margin: -30px auto 0;
         }
     }
@@ -231,6 +235,7 @@
     &__sidebar {
         padding: 36px;
         box-sizing: border-box;
+        height: max-content;
 
         &-footer {
             display: flex;

@@ -4,16 +4,12 @@ import RootPage from "../rootPage/rootPage";
 import BlueStarIcon from '../../assets/images/icons/star_blue_sharp.svg';
 import PlusIcon from '../../assets/images/icons/plus.svg';
 
-import ReviewImg1 from '../../assets/images/img/reviews/1.png';
-import ReviewImg2 from '../../assets/images/img/reviews/2.png';
-import ReviewImg3 from '../../assets/images/img/reviews/3.png';
-
 import Review from "../../components/review/review";
 import ReviewSender from "../../components/reviewSender/reviewSender";
 import Overlay from "../../components/overlay/overlay";
 
-import './reviewsPage.scss';
 import { getData } from "../../services/services";
+import './reviewsPage.scss';
 
 interface ReviewsPagePropsI {
     
@@ -30,11 +26,7 @@ const ReviewsPage: FC<ReviewsPagePropsI> = () => {
 
     return (
         <RootPage>
-            {
-                isSenderOpened && <Overlay closeHandler={setIsSenderOpened}>
-                    <ReviewSender closeHandler={setIsSenderOpened}/>
-                </Overlay>
-            }
+            <ReviewSender isOpened={isSenderOpened} closeHandler={setIsSenderOpened}/>
             <main className="reviews">
                 <div className="container reviews__container">
                     <div className="reviews__rating block">
@@ -48,7 +40,7 @@ const ReviewsPage: FC<ReviewsPagePropsI> = () => {
                                 <img src={BlueStarIcon} alt="рейтинг" className="reviews__rating-star" />
                                 <img src={BlueStarIcon} alt="рейтинг" className="reviews__rating-star" />
                             </div>
-                            <span className="reviews__amount">11948 отзывов</span>
+                            <span className="reviews__amount">{reviews.length} отзывов</span>
                             <button onClick={() => setIsSenderOpened(true)} className="btn reviews__rating-btn">
                                 <img src={PlusIcon} alt="Оставить свой отзыв" />
                                 Оставить свой отзыв

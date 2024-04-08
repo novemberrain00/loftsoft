@@ -21,13 +21,17 @@ interface ProductsPropsI {
 }
  
 const Products: FC<ProductsPropsI> = () => {
-    const [products, setProducts] = useState<ProductI[]>([]);
     const [subcategories, setSubcategories] = useState<SubcategoryI[]>([]);
     const [draggableList, setDraggableList] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     const deleteProduct = async (id: number) => {
         await deleteData(`/product/${id}`)
+        .then(async () => {
+            await getData('/subcategories', true)
+            .then((data: SubcategoryI[]) => setSubcategories(data))
+        })
     }
 
     const onDragEnd = async (result: any) => {
@@ -66,6 +70,8 @@ const Products: FC<ProductsPropsI> = () => {
         .then(data => setSubcategories(data));
     }, []);
 
+    useEffect(() => console.log(searchQuery), [searchQuery]);
+
     return (
         <>
             <AdminHeader title="Товары">
@@ -81,19 +87,23 @@ const Products: FC<ProductsPropsI> = () => {
             <div className="admin__block admin__products">
                 <div className="search subcategories__search">
                     <img src={SearchIcon} alt="поиск" className="search__icon subcategories__search-icon"/>
-                    <input type="text" placeholder="Поиск" className="search__input" />
+                    <input onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())} type="text" placeholder="Поиск" className="search__input" />
                 </div>
                 {
                     subcategories.length ? subcategories.map(({id, products}, i) => {
-                        return products.length ? (
+                        return products.length ? ( 
                             <ul key={id} className="admin__list list subcategories__list">
-                                <DragDropContext onDragStart={() => setDraggableList(i)} onDragEnd={onDragEnd}>
+                                <DragDropContext 
+                                    onDragStart={() => setDraggableList(i)} 
+                                    onDragEnd={onDragEnd}
+                                >
                                     <Droppable droppableId="droppable">
                                         {
                                             (provided: any) => (
                                                 <div {...provided.droppableProps} ref={provided.innerRef}>
                                                 {
-                                                    products.length ? products.map(({id, title, parameters, product_photos}, i) => {
+                                                    products.length ? products.filter(prod => prod.title.toLocaleLowerCase().includes(searchQuery))
+                                                    .map(({id, title, parameters, product_photos}, i) => {
                                                         return ( 
                                                             <Draggable key={id} draggableId={''+id} index={i}>
                                                                 {(provided: any) => (

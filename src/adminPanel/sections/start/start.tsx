@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC, MouseEvent, useEffect, useState } from "react";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
@@ -6,17 +6,34 @@ import BackIcon from "../../../assets/images/icons/back.svg";
 import CloseIcon from "../../../assets/images/icons/close_blue.svg";
 import CloseTicketIcon from "../../../assets/images/icons/close.svg";
 import UpdateIcon from "../../../assets/images/icons/update_blue.svg";
-import TgIcon from "../../../assets/images/icons/tg_blue.svg";
 import TrashIcon from "../../../assets/images/icons/trash.svg";
-import Avatar from "../../../assets/images/img/ava.png";
 
+import { SupportTicketI } from "../../../interfaces";
 import './start.scss';
+import { getData, postData } from "../../../services/services";
+import { Link } from "react-router-dom";
 
 interface StartPropsI {
     
 }
  
 const Start: FC<StartPropsI> = () => {
+    const [tickets, setTickets] = useState<SupportTicketI[]>([]);
+    const [selectedTickets, setSelectedTickets] = useState<number[]>([]);
+
+    const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
+
+    const closeTicket = async (e: MouseEvent, id: number) => {
+        e.preventDefault();
+        await postData(`/ticket/${id}/close`, {}, true)
+        .then(() => setTickets(tickets.filter(ticket => ticket.id !== id)))
+    }
+
+    useEffect(() => {
+        getData('/tickets/opened', true)
+        .then((data: SupportTicketI[]) => setTickets(data));
+    }, [])
+
     return (
         <>
             <AdminHeader title="Начало работы"></AdminHeader>
@@ -34,59 +51,54 @@ const Start: FC<StartPropsI> = () => {
                         <img src={UpdateIcon} alt="История закрытых тикетов" />
                         История закрытых тикетов
                     </div>
-                    <div className="start__top-item">
-                        <img src={TgIcon} alt="Настроить уведомления Telegram" />
-                        Настроить уведомления Telegram
-                    </div>
                 </div>
                 <div className="start__tickets tickets">
                     <h2 className="tickets__title">
                         Открытые тикеты
-                        <div className="tickets__helper">
+                        <div onClick={(e: MouseEvent) => {
+                            selectedTickets.forEach(ticketId => {
+                                closeTicket(e, ticketId)
+                            })
+                        }} className="tickets__helper">
                             <img src={TrashIcon} alt="удалить" />
                         </div>
                     </h2>
                     <div className="tickets__items">
-                        <div className="tickets__item ticket">
-                            <input type="checkbox" className="checkbox" id="checkbox-21"/>
-                            <label htmlFor="checkbox-21" className="checkbox-label"></label>
-                            <div className="ticket__body">
-                                <img src={Avatar} alt="" className="ticket__img" />
-                                <div className="ticket__info">
-                                    <span className="ticket__num">Ticket#12</span>
-                                    <h4 className="ticket__name">Nickname</h4>
-                                </div>
-                                <div className="ticket__message">
-                                    <h6 className="ticket__message-title">
-                                        Последнее сообщение
-                                    </h6>
-                                    “я не могу ввести код, у меня тут какая то ошибка
-                                    я не могу ввести код, у меня тут какая то ошибка
-                                    я не могу ввести код, у меня тут какая то ошибка"
-                                </div>
-                                <img src={CloseTicketIcon} alt="закрыть" className="ticket__closer" />
-                            </div>
-                        </div>
-                        <div className="tickets-item ticket">
-                            <input type="checkbox" className="checkbox" id="checkbox-22"/>
-                            <label htmlFor="checkbox-22" className="checkbox-label"></label>
-                            <div className="ticket__body">
-                                <img src={Avatar} alt="" className="ticket__img" />
-                                <div className="ticket__info">
-                                    <span className="ticket__num">Ticket#12</span>
-                                    <h4 className="ticket__name">Nickname</h4>
-                                </div>
-                                <div className="ticket__message">
-                                    <h6 className="ticket__message-title">
-                                        Последнее сообщение
-                                    </h6>
-                                    “я не могу ввести код, у меня тут какая то ошибка
-                                    я не могу ввести код, у меня тут какая то ошибка
-                                    я не могу ввести код, у меня тут какая то ошибка"
-                                </div>
-                                <img src={CloseTicketIcon} alt="закрыть" className="ticket__closer" />
-                            </div>
-                        </div>
+                        {
+                            tickets.length ? tickets.map(({id, last_message, user}) => {
+                                return (
+                                    <div className="tickets__item ticket">
+                                        <input onChange={(e: ChangeEvent) => {
+                                            setSelectedTickets(
+                                                (e.target as HTMLInputElement).checked ? 
+                                                    [...selectedTickets, id] : selectedTickets.filter(ticketId => ticketId !== id)
+                                            )
+                                        }} 
+                                            type="checkbox" 
+                                            className="checkbox" 
+                                            id={`checkbox-${id}`}
+                                        />
+                                        <label htmlFor={`checkbox-${id}`} className="checkbox-label"></label>
+                                        <div className="ticket__body">
+                                            <img src={baseURL + '/uploads/' + user.photo} alt="" className="ticket__img" />
+                                            <div className="ticket__info">
+                                                <Link to={`${id}`}>
+                                                    <span className="ticket__num">Ticket#{id}</span>
+                                                </Link>
+                                                <h4 className="ticket__name">{user.username}</h4>
+                                            </div>
+                                            <div className="ticket__message">
+                                                <h6 className="ticket__message-title">
+                                                    Последнее сообщение
+                                                </h6>
+                                                “{last_message}"
+                                            </div>
+                                            <img onClick={(e: MouseEvent) => closeTicket(e, id)} src={CloseTicketIcon} alt="закрыть" className="ticket__closer" />
+                                        </div>
+                                    </div>
+                                )
+                            }) : null
+                        }
                     </div>
                 </div>
             </div>

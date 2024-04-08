@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import RefreshIcon from "../../../assets/images/icons/refresh.svg";
 
@@ -147,12 +147,16 @@ const Categories: FC<CategoriesPropsI> = () => {
 
     useEffect(() => {
         getData('/categories', true)
-        .then(data => setCategories(data));
+        .then(data => {
+            setCategories(data);
+            setCategoriesInitialList(data);
+        });
     }, []);
 
     useEffect(() => {
         const newCategories = categoriesInitialList.filter(cat => cat.title.toLowerCase().includes(searchQuery))
-        setCategoriesInitialList(newCategories)
+        console.log(categoriesInitialList)
+        setCategories(newCategories)
     }, [searchQuery])
 
     return (

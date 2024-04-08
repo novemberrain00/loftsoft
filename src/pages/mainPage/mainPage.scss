@@ -179,13 +179,9 @@
         transform: translateX(100%);
     }
 
-    // &__title {
-    //     margin-top: 20px !important;
-    // }
-
     &__items {
         display: flex;
-        justify-content: space-between;
+        justify-content: start;
         gap: 40px;
         margin-top: 30px;
         padding-bottom: 24px;

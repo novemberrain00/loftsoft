@@ -195,7 +195,6 @@
         border-radius: 100px !important;
         font-weight: 400;
         margin-right: 9px;
-        margin-left: auto;
     }
 
     &__discount-value {
@@ -255,12 +254,15 @@
 
         &__gallery {
             flex-direction: row-reverse;
+            gap: 20px;
 
             &-item {
                 max-height: 120px;
             }
 
             &-items {
+                display: flex;
+                flex-direction: column;
                 height: max-content;
                 gap: 15px;
             }
@@ -314,9 +316,6 @@
 
 @media screen and (max-width: 756px) {
     .product-page {
-        &__switch {
-            display: none;
-        }
 
         &__gallery {
             flex-direction: column;
@@ -345,7 +344,22 @@
 
         &__btn {
             font-size: 16px;
-            margin-left: auto;
+            margin: 0;
+        }
+
+        &__var-title {
+            text-align: center;
+            margin-bottom: 17px !important;
+        }
+
+        &__switch {
+            margin-left: 0;
+        }
+
+        &__bottom {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
         }
     }
 }

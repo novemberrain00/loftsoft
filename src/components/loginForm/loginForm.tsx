@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent } from "react";
-import { getData, postData } from "../../services/services";
+import { postData } from "../../services/services";
 import { useDispatch } from "react-redux";
 import { addSnack } from "../../redux/snackbarSlice";
 import { useNavigate } from "react-router-dom";
@@ -36,8 +36,7 @@ const LoginForm: FC<LoginFormPropsI> = () => {
                 return;
             };
 
-            document.cookie = `access_token=${data.access_token}`;
-            document.cookie = `refresh_token=${data.refresh_token}`;
+            window.localStorage.setItem('access_token', data.access_token as string)
 
             navigate('/');
 

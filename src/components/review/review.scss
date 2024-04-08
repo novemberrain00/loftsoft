@@ -127,10 +127,9 @@
 
     &__footer {
         position: absolute;
-        width: calc(100% - 74px);
-        right: 40px;
         bottom: 40px;
         display: flex;
+        width: 85%;
         justify-content: space-between;
         align-items: center;
         margin-top: 30px;
@@ -157,15 +156,89 @@
     }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 1280px) {
     .review {
-        width: 408px;
+        position: initial;
+
+        &__footer {
+            width: 100%;
+            position: initial;
+        }
+    }
+}
+
+@media screen  and (max-width: 980px){
+    .review {
+        &__photo {
+            width: 60px;
+            height: 60px;
+        }
+
+        &__product {
+            font-size: 16px;
+        }
+    }
+}
+
+@media screen and (max-width: 756px) {
+    .review {
+        width: 370px;
         height: 318px;
+        padding: 33px 30px 40px;
+        
+        &__product {
+            font-size: 14px;
+        }
+
+        &__name {
+            font-size: 20px;
+        }
+
+        &__photo {
+            width: 60px;
+            height: 60px;
+        }
+
+        &__star {
+            width: 25px;
+        }
+
+        &__date {
+            font-size: 16px;
+        }
     }
 }
 
 @media screen and (max-width: 480px) {
     .review {
-        
+        width: 260px;
+        padding: 20px;
+
+        &__header {
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        &__product {
+            margin-left: 0;
+        }
+
+        &__img {
+            width: 50px;
+            height: 50px;
+        }
+
+        &__date {
+            font-size: 14px;
+        }
+
+        &__star {
+            width: 20px;
+        }
+
+        &__helper {
+            top: 30px;
+        }
     }
 }

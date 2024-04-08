@@ -25,9 +25,12 @@ import CheckIcon from '../../assets/images/icons/check.svg';
 import { addSnack } from "../../redux/snackbarSlice";
 import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 
-import './cartPage.scss';
 import { setUserInfo } from "../../redux/userSlice";
 import { OrderI } from "../../interfaces";
+
+import './cartPage.scss';
+import { setOrder } from "../../redux/straightOrderSlice";
+import { setPurchase } from "../../redux/purchaseSlice";
 
 interface CartPagePropsI {
     
@@ -83,10 +86,7 @@ const CartPage: FC<CartPagePropsI> = () => {
             return
         }
 
-        if(orderId !== -1) {
-            navigate(`order/${orderId}`);
-            return;
-        } 
+        if(userData.shop_cart.length < 1) return;
 
         await postData('/order/', {
             promocode: promo,
@@ -96,12 +96,13 @@ const CartPage: FC<CartPagePropsI> = () => {
         } ,true)
         .then((data: OrderI | string) => {
             if(data === 'NOT_ENOUGH_BALANCE') {
-                setAlertMessage('Недостаточно средств на балансе')
+                dispatch(addSnack({text: 'Недостаточно средств'}))
                 return;
             }
 
             if(activePayment === 'site_balance') {
-                navigate(`/profile/cart/order/${(data as OrderI).id}/success`);
+                dispatch(setPurchase(data))
+                navigate(`order/${(data as OrderI).id}/success`);
                 return;
             } else {
                 dispatch(setOrderId((data as OrderI).id));
@@ -112,7 +113,6 @@ const CartPage: FC<CartPagePropsI> = () => {
     }
 
     const cleanCart = async () => {
-
         const promises = userData.shop_cart.map(({parameter, product}) => {
             return postData('/cart/add', {
                 product_id: product.id,
@@ -128,9 +128,6 @@ const CartPage: FC<CartPagePropsI> = () => {
                 shop_cart: []
             }));
         });
-        
-
-
     }
 
     return (
@@ -299,10 +296,10 @@ const CartPage: FC<CartPagePropsI> = () => {
                                         <img src={SBPIcon} alt="СБП" className="cart__payment-icon" />
                                         СБП
                                     </div>
-                                    <div onClick={() => setActivePayment('crypto')} className={`cart__payment ${activePayment === 'crypto' && 'cart__payment_active'}`}>
+                                    {/* <div onClick={() => setActivePayment('crypto')} className={`cart__payment ${activePayment === 'crypto' && 'cart__payment_active'}`}>
                                         <img src={CryptoIcon} alt="Криптовалюта" className="cart__payment-icon" />
                                         Криптовалюта
-                                    </div>
+                                    </div> */}
                                     <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
                                         <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
                                         Баланс на сайте

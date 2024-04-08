@@ -6,7 +6,6 @@ import RootPage from "../rootPage/rootPage";
 import CopyIcon from '../../assets/images/icons/copy.svg';
 
 import FilterArrowIcon from '../../assets/images/icons/filter-arrow.svg'; 
-import DropdownIcon from "../../assets/images/icons/dropdown-arrow.svg"
 
 import Product from "../../components/product/product";
 import CatalogSection from "../../components/catalogSection/catalogSection";

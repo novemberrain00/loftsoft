@@ -90,6 +90,7 @@
             height: 31px;
             border-radius: 20px;
             background: #F1F1F1;
+            z-index: 1;
 
             &-icon {
                 width: 24px;
@@ -101,6 +102,47 @@
                 background: #c2c0c0;
                 transition: .3s;
             }
+
+            &-wrapper {
+                display: flex;
+            }
+
+            &-btn {
+                width: 30px;
+                height: 30px;
+                margin-left: 4px;
+                position: relative;
+                z-index: 1;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    height: 10px;
+                    width: 8px;
+                    position: absolute;
+                    left: -5px;
+                    top: 11px;
+                    background: #2767FF;
+                    z-index: 0;
+                    transition: .3s;
+                }
+
+                &:hover {
+                    &::before {
+                       background: #2552bc;
+                    }
+                }
+
+                img {
+                    width: 12px;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+
+        &__param {
+            border: 1px solid #2667FF;
         }
 
         &__photos {
@@ -419,6 +461,24 @@
             &__params {
                 &-content {
                     display: flex;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin {
+        .editor {
+            &__photos {
+                flex-direction: column-reverse;
+                align-items: center;
+                text-align: center;
+            }
+
+            &__tags {
+                &-header {
+                    flex-direction: column;
                 }
             }
         }

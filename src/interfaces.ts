@@ -265,6 +265,7 @@ export interface PurchaseI {
         items: string[]
         title: string
     }[]
+    uri?: string
 
 }
 
@@ -290,5 +291,15 @@ export interface PaymentI {
 export interface TelegramDataI {
     token: string
     telegram_ids: number[]
+}
+
+export interface AdminOrderI {
+    number: string;
+    order_id: number;
+    date: string;
+    email: string;
+    product: string;
+    give_type: string;
+    count: number;
 }
 

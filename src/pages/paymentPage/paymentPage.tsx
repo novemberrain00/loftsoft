@@ -17,12 +17,10 @@ interface PaymentPagePropsI {
  
 const PaymentPage: FC<PaymentPagePropsI> = () => {
     const [data, setData] = useState({
-        number: '',
         phone: '',
-        bank: '',
         seller: '',
     });
-    const [seconds, setSeconds] = useState<number>(+(window.localStorage.getItem('timeToPay') || 600));
+    const [seconds, setSeconds] = useState<number>(600);
     const [isInstructionOpened, setIsInstructionOpened] = useState<boolean>(false);
 
     const {id} = useParams();
@@ -57,18 +55,15 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     };
 
     useEffect(() => {
-        //if(!replenishment.replenishment.number.length) return;
 
         const interval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(prevSeconds => prevSeconds - 1);
-                window.localStorage.setItem('timeToPay', seconds+'')
             } else {
                 clearInterval(interval);
                 
                 postData(`/order/${id}/cancel`, {}, true)
                 .then(() => {
-                    window.localStorage.removeItem('timneToPay')
                     navigate(-1);
                 })
             }
@@ -78,13 +73,15 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     }, [seconds]);
 
     useEffect(() => {
-        getData('/payments/sbp/ozon', true)
+        getData('/payments/sbp/ozon/user', true)
         .then(data => setData({
-            number: data.token,
             phone: data.phone,
-            seller: data.fio,
-            bank: data.bank
+            seller: data.fio
         }));
+
+        const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
+        getData(route, true)
+        .then(data => setSeconds(data.remaining_time))
     }, []);
 
     
@@ -93,7 +90,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
         <RootPage>
             <div className="container content__container">
                 {
-                !isInstructionOpened ?<div className="payment">
+                !isInstructionOpened ? <div className="payment">
                     <header className="payment__header">
                         <div className="payment__header-top">
                             <div className="payment__header-left">
@@ -115,16 +112,6 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
                         </div>
                     </header>
                     <div className="payment__body">
-                        <label htmlFor="payment-number" className="input payment__input">
-                            <span className="input__label">Номер пополнения</span>
-                            <input 
-                                value={data.number}
-                                type="text" 
-                                className="payment__input-text input__text input__text_rounded" 
-                                placeholder="Номер пополнения" 
-                                id="payment-number"
-                            />
-                        </label>
                         <label htmlFor="payment-phone" className="input payment__input">
                             <span className="input__label">Номер телефона</span>
                             <input 
@@ -169,7 +156,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
                                 <div className="instruction__step-content">
                                     Скопируйте номер телефона для перевода
                                     <div className="instruction__step-bottom">
-                                        <span className="instruction__step-attention">79998455567</span>(Озон Банк)
+                                        <span className="instruction__step-attention">{data.phone}</span>(Озон Банк)
                                     </div>
                                 </div>
                             </li>

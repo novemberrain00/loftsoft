@@ -122,6 +122,13 @@ const Promocodes: FC<PromocodesPropsI> = () => {
                     <img src={RefreshIcon} alt="Обновить" />
                     Обновить
                 </button>
+                <button onClick={() => {
+                    setAction('post')
+                    setIsCreatePromoPopupOpened(true);
+                }} className="btn admin__btn">
+                    <img src={PlusIcon} alt="Создать промокод" className="admin__btn-icon" />
+                    Создать промокод
+                </button>
             </AdminHeader>
             <Popup isPopupOpened={isCreatePromoPopupOpened} setIsPopupOpened={setIsCreatePromoPopupOpened}>
                 <h3 className="title popup__title">Создание промокода</h3>
@@ -191,13 +198,6 @@ const Promocodes: FC<PromocodesPropsI> = () => {
                         <img src={SearchIcon} alt="поиск" className="promocodes__search-icon" />
                         <input type="text" id="promocodes__search-input" placeholder="Поиск" className="promocodes__search-input"/>
                     </label>
-                    <button onClick={() => {
-                        setAction('post')
-                        setIsCreatePromoPopupOpened(true);
-                    }} className="btn admin__btn">
-                        <img src={PlusIcon} alt="Создать промокод" className="admin__btn-icon" />
-                        Создать промокод
-                    </button>
                 </div>
                 <div className="promocodes__items">
                     <div className="promocodes__items-header">

@@ -1,13 +1,12 @@
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { useSelector } from 'react-redux';
-
-import ProfileImg from '../../assets/images/img/profile.png';
 import WalletIcon from '../../assets/images/icons/wallet.svg';
 import CartIcon from '../../assets/images/icons/shopping_cart.svg';
 import UpdateIcon from '../../assets/images/icons/update.svg';
 import DashboartIcon from '../../assets/images/icons/dashboard.svg';
+import LogoutIcon from '../../assets/images/icons/logout.svg';
 
 import ProfileEditor from "../profileEditor/profileEditor";
 import Overlay from "../overlay/overlay";
@@ -15,8 +14,8 @@ import Overlay from "../overlay/overlay";
 import { UserI } from "../../interfaces";
 import { RootState } from "../../store";
 
-import { getCookie } from "../../services/services";
 import './profile.scss';
+import { setUserInfo } from "../../redux/userSlice";
 
 interface ProfilePropsI {
     isOpened: boolean
@@ -29,11 +28,30 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
     const [isEditorOpened, setIsEditorOpened] = useState(false);
     const [editingData, setEditingData] = useState('login');
 
-    const userData = useSelector((state: RootState) => state.user.userInfo)
+    const userData = useSelector((state: RootState) => state.user.userInfo);
+    const dispatch = useDispatch();
 
     const clickHandler = (data: string) => {
         setEditingData(data);
         setIsEditorOpened(true);
+    }
+
+    const logout = () => {
+        window.localStorage.removeItem('access_token');
+        dispatch(setUserInfo({
+            id: null,
+            balance: "0",
+            email: "",
+            is_active: false,
+            is_admin: false,
+            is_anonymous: true,
+            photo: "",
+            reg_datetime: "",
+            shop_cart: [],
+            username: ""
+        }));
+
+        closeHandler(false)
     }
 
     return isOpened ? (
@@ -75,14 +93,26 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
                             </span>
                         </Link>
                     </li>
-                   {userData.is_admin && <li className="profile__menu-item">
-                        <Link to="/admin">
-                            <span className="profile__link">
-                                <img src={DashboartIcon} alt="Перейти в админ-панель" className="profile__link-icon" />
-                                Перейти в админ-панель
+                    <li onClick={() => logout()} className="profile__menu-item">
+                        <Link to="/">
+                            <span className="profile__link profile__link_red">
+                                <img src={LogoutIcon} alt="Выход" className="profile__link-icon" />
+                                Выйти
                             </span>
                         </Link>
-                    </li>}
+                    </li>
+
+                   {
+                    userData.is_admin && 
+                        <li className="profile__menu-item">
+                            <Link to="/admin">
+                                <span className="profile__link">
+                                    <img src={DashboartIcon} alt="Перейти в админ-панель" className="profile__link-icon" />
+                                    Перейти в админ-панель
+                                </span>
+                            </Link>
+                        </li>
+                    }
                 </ul>
             </div>}
             {isEditorOpened && <ProfileEditor editingData={editingData} closeHandler={closeHandler}/>}

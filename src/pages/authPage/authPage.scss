@@ -110,3 +110,16 @@
         }
     }
 }
+
+@media screen and (max-width: 620px) {
+    .auth {
+        &__block {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        &__support {
+            margin-top: 30px;
+        }
+    }
+}

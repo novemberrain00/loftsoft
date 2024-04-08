@@ -10,7 +10,7 @@ import RefreshIcon from "../../../assets/images/icons/refresh.svg";
 import { deleteData, getData, postData, uploadFile } from "../../../services/services";
 
 import './main.scss';
-import { PartnerI } from "../../../interfaces";
+import { AdminOrderI, PartnerI } from "../../../interfaces";
 
 interface MainPropsI {
     
@@ -19,6 +19,7 @@ interface MainPropsI {
 const Main: FC<MainPropsI> = () => {
     const [newPartners, setNewPartners] = useState<FileList>({} as FileList);
     const [partners, setPartners] = useState<PartnerI[]>([]);
+    const [ordersHistory, setOrdersHitory] = useState<AdminOrderI[]>([]);
 
     const getPartners = async () => {
         await getData('/partners')
@@ -55,12 +56,16 @@ const Main: FC<MainPropsI> = () => {
         
     };
 
+
     useEffect(() => {
         handleImageUpload()
     }, [newPartners]);
 
     useEffect(() => {
         getPartners()
+
+        getData('/orders', true)
+        .then((data: AdminOrderI[]) => setOrdersHitory(data))
     }, [])
 
     const basicURL = process.env.REACT_APP_DEV_SERVER_URL;
@@ -149,98 +154,59 @@ const Main: FC<MainPropsI> = () => {
                             <div className="main__sales-products">
                                 <ul className="list main__sales-list">
                                     <li className="main__sales-item">№</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
-                                    <li className="main__sales-item">1</li>
+                                    {
+                                        ordersHistory.length ? ordersHistory.map(({number}, i) => {
+                                            return (
+                                                <li key={number} className="main__sales-item">{i+1}</li>
+
+                                            )   
+                                        }) : null
+                                    }
+                                    
                                 </ul>
                                 <ul className="list main__sales-list">
                                     <li className="main__sales-item">№ заказа</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
-                                    <li className="main__sales-item">124123312</li>
+                                    {
+                                        ordersHistory.length ? ordersHistory.map(({number}, i) => {
+                                            return (
+                                                <li key={number} className="main__sales-item">{number}</li>
+
+                                            )   
+                                        }) : null
+                                    }
                                 </ul>
                                 <ul className="list main__sales-list">
                                     <li className="main__sales-item">ID</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
-                                    <li className="main__sales-item">755</li>
+                                    {
+                                        ordersHistory.length ? ordersHistory.map(({number, order_id}, i) => {
+                                            return (
+                                                <li key={number} className="main__sales-item">{order_id}</li>
+
+                                            )   
+                                        }) : null
+                                    }
                                 </ul>
                                 <ul className="list main__sales-list">
                                     <li className="main__sales-item">E-Mail</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
-                                    <li className="main__sales-item">jopapopa@gmail.sru</li>
+                                    {
+                                        ordersHistory.length ? ordersHistory.map(({number, email}, i) => {
+                                            return (
+                                                <li key={number} className="main__sales-item">{email}</li>
+
+                                            )   
+                                        }) : null
+                                    }
                                 </ul>
                                 <ul className="list main__sales-list">
                                     <li className="main__sales-item">Название товара</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
-                                    <li className="main__sales-item">Windows 10 Professional OEM Key</li>
+                                    {
+                                        ordersHistory.length ? ordersHistory.map(({number, product}, i) => {
+                                            return (
+                                                <li key={number} className="main__sales-item">{product}</li>
+
+                                            )   
+                                        }) : null
+                                    }
                                 </ul>
                             </div> 
                         </div>

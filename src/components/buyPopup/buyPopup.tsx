@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, FormEvent } from "react";
+import { FC, useEffect, useState, FormEvent, MouseEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -8,15 +8,18 @@ import ArrowIcon from "../../assets/images/icons/arrow_right_bold.svg";
 import CartIcon from "../../assets/images/icons/cart_white.svg";
 import SBPIcon from "../../assets/images/icons/sbp.svg";
 import WalletIcon from "../../assets/images/icons/wallet_blue.svg";
+import MarkIcon from "../../assets/images/icons/check.svg";
+import CloserIcon from "../../assets/images/icons/close_red.svg";
+import ArrowBlueIcon from "../../assets/images/icons/arrow_right_blue.svg";
 
 import { RootState } from "../../store";
 import { resetInputData, setOrder } from "../../redux/straightOrderSlice";
 import { getData, postData } from "../../services/services";
-import { OrderI, PurchaseI } from "../../interfaces";
+import { PurchaseI } from "../../interfaces";
 import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 
-import './buyPopup.scss';
 import { setPurchase } from "../../redux/purchaseSlice";
+import './buyPopup.scss';
 
 interface BuyPopupPropsI {
     isOpened: boolean
@@ -28,6 +31,10 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
     const [isPaymentsListShowed, setIsPaymentListShowed] = useState<boolean>(false);
     const [isAgreementChecked, setIsAgreementChecked] = useState<boolean>(false);
     const [alertMessage, setAlertMessage] = useState<string>('');
+    const [promoState, setPromoState] = useState({
+        failed: false,
+        success: false
+    });
 
     const straightOrder = useSelector((state: RootState) => state.straightOrder.straightOrder);
 
@@ -36,25 +43,43 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
 
     const checkPromo = async (e: any) => {
         await getData(`/promocode/${straightOrder.promocode}/use`)
-        .then(data => {
-            if(data.detail === "NOT_FOUND") {
-                //setAlertMessage('Промокод не существует');
+        .then((data) => {
+            if(data.detail === "Not Found") {
+                setPromoState({
+                    success: false,
+                    failed: true
+                });
+
+                dispatch(setOrder({
+                    ...straightOrder,
+                    promocode: ''
+                }));
                 
                 return
             }
 
-            // if(data.detail === "PROMO_INACTIVE") {
-            //     setAlertMessage('Промокод неактивен');
-            //     setPromo('')
-            //     return
-            // }
+            if(data.detail === "PROMO_INACTIVE") {
+                setPromoState({
+                    success: false,
+                    failed: true
+                });
 
-            //setSalePercent(data.sale_percent);
+                dispatch(setOrder({
+                    ...straightOrder,
+                    promocode: ''
+                }));
+                return
+            }
 
-            // setIsPromoUsedSuccesfully(true)
-            // dispatch(addSnack({
-            //     text: 'Промокод успешно применен'
-            // }));
+            dispatch(setOrder({
+                ...straightOrder,
+                price: straightOrder.price - straightOrder.price * (data.sale_percent / 100)
+            }))
+
+            setPromoState({
+                failed: false,
+                success: true
+            });
         });
     }
 
@@ -64,6 +89,11 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
         
         if(email.length === 0) {
             setAlertMessage('Введите email');
+            return;
+        }
+
+        if(!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            setAlertMessage('Некорректный email');
             return;
         }
 
@@ -184,6 +214,40 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                                 type="text" 
                                 className="purchase__form-input"
                             />
+                            {
+                                straightOrder.promocode.length ? (
+                                    <img 
+                                        src={ArrowBlueIcon} 
+                                        onClick={(e: MouseEvent) => checkPromo(e)} 
+                                        alt="применить" 
+                                        className="purchase__promocode-submitter"
+                                    />
+                                ) : null
+                            }
+                            {
+                                promoState.success && 
+                                <span className="purchase__promocode-success">
+                                    Применено
+                                    <img src={MarkIcon}  alt="применено" />
+                                </span>
+                            }
+                            {
+                                promoState.failed && 
+                                <span className="purchase__promocode-error">
+                                    Неактивен
+                                    <img src={CloserIcon} onClick={() => {
+                                        setPromoState({
+                                            failed: false,
+                                            success: false
+                                        })
+
+                                        dispatch(setOrder({
+                                            ...straightOrder,
+                                            promocode: ''
+                                        }))
+                                    }} alt="Неактивен" />
+                                </span>
+                            }
                         </div>
                     </div>
                     <div className="purchase__form-footer">
@@ -192,7 +256,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                         <div className="checkbox-container">
                             <input onChange={(e) => setIsAgreementChecked((e.target as HTMLInputElement).checked)} type="checkbox" className="checkbox purchase__checkbox" id="checkbox-4566"/>
                             <label htmlFor="checkbox-4566" className="purchase__checkbox-label checkbox-label">
-                                Согласен с&nbsp;<Link to="/terms"><a href="#" className="purchase__link">правилами магазина</a></Link>
+                                <span>Согласен с&nbsp;<Link to="/terms"><a href="#" className="purchase__link">правилами магазина</a></Link></span>
                             </label>
                         </div>
                         <div className="purchase__form-bottom">
@@ -200,7 +264,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                                 <img src={CartIcon} alt="оплатить" className="btn__icon" />
                                 Перейти к оплате
                             </button>
-                            <a href="#" onClick={() => closeHandler(false)} className="purchase__link">Закрыть</a>
+                            <a href="#" onClick={() => closeHandler(false)} className="purchase__link purchase__bottom-link">Закрыть</a>
                         </div>
                     </div>
                 </form>

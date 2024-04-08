@@ -6,7 +6,7 @@ import BackArrow from "../../../assets/images/icons/arrow_left.svg";
 import CloseTicketIcon from "../../../assets/images/icons/close.svg";
 
 import { Link, useNavigate } from "react-router-dom";
-import { getData, postData } from "../../../services/services";
+import { getData, postData, timestampToTime } from "../../../services/services";
 import { SupportTicketI } from "../../../interfaces";
 
 import './ticketsHistory.scss';
@@ -26,7 +26,7 @@ const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
     }
 
     useEffect(() => {
-        getData('/tickets/opened', true)
+        getData('/tickets/closed', true)
         .then((data: SupportTicketI[]) => setTicketsList(data));
     }, []);
 
@@ -53,7 +53,7 @@ const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
                                         <div className="ticket__info" onClick={() => navigate(`/admin/tickets/${id}`)}>
                                             <Link to={`${id}`}>
                                                 <span className="ticket__num">
-                                                    Ticket#{id} {status === 'closed' ? `(closed ${closed_at})` : null}
+                                                    Ticket#{id} {status === 'closed' ? `(closed at ${timestampToTime(closed_at)})` : null}
                                                 </span>
                                             </Link>
                                             <h4 className="ticket__name">{user.username}</h4>

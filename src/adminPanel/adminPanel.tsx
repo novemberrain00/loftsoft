@@ -29,6 +29,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     const isSidebarOpened = useSelector((state: RootState) => state.adminSidebar.isOpened);
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
+    const isAdmin = useSelector((state: RootState) => state.user.userInfo.is_admin);
 
     useEffect(() => {
         const getUserData = async () => {
@@ -42,10 +43,10 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
 
         }
 
-        if(getCookie('access_token')) getUserData();
+        if(window.localStorage.getItem('access_token')) getUserData();
     }, [])
 
-    return getCookie('is_admin') === 'true' ? (
+    return isAdmin ? (
         <>
         <Notifications isPopupOpened={isNotificationsOpened} setIsPopupOpened={setIsNotificationsOpened}/>
         <div className="admin">
@@ -64,7 +65,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin">
-                                <a href="#" className="admin__menu-link">Главная страница</a>
+                                <a href="/" className="admin__menu-link">Главная страница</a>
                             </Link>
                         </li>
                     </ul>
@@ -74,49 +75,49 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/users">
-                                <a href="#" className="admin__menu-link">Пользователи</a>
+                                <a href="/" className="admin__menu-link">Пользователи</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/products">
-                                <a href="#" className="admin__menu-link">Товары</a>
+                                <a href="/" className="admin__menu-link">Товары</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/reviews">
-                                <a href="#" className="admin__menu-link">Отзывы</a>
+                                <a href="/" className="admin__menu-link">Отзывы</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/categories">
-                                <a href="#" className="admin__menu-link">Категории</a>
+                                <a href="/" className="admin__menu-link">Категории</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/subcategories">
-                                <a href="#" className="admin__menu-link">Подкатегории</a>
+                                <a href="/" className="admin__menu-link">Подкатегории</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/promocodes">
-                                <a href="#" className="admin__menu-link">Промокоды</a>
+                                <a href="/" className="admin__menu-link">Промокоды</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/billing">
-                                <a href="#" className="admin__menu-link">Платежная система</a>
+                                <a href="/" className="admin__menu-link">Платежная система</a>
                             </Link>
                         </li>
                     </ul>
@@ -126,11 +127,15 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                             <Link onClick={() => {
                                 dispatch(closeSidebar())
                             }} to="/admin/tickets">
-                                <a href="#" className="admin__menu-link">Начало работы</a>
+                                <a href="/" className="admin__menu-link">Начало работы</a>
                             </Link>
                         </li>
                         <li className="admin__menu-item">
-                            <a href="#" className="admin__menu-link">История</a>
+                        <Link onClick={() => {
+                                dispatch(closeSidebar())
+                            }} to="/admin/tickets/history">
+                                <a href="/" className="admin__menu-link">История</a>
+                            </Link>
                         </li>
                         <li className="admin__menu-item">
                             <a onClick={(e: MouseEvent) => {
@@ -141,7 +146,7 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                     </ul>
                 </nav>
                 <Link to="/">
-                    <a href="#" className="admin__logout">
+                    <a href="/" className="admin__logout">
                         <img src={LogoutIcon} alt="Выйти"/>
                         Выйти
                     </a>

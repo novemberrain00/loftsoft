@@ -68,7 +68,7 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler}) => {
                     </div>
                 </div>
                 <div className="history__lists">
-                    {!getCookie('access_token') ? <div className="history__auth">
+                    {!window.localStorage.getItem('access_token') ? <div className="history__auth">
                         <h3 className="title history__auth-title">Авторизируйтесь</h3>
                         <h4 className="history__auth-subtitle text">для получения списка купленных продуктов и истории пополнения</h4>
                         <button className="btn history__auth-btn">
@@ -76,7 +76,7 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler}) => {
                             Авторизация
                         </button>
                     </div>: ''}
-                    <ul className={`list history__items ${!getCookie('access_token') && 'history__items_blured'} ${!activeTab  ? "history__items_active" : ''}`}>
+                    <ul className={`list history__items ${!window.localStorage.getItem('access_token') && 'history__items_blured'} ${!activeTab  ? "history__items_active" : ''}`}>
                         {
                             orders.length ? orders.map((order) => {
 
@@ -97,8 +97,8 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler}) => {
                             }) : null
                         }
                     </ul>
-                    <ul className={`list history__items ${!getCookie('access_token') && 'history__items_blured'} ${activeTab  ? "history__items_active" : ''}`}>
-                        {getCookie('access_token') ? 
+                    <ul className={`list history__items ${!window.localStorage.getItem('access_token') && 'history__items_blured'} ${activeTab  ? "history__items_active" : ''}`}>
+                        {window.localStorage.getItem('access_token') ? 
 
                             replenishes.length ? replenishes.map(({id, result_price, payment_type, status, created_datetime}) => {
                                 return (

@@ -32,6 +32,10 @@
     &__star {
         width: 30px;
         height: 30px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &__title {
@@ -130,6 +134,8 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            max-height: 300px;
+            overflow: auto;
             opacity: 0;
             border-radius: 10px;
             border-top-right-radius: 0;
@@ -172,6 +178,19 @@
 
         &:focus {
             outline: none;
+        }
+    }
+}
+
+@media screen and (max-width: 756px) {
+    .review-sender {
+        width: 60vw;
+        padding: 40px;
+
+        &__block {
+            &-input {
+                width: auto;
+            }
         }
     }
 }

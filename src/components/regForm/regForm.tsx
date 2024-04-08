@@ -4,7 +4,7 @@ import { addSnack } from "../../redux/snackbarSlice";
 import { postData } from "../../services/services";
 
 interface RegFormPropsI {
-    changeForm:  React.Dispatch<React.SetStateAction<boolean>>
+    changeForm:  React.Dispatch<React.SetStateAction<"register" | "login" | "reset">>
 }
 
 interface RegDataI {
@@ -30,15 +30,15 @@ const RegForm: FC<RegFormPropsI> = ({changeForm}) => {
 
             switch (data.detail) {
                 case 'LOGIN_EXISTS': 
-                    dispatch(addSnack({text: 'Пользователь с таким именем уже зарегестрирован'}));
+                    dispatch(addSnack({text: 'Пользователь с таким именем уже зарегистрирован'}));
                     return;
                 case 'EMAIL_EXISTS':
-                    dispatch(addSnack({text: 'Пользователь с таким email уже зарегестрирован'}));
+                    dispatch(addSnack({text: 'Пользователь с таким email уже зарегистрирован'}));
                     return;
             }
 
-            dispatch(addSnack({text: 'Вы успешно зарегестрировались'}));
-            changeForm(false);
+            dispatch(addSnack({text: 'Вы успешно зарегистрировались'}));
+            changeForm('login');
 
         })
         .catch(err => console.log(err));
@@ -70,7 +70,7 @@ const RegForm: FC<RegFormPropsI> = ({changeForm}) => {
                     })} type="password" className="auth__form-input" placeholder="Пароль" id="auth-password" required/>
                 </label>
                 
-                <input type="submit" className="btn auth__form-btn" value="Зарегестрироваться"/>
+                <input type="submit" className="btn auth__form-btn" value="Зарегистрироваться"/>
             </form>
         </>
     );

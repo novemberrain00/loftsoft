@@ -1,11 +1,10 @@
-import Categories from "../adminPanel/sections/categories/categories";
-import { CategoryI, LoginResponseI, ShortUserI } from "../interfaces";
+import { ShortUserI } from "../interfaces";
 
 const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
 const getData = async (url: string, isAuthRequired = false) => {
   const headers = isAuthRequired ? {
-    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+    "Authorization": 'Bearer ' + window.localStorage.getItem('access_token') as string,
     "Content-Type": "application/json"
   } : {
     "Content-Type": "application/json"
@@ -21,7 +20,7 @@ const getData = async (url: string, isAuthRequired = false) => {
 
 const postData = async (url: string, data: object, isAuthRequired = false) => {
   const headers = isAuthRequired ? {
-    "Authorization": 'Bearer ' + getCookie('access_token') as string,
+    "Authorization": 'Bearer ' + window.localStorage.getItem('access_token') as string,
     "Content-Type": "application/json"
   } : {
     "Content-Type": "application/json"
@@ -40,7 +39,7 @@ const deleteData = async (url: string) => {
   return await fetch(`${baseURL}${url}`, {
     headers: {
       Accept: "application/json",
-      Authorization: 'Bearer ' + getCookie('access_token') as string,
+      Authorization: 'Bearer ' + window.localStorage.getItem('access_token') as string,
     },
     method: "DELETE"
   }).then(response => {
@@ -52,7 +51,7 @@ const deleteData = async (url: string) => {
 }
 
 const uploadFile = async (img: Blob) => {
-  const body = new FormData;
+  const body = new FormData();
   body.append("file", img);
 
   return await fetch(`${baseURL}/upload`, {
@@ -72,7 +71,7 @@ const updateCurrentUser = async (payload: ShortUserI) => {
     body: JSON.stringify(payload),
     headers: {
       "Accept": "application/json",
-      "Authorization": 'Bearer ' + getCookie('access_token') as string,
+      "Authorization": 'Bearer ' + window.localStorage.getItem('access_token') as string,
       "Content-Type": "application/json"
     },
     method: "PATCH"

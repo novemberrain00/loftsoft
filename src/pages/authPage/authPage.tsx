@@ -1,20 +1,22 @@
-import { FC, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { FC, MouseEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
+import RegForm from "../../components/regForm/regForm";
 import LoginForm from "../../components/loginForm/loginForm";
 import SnackbarContainer from "../../components/snackbar/snackbar";
+import Snack from "../../components/snack/snack";
 
 import Logo from '../../assets/images/logo/logo.svg';
 import ArrowLeft from '../../assets/images/icons/arrow-left_black.svg';
 import RegIcon from '../../assets/images/icons/reg.svg';
+import LoginIcon from '../../assets/images/icons/login.svg';
 
-import RegForm from "../../components/regForm/regForm";
 import { SnackI } from "../../interfaces";
-import Snack from "../../components/snack/snack";
+import { RootState } from "../../store";
 
 import './authPage.scss';
-import { RootState } from "../../store";
+import PasswordResetForm from "../../components/passwordResetForm/passwordResetForm";
 
 interface AuthPagePropsI {
     
@@ -22,8 +24,9 @@ interface AuthPagePropsI {
  
 const AuthPage: FC<AuthPagePropsI> = () => {
     const navigate = useNavigate();
-    const [activeForm, setActiveForm] = useState(false); //false - authorization, true - registration
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
+    
+    const [activeForm, setActiveForm] = useState<'register' | 'login' | 'reset'>('login');
 
     return (
         <div className="auth">
@@ -36,26 +39,35 @@ const AuthPage: FC<AuthPagePropsI> = () => {
                 <div className="auth__left">
                     <img src={Logo} alt="loftsoft" className="logo auth__logo" />
                     <div className="auth__buttons">
-                        <a href="#" className="link auth__btn" onClick={() => navigate(-1)}>
-                            <img src={ArrowLeft} alt="Назад" className="auth__btn-icon" />
-                            Назад
+                        <a 
+                            href="#" 
+                            className="link auth__btn" 
+                            onClick={() => {
+                                activeForm === 'reset' ? setActiveForm('register') : navigate(-1)
+                            }}
+                        >
+                            <img src={activeForm === 'reset' ? RegIcon : ArrowLeft} alt="Назад" className="auth__btn-icon" />
+                            {activeForm === 'reset' ? 'Регистрация' : 'Назад'}
                         </a>
-                        <a href="#" onClick={(e) => {
+                        <a href="/" onClick={(e) => {
                             e.preventDefault();
-                            setActiveForm(!activeForm);
+                            setActiveForm(activeForm === 'login' ? "register" : "login");
                         }} className="link auth__btn">
-                            <img src={RegIcon} alt="Регистрация" className="auth__btn-icon" />
-                            {!activeForm ? "Регистрация" : "Вход"}
+                            <img src={activeForm !== 'login'  ?  LoginIcon : RegIcon} alt="Регистрация" className="auth__btn-icon" />
+                            {activeForm === 'login' ? "Регистрация" : "Вход"}
                         </a>
                     </div>
                     <div className="auth__support">
-                        <a href="#" className="link auth__support-link">Забыли пароль?</a>
-                        <a href="#" className="link auth__support-link">Сообщить о проблеме</a>
-                        <a href="#" className="link auth__support-link">О LoftSoft</a>
+                        <a href="/" onClick={(e: MouseEvent) => {
+                            e.preventDefault()
+                            setActiveForm('reset')
+                        }} className="link auth__support-link">Забыли пароль?</a>
                     </div>
                 </div>
                 <div className="auth__right">
-                    {!activeForm ? <LoginForm/> : <RegForm changeForm={setActiveForm}/>}
+                    {activeForm === 'login' && <LoginForm/>}
+                    {activeForm === 'register' && <RegForm changeForm={setActiveForm}/>}
+                    {activeForm === 'reset' && <PasswordResetForm/>}
                 </div>
             </div>
         </div>

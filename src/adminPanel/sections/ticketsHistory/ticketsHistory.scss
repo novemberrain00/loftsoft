@@ -8,6 +8,11 @@
 
     &__closer {
         height: 24px;
+        margin-left: 10%;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &__body {
@@ -59,6 +64,7 @@
         text-overflow: ellipsis;
         overflow: hidden;
         max-width: 405px;
+        margin-left: auto;
 
         &-title {
             margin: 10px 0 9px 0;
