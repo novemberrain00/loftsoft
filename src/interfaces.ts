@@ -169,8 +169,7 @@ export interface PostProductI {
             sale_price: string,
             order_id?: number,
             product_id?: number,
-            data?: string[],
-            files?: FileList | string[],
+            data: string[],
             give_type: string
             description: string,
         }

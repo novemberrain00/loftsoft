@@ -19,7 +19,6 @@ import Popup from "../../../components/categoryPopup/categoryPopup";
 import { PostProductI, SubcategoryI } from "../../../interfaces";
 import { getData, postData, uploadFile } from "../../../services/services";
 
-import { RootState } from "../../../store";
 import { addSnack } from "../../../redux/snackbarSlice";
 
 import { LoaderT } from "../../../types";
@@ -65,8 +64,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         price: '',
         title: '',
         description: '',
-        give_type: 'hand',
-        files: (new DataTransfer()).files
+        give_type: 'hand'
     });
 
     const [subcategories, setSubcategories] = useState<SubcategoryI[]>([]);
@@ -77,7 +75,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
     const [isRowAdded, setIsRowAdded] = useState<boolean>(false);
     const [newRow, setNewRow] = useState<string>('');
     const [isSubcatDropdownOpened, setIsSubcatDropdownOpened] = useState<boolean>(false);
-    const [fileSizes, setFileSizes] = useState<number[]>([]);
     const [isDataLoaded, setIsDataLoaded] = useState<{
         product: LoaderT
         txtFiles: LoaderT
@@ -199,7 +196,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             sale_price: '',
             has_sale: false,
             data: [],
-            files: (new DataTransfer()).files,
             description: '',
             give_type: 'hand'
         });
@@ -209,20 +205,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
     }
 
     const editParam = async () => {
-        let paramData: string[] = [...curParam.data];
-        if(curParam.give_type === 'file' && curParam.files) {
-            const filesArray: File[] = Array.from(curParam?.files);
-            for(let i in filesArray) {
-                await uploadFile(filesArray[i])
-                .then(data => {
-                    paramData = [
-                        ...paramData,
-                        data.upload
-                    ]
-                });
-            }
-        }
-
         const paramsArrRef = productData.parameters;
         paramsArrRef[paramsArrRef.indexOf(paramsArrRef.filter(par => par.id === editableParam)[0])] = {
             title: curParam.title,
@@ -230,8 +212,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             sale_price: curParam.sale_price,
             has_sale: curParam.has_sale,
             id: editableParam,
-            data: paramData.length ? paramData : curParam.data,
-            files: curParam.files,
+            data: curParam.data,
             description: curParam.description,
             give_type: curParam.give_type
         };
@@ -243,7 +224,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             sale_price: '',
             has_sale: false,
             data: [],
-            files: {} as FileList,
             description: '',
             give_type: 'hand'
         });
@@ -261,27 +241,30 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         const paramsArrRef = productData.parameters;
         const matchedParam = paramsArrRef[paramsArrRef.indexOf(paramsArrRef.filter(par => par.id === editableParam)[0])];
 
-        if(matchedParam?.data?.length && matchedParam?.data?.filter(par => par === newRow).length > 0) {
-            alert('Ключ существует')
+        if(matchedParam?.data?.filter(par => par === newRow).length > 0) {
+            dispatch(addSnack({text: 'Ключ существует'}));
+            return
         }
 
-        setCurParam({
-            ...curParam,
-            data: [
-                ...curParam.data,
-                newRow
-            ]
-        });
+        if(newRow.length) {
+            setCurParam({
+                ...curParam,
+                data: [
+                    ...curParam.data,
+                    newRow
+                ]
+            });
+        }
 
         setNewRow('');
         setIsRowAdded(false);
     }
 
-    const saveKeys = async () => {
+    const saveKeys = () => {
         const paramsArrRef = productData.parameters;
         const {id, title, price, sale_price, has_sale, data, give_type, description} = curParam;
         
-        paramsArrRef[paramsArrRef.indexOf(paramsArrRef.filter(par => par.id === editableParam)[0])] = give_type !== 'file' ?{
+        paramsArrRef[paramsArrRef.indexOf(paramsArrRef.filter(par => par.id === editableParam)[0])] = {
             id,
             title,
             price,
@@ -290,39 +273,22 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             data,
             description,
             give_type
-        } : {
-            id,
-            title,
-            price,
-            sale_price,
-            has_sale,
-            files : curFiles,
-            description,
-            give_type 
-        }
+        } 
 
         setProductData({
             ...productData,
             parameters: paramsArrRef
         });
         setEditableParam(id);
+        console.log(productData.parameters)
+        dispatch(addSnack({text: "Ключи успешно сохранены"}));
     }
 
-    const removeTxtFile = (i: number) => {
-        if (curParam.files) {
-            const filesArray: File[] = Array.from(curParam.files);
-            filesArray.splice(i, 1); 
-            const newFileList = new DataTransfer(); 
-            filesArray.forEach(file => {
-                const fileItem = new File([file], file.name, { type: file.type });
-                newFileList.items.add(fileItem); 
-            });
-            
-            setCurParam({
-                ...curParam,
-                files: newFileList.files
-            })
-        }
+    const removeKey = (key: string) => {
+        setCurParam({
+            ...curParam,
+            data: curParam.data.filter(item => item !== key)
+        })
     }
 
     const updateProduct = async () => {
@@ -397,7 +363,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             });
         }
 
-        for(let {id, title, price, has_sale, sale_price, data} of parameters) {
+        for(let {id, title, price, has_sale, sale_price, data, give_type} of parameters) {
             await fetch(baseURL + `/parameter/${id}`, {
                 method: 'PATCH',
                 headers: {
@@ -409,7 +375,8 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     title,
                     price,
                     has_sale,
-                    sale_price
+                    sale_price,
+                    give_type
                 })
             });
 
@@ -605,6 +572,16 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
 
     }
 
+    const uploadFiles = async (list: FileList) => {
+        for (let i of Object.keys(list)) {
+            const data = await uploadFile(list[+i]);
+            setCurParam(prevState => ({
+                ...prevState,
+                data: [...prevState.data, data.upload]
+            }));
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             await getData('/subcategories?empty_filter=false', true)
@@ -701,14 +678,11 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             data: matchedParam?.data || [],
             sale_price: matchedParam?.sale_price,
             has_sale: matchedParam?.has_sale,
-            files: matchedParam?.files as FileList,
             price: matchedParam?.price,
             description: matchedParam?.description,
             give_type: matchedParam?.give_type || 'hand'
         });        
     }, [editableParam]);
-
-    const curFiles = curParam?.files || productData.parameters.filter(par => par.id === editableParam)[0]?.files;
 
     return (
         <>
@@ -1001,7 +975,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                     sale_price: '',
                                     data: [],
                                     has_sale: false,
-                                    files: (new DataTransfer()).files,
                                     description: '',
                                     give_type: 'hand'
                                 });
@@ -1198,57 +1171,33 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                     }
                                 </div>
                                 {
-                                    !(curFiles?.length || curParam?.data.length) && 
-                                    <>
-                                        <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
-                                        <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
-                                    </>
-                                }
-                                
-                                {
-                                    !!(curFiles?.length || curParam?.data.length) && 
-                                    <div className="editor__files">
-                                        { productData.id > -1 ?
-                                            (curParam?.data || []).map((key, i) => {
-                                                return (
-                                                    <div key={i} className="editor__file">
-                                                        <a target="blank" href={baseURL + '/uploads/' + key} className="editor__file-name">{key}</a>
-                                                        <span className="editor__file-size">{Math.floor(1000 / 1024 * 1000) / 1000}KB</span>
-                                                        <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
-                                                    </div>
-                                                )
-                                            }) : null
-                                        }
-                                        {
-                                            Object.keys(curFiles || []).map((key, i) => {
-                                                const {name, size} = curFiles[+key];
-                                                return (
-                                                    <div key={name} className="editor__file">
-                                                        <a target="blank" href={baseURL + '/uploads/' + name} className="editor__file-name">{name}</a>
-                                                        <span className="editor__file-size">{Math.floor(size / 1024 * 1000) / 1000}KB</span>
-                                                        <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
-                                                    </div>
-                                                )
-                                            }) || ''
-                                        }
-                                    </div>
+                                    !curParam.data.length ? (
+                                        <>
+                                            <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
+                                            <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
+                                        </>
+                                    ) : (
+                                        <div className="editor__files">
+                                            {
+                                                curParam.data.map(item => {
+                                                    return (
+                                                        <div key={item} className="editor__file">
+                                                            <a target="blank" href={baseURL + '/uploads/' + item} className="editor__file-name">{item}</a>
+                                                            <img onClick={() => removeKey(item)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
+                                                        </div>
+                                                    )
+                                                })
+                                            }       
+                                        </div>
+                                    )
                                 }
                                 <div className="editor__params-txt">
                                     <span className="editor__params-counter">
-                                        {curFiles?.length === 1 ?  'Добавлен' : ''}&nbsp;
-                                        {curFiles?.length as number > 1 ?  'Добавлено' : ''}&nbsp;
-                                        {!!curFiles?.length && curFiles?.length}&nbsp;
-                                        {curFiles?.length === 1 ? 'файл' : ''}
-                                        {(curFiles?.length as number) > 1 && (curFiles?.length as number) < 5 ? 'файла' : ''}
-                                        {(curFiles?.length as number) >= 5 ? 'файлов' : ''}
                                     </span>
                                     <label htmlFor="file-sender__input-25" className="file-sender file-sender_small">
                                         <input 
-                                            onInput={(e) => {
-                                                setCurParam({
-                                                    ...curParam,
-                                                    files: (e.target as HTMLInputElement).files as FileList
-                                                })
+                                            onInput={async (e) => {
+                                               await uploadFiles((e.target as HTMLInputElement).files as FileList)
                                             }}
                                             multiple
                                             type="file" 
@@ -1302,6 +1251,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                     className={`editor__accounts-tab ${curParam.give_type === 'file' ? 'editor__accounts-tab_active' : ''}`}
                                 >
                                     .txt
+                                    
                                 </div>
                             </div>
                         </> : null
@@ -1363,78 +1313,60 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         {
                             editableParam >= 0 && curParam.give_type === 'file' &&
                             <div className="editor__params">
-                                <div className="editor__params-header">
-                                    <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
-                                    {
-                                        isDataLoaded.txtFiles !== 'processing' ?
-                                        <img onClick={() => {setIsParamPopupOpened(true)}} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить" /> : <Loader/>
+                                <div>
+                                    <div className="editor__params-header">
+                                        <button className="btn admin__btn">{productData.parameters.filter(par => par.id === editableParam)[0]?.title}</button>
+                                        {
+                                            isDataLoaded.txtFiles !== 'processing' ?
+                                            <img onClick={() => saveKeys()} src={SaveBlueIcon} className="editor__params-saver" alt="Сохранить" /> : <Loader/>
 
+                                        }
+                                    </div>
+                                    {
+                                        !curParam.data.length ? (
+                                            <>
+                                                <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
+                                                <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
+                                            </>
+                                        ) : (
+                                            <div className="editor__files">
+                                                {
+                                                    curParam.data.map(item => {
+                                                        return (
+                                                            <div key={item} className="editor__file">
+                                                                <a target="blank" href={baseURL + '/uploads/' + item} className="editor__file-name">{item}</a>
+                                                                <img onClick={() => removeKey(item)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }       
+                                            </div>
+                                        )
                                     }
                                 </div>
-                                <div className="editor__params-content">
+                                <div className="editor__params-txt">
                                     {
-                                        !(curFiles?.length || curParam?.data.length) && 
-                                        <div>
-                                            <h2 className="editor__params-title">Включена выдача <br /> по .txt</h2>
-                                            <h3 className="editor__params-subtitle">Вам необходимо добавить файлы</h3>
-                                        </div>
+                                        curParam.data.length ?
+                                        (
+                                            <span className="editor__params-counter">
+                                                Добавлено {curParam.data.length} файлов
+                                            </span>
+                                        ) : null
                                     }
-                                    
-                                    {
-                                        !!(curFiles?.length || curParam?.data.length) && 
-                                        <div className="editor__files">
-                                            { productData.id > -1 ?
-                                                (curParam?.data || []).map((key, i) => {
-                                                    return (
-                                                        <div key={i} className="editor__file">
-                                                            <a target="blank" href={baseURL + '/uploads/' + key} className="editor__file-name">{key}</a>
-                                                            <span className="editor__file-size">{Math.floor(1000 / 1024 * 1000) / 1000}KB</span>
-                                                            <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
-                                                        </div>
-                                                    )
-                                                }) : null
-                                            }
-                                            {
-                                                Object.keys(curFiles || []).map((key, i) => {
-                                                    const {name, size} = curFiles[+key];
-                                                    return (
-                                                        <div key={name} className="editor__file">
-                                                            <a target="blank" href={baseURL + '/uploads/' + name} className="editor__file-name">{name}</a>
-                                                            <span className="editor__file-size">{Math.floor(size / 1024 * 1000) / 1000}KB</span>
-                                                            <img onClick={() => removeTxtFile(i)} src={TrashIcon} alt="удалить" className="editor__file-icon"/>
-                                                        </div>
-                                                    )
-                                                }) || ''
-                                            }
-                                        </div>
-                                    }
-                                    <div className="editor__params-txt">
-                                        <span className="editor__params-counter">
-                                            {curFiles?.length === 1 ?  'Добавлен' : ''}&nbsp;
-                                            {curFiles?.length as number > 1 ?  'Добавлено' : ''}&nbsp;
-                                            {!!curFiles?.length && curFiles?.length}&nbsp;
-                                            {curFiles?.length === 1 ? 'файл' : ''}
-                                            {(curFiles?.length as number) > 1 && (curFiles?.length as number) < 5 ? 'файла' : ''}
-                                            {(curFiles?.length as number) >= 5 ? 'файлов' : ''}
-                                        </span>
-                                        <label htmlFor="file-sender__input-25" className="file-sender file-sender_small">
-                                            <input 
-                                                onInput={(e) => {
-                                                    setCurParam({
-                                                        ...curParam,
-                                                        files: (e.target as HTMLInputElement).files as FileList
-                                                    })
-                                                }}
-                                                multiple
-                                                type="file" 
-                                                accept=".txt" 
-                                                id="file-sender__input-25" 
-                                                className="file-sender__input" 
-                                            />
-                                            <img src={UploadIcon} alt="Добавить .txt" />
-                                            Добавить .txt
-                                        </label>
-                                    </div>
+                                    <label htmlFor="file-sender__input-25" className="file-sender file-sender_small">
+                                        <input 
+                                            onInput={async (e) => {
+                                               await uploadFiles((e.target as HTMLInputElement).files as FileList)
+                                            }}
+                                            multiple
+                                            type="file" 
+                                            accept=".txt" 
+                                            id="file-sender__input-25" 
+                                            className="file-sender__input" 
+                                        />
+                                        <img src={UploadIcon} alt="Добавить .txt" />
+                                        Добавить .txt
+                                    </label>
                                 </div>
                             </div>
                         }

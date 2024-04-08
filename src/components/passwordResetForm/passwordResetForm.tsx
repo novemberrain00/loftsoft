@@ -1,5 +1,8 @@
 import { FC, FormEvent, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { postData } from "../../services/services";
+import { addSnack } from "../../redux/snackbarSlice";
 
 interface PasswordResetFormPropsI {
     
@@ -16,9 +19,12 @@ const PasswordResetForm: FC<PasswordResetFormPropsI> = () => {
         password: ''
     });
 
+    const dispatch = useDispatch();
+
     const submitHandler = async (e: FormEvent) => {
         e.preventDefault()
-        await postData('/user/password/drop', resetData);
+        await postData('/user/password/drop', resetData)
+        .then(() => dispatch(addSnack({text: 'Ссылка для сброса пароля отправлена на почту'})));
     }
 
     return (
@@ -33,7 +39,7 @@ const PasswordResetForm: FC<PasswordResetFormPropsI> = () => {
                     })} type="email" className="input__text" placeholder="Логин" id="reset-email" required/>
                 </label>
                 <label htmlFor="reset-password" className="input">
-                    <span className="input__label">Пароль</span>
+                    <span className="input__label">Новый пароль</span>
                     <input onInput={(e: any) => setResetData({
                         ...resetData,
                         password: (e.target as HTMLInputElement).value

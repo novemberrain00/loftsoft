@@ -213,6 +213,8 @@
                 display: flex;
                 flex-direction: column;
                 gap: 5px;
+                height: 460px;
+                overflow: auto;
                 margin-top: 11px;
             }
 
@@ -289,12 +291,11 @@
             }
 
             &-txt {
-                margin-top: 100%;
+                margin-top: 40px;
             }
 
             &-counter {
                 display: block;
-                margin-top: 100%;
                 margin-bottom: 10px;
                 color: #2667FF;
                 font-size: 15px;
@@ -305,6 +306,8 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            height: 370px;
+            overflow: auto;
             margin-top: 27px;
         }
 
@@ -459,9 +462,9 @@
             }
 
             &__params {
-                &-content {
-                    display: flex;
-                }
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
         }
     }
