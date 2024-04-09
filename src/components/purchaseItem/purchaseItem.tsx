@@ -1,7 +1,4 @@
-import { FC, Fragment, useEffect, useState } from "react";
-
-import { getData } from "../../services/services";
-import { ProductI } from "../../interfaces";
+import { FC, Fragment, useState } from "react";
 
 import WindowsImg from "../../assets/images/img/catalog/windows.png";
 

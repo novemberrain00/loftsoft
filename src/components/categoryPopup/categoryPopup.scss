@@ -32,6 +32,7 @@
     &__content {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
     }
 
     &__body {
@@ -160,6 +161,10 @@
         display: block;
         margin-top: 15px;
         margin-bottom: 40px;
+        color: #CCC;
+        font-family: Roboto;
+        font-size: 14px;
+        font-style: normal;
     }
 
     &__textarea {
@@ -232,6 +237,12 @@
     }
 }
 
+@media screen and (max-width: 980px) {
+    .popup {
+        width: 40vw;
+    }
+}
+
 @media screen and (max-width: 756px) {
     .popup {
         padding: 0 10vw;
@@ -243,12 +254,17 @@
         &__body {
             margin: 30px 0;
         }
+
+        &__description {
+            margin-top: 0;
+        }
     }
 }
 
 @media screen and (max-width: 576px) {
     .popup {
         padding: 0 5vw;
+        width: 57vw;
 
         &__widget {
             &-btn {
@@ -267,6 +283,7 @@
 @media screen and (max-width: 480px) {
     .popup {
         padding: 0;
+        width: 77vw;
 
         &__body {
             width: 65vw;
@@ -277,6 +294,10 @@
             &-title {
                 font-size: 14px;
             }
+        }
+
+        &__notification {
+            padding: 8px 0;
         }
     }
 }

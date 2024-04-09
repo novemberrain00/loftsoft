@@ -337,6 +337,13 @@
 
 @media screen and (max-width: 480px) {
     .success {
+        &__header {
+            &-icon, &-img, &-mark {
+                display: none;
+
+            }
+        }
+
         &__widgets {
             flex-direction: column;
         }

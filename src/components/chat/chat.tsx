@@ -94,46 +94,35 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
         .then((data: SupportTicketI[]) => {
             setTicketsList(data);
         });
+    }, []);
 
-        let delay = 3000;
+    useEffect(() => {
         let timeout: NodeJS.Timeout | null = null;
 
         const updateChat = async () => {
-            if(!isChatOpened) return;
-
-            await getData(`/tickets`, true)
-            .then((data: SupportTicketI[]) => {
-                if(data[0].messages.length !== ticketsList[0].messages.length) {
-                    setTimeout(() => {
-                        const chatBody = document.querySelector('.chat__body');
-        
-                        chatBody!.scrollTop = (chatBody as HTMLElement).scrollHeight;
-                    }, 0);
-                }
-
-                setTicketsList(data);
-
-            })
-            .finally(() => {
-                delay = 3000;
-                timeout = setTimeout(updateChat, delay);
-            });
+            await getData('/tickets', true)
+                .then((data: SupportTicketI[]) => {
+                    setTicketsList(data);
+                })
+                .finally(() => {
+                    if (isChatOpened) {
+                        timeout = setTimeout(updateChat, 3000);
+                    }
+                });
         }
-    
-        updateChat();
+
+        if (isChatOpened) {
+            const chatBody = document.querySelector('.chat__body');
+            chatBody!.scrollTop = chatBody!.scrollHeight;
+
+            updateChat();
+        }
         
         return () => {
             if (timeout) {
                 clearTimeout(timeout);
             }
-        }
-    }, []);
-
-    useEffect(() => {
-        if(!isChatOpened) return;
-
-        const chatBody = document.querySelector('.chat__body');
-        chatBody!.scrollTop = (chatBody as HTMLElement).scrollHeight;
+        };
     }, [isChatOpened]);
 
     return (
@@ -175,12 +164,15 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                             placeholder="Ваше сообщение..."
                             value={message}
                         />
-                        <button onClick={e => {
-                            e.preventDefault();
-                            sendMessage();
-                        }} className="chat__sender">
-                            <img src={MSGSendIcon} alt="отправить"/>
-                        </button>
+                        {
+                            message.length > 0 &&
+                            <button onClick={e => {
+                                e.preventDefault();
+                                sendMessage();
+                            }} className="chat__sender">
+                                <img src={MSGSendIcon} alt="отправить"/>
+                            </button>
+                        }
                     </form>
                     <div 
                         className={`chat__menu-overlay ${isMenuOpened ? 'chat__menu-overlay_opened' : ''}`}
@@ -199,13 +191,13 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                             <div className="chat__menu-body">
                                 <ul className="chat__menu-list list">
                                     <li className="chat__menu-item">
-                                        <a href="/" className="chat__menu-link">
+                                        <a href="https://wa.me/905344582667" className="chat__menu-link">
                                             <img src={WhatsappIcon} alt="WhatApp" className="chat__menu-icon" />
                                             Поддержка в WhatsApp
                                         </a>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="/" className="chat__menu-link">
+                                        <a href="https://t.me/LoftSoft" className="chat__menu-link">
                                             <img src={TelegramIcon} alt="Telegram" className="chat__menu-icon" />
                                             Поддержка в Телеграм
                                         </a>

@@ -530,6 +530,7 @@
 @media screen and (max-width: 480px) {
     .footer {
         position: relative;
+        padding-bottom: 150px;
 
         &__container {
             flex-direction: column;
@@ -537,7 +538,7 @@
 
         &__discount {
             position: absolute;
-            display: none !important;
+            top: 300px;
         }
     }
 }

@@ -23,7 +23,7 @@
     animation: snackFadeOut .6s ease 3s forwards;
 
     &_hidden {
-        display: none;
+        display: flex;
     }
 
     &__closer {
@@ -34,6 +34,16 @@
 
         &:hover {
             cursor: pointer;
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .snack {
+        font-size: 14px;
+
+        &__closer {
+            font-size: 14px;
         }
     }
 }

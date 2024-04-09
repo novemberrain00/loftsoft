@@ -1,22 +1,15 @@
 import { FC, useEffect, useState } from "react";
 
-import Review from "../../../components/review/review";
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
-import ReviewImg1 from "../../../assets/images/img/reviews/1.png";
-import ReviewImg2 from "../../../assets/images/img/reviews/1.png";
-
 import StarIcon from "../../../assets/images/icons/star_orange.svg";
-import EditIcon from "../../../assets/images/icons/edit_white.svg";
-import CloseIcon from "../../../assets/images/icons/close_white.svg";
-import CheckIcon from "../../../assets/images/icons/check.svg";
 import TrashIcon from '../../../assets/images/icons/trash.svg';
 
 import { getData, postData } from "../../../services/services";
 import ModeratedReview from "../../../components/moderatedReview/moderatedReview";
 import { ReviewI } from "../../../interfaces";
-import './reviews.scss';
 import FsLightbox from "fslightbox-react";
+import './reviews.scss';
 
 interface ReviewsPropsI {
     

@@ -29,7 +29,7 @@ const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
     const [isSenderOpened, setIsSenderOpened] = useState(false);
     const {id} = useParams();
 
-    const { number, total_price, order_data, uri } = orderData;
+    const { number, result_price, order_data, uri } = orderData;
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
@@ -82,7 +82,7 @@ const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
                             }
                         </ul>
                         <div className="success__products-footer">
-                            Итог: { total_price } ₽
+                            Итог: { result_price } ₽
                         </div>
                     </div>
                     <div className="success__widgets">

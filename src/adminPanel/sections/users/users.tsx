@@ -72,7 +72,7 @@ const Users: FC<UsersPropsI> = () => {
             method: 'PATCH',
             headers: {
                 "Accept": "application/json",
-                "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                "Authorization": 'Bearer ' + window.localStorage.getItem('access_token') as string,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)

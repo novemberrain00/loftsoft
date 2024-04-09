@@ -140,6 +140,8 @@
             display: flex;
             flex-direction: column;
             padding-top: 11px;
+            font-family: Roboto;
+            font-size: 16px;
         }
 
         &-bottom {
@@ -207,3 +209,32 @@
 //         }
 //     }
 // }
+
+@media screen and (max-width: 480px) {
+    .payment {
+        &__header {
+            padding: 40px;
+            &-top {
+                text-align: center;
+                align-items: center;
+                flex-direction: column-reverse;
+            }
+        }
+
+        &__bottom {
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        &__btn {
+            width: 250px;
+        }
+    }
+
+    .instruction {
+        &__body {
+            padding: 35px;
+        }
+    }
+}

@@ -407,8 +407,11 @@
             margin-bottom: 30px;
     
             &__params {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
                 min-height: initial;
-                height: 245px;
+                height: 345px;
                 width: 100%;
 
                 &-content {
@@ -425,6 +428,10 @@
                 &-counter {
                     margin-top: 0;
                 }
+            }
+
+            &__files {
+                height: 110px;
             }
     
             &__accounts {
@@ -459,12 +466,6 @@
         .editor {
             &__accounts {
                 margin-top: 30px;
-            }
-
-            &__params {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
             }
         }
     }

@@ -245,9 +245,9 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                 <img src={CartIcon} alt="корзина" className="header__info-icon"/>
                             </a>
                         </Link>
-                        <a href="/" onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
+                        <span onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
                             <img src={UpdateIcon} alt="история" className="header__info-icon"/>
-                        </a>
+                        </span>
                         {
                             username && 
                                 <div onClick={() => {

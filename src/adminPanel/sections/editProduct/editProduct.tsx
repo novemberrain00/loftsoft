@@ -46,6 +46,18 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         product_photos: [],
         initialPhotos: []     
     });
+    const [initialProductData, setInitialProductData] = useState<PostProductI>({
+        id: -1,
+        title: '',
+        description: '',
+        card_price: '',
+        options: [],
+        parameters: [],
+        subcategory_id: 0,
+        product_photos: [],
+        initialPhotos: []     
+    });
+
     const [alertMessages, setAlertMessages] = useState({
         options: '',
         params: ''
@@ -363,34 +375,45 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
             });
         }
 
-        for(let {id, title, price, has_sale, sale_price, data, give_type} of parameters) {
-            await fetch(baseURL + `/parameter/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    "Accept": "application/json",
-                    "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
+        for(let {id, title, price, has_sale, sale_price, data, give_type, description} of parameters) {
+            if(initialProductData.parameters.map(param => param.id).includes(id)) {
+                await fetch(baseURL + `/parameter/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        title,
+                        price,
+                        has_sale,
+                        sale_price,
+                        give_type,
+                        description
+                    })
+                });
+    
+                await fetch(baseURL + `/parameter/${id}/data`, {
+                    method: 'PATCH',
+                    headers: {
+                        "Accept": "application/json",
+                        "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+            } else {
+                await postData(`/product/${productData.id}/parameters`, {
                     title,
                     price,
                     has_sale,
                     sale_price,
-                    give_type
-                })
-            });
-
-            await fetch(baseURL + `/parameter/${id}/data`, {
-                method: 'PATCH',
-                headers: {
-                    "Accept": "application/json",
-                    "Authorization": 'Bearer ' +  window.localStorage.getItem('access_token') as string,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
-
-
+                    give_type,
+                    description,
+                    data
+                }, true)
+            }
         }
 
         if(product_photos.length) {
@@ -600,6 +623,21 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 await getData(`/product/${loc.substring(loc.lastIndexOf('/')+1, loc.length)}`, true)
                 .then((data: PostProductI) => {
                     setProductData({
+                        id: data.id,
+                        title: data.title,
+                        card_price: data.card_price,
+                        options: data.options,
+                        parameters: data.parameters,
+                        description: data.description,
+                        initialPhotos: [
+                            data.product_photos[0],
+                            ...data.product_photos.splice(1, data.product_photos.length)
+                        ],
+                        product_photos: [],
+                        subcategory_id: data.subcategory_id
+                    })
+
+                    setInitialProductData({
                         id: data.id,
                         title: data.title,
                         card_price: data.card_price,
@@ -847,16 +885,16 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     <div className="popup__body popup__description">
                         <label htmlFor="editor__input-value-1410313" className="input popup__inpu popup__textarea">
                             <span className="input__label">Введите описание товара</span>
-                            <div 
+                            <textarea
                                 onInput={(e) => setCurParam({
                                     ...curParam,
-                                    description: (e.target as HTMLInputElement).innerText
+                                    description: (e.target as HTMLInputElement).value
                                 })}
+                                value={curParam.description}
                                 id="editor__input-value-1410313" 
                                 className="input__text input__textarea"
-                                contentEditable
                             >
-                            </div>
+                            </textarea>
                         </label>
                         <div className="popup__description-footer">
                             <button className="popup__description-btn">B</button>

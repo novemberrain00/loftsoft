@@ -256,7 +256,7 @@ export interface OrderI {
 export interface PurchaseI {
     id: number
     number: string
-    total_price: number
+    result_price: number
     order_data:  {
         count: number;
         give_type: string

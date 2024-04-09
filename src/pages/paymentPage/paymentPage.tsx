@@ -29,18 +29,18 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     const replenishment = useSelector((state: RootState) => state.replenishment);
     const dispatch = useDispatch();
 
-    const totalPrice = replenishment.replenishment.result_price || orderPrice;
+    let totalPrice = replenishment.replenishment.result_price || orderPrice;
 
     const checkOrder = async () => {
         const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
         await getData(route, true)
         .then(data => {
-            if(data.status.includes("waiting")) {
+            if(data?.status?.includes("waiting")) {
                 dispatch(addSnack({text: "Ожидается оплата"}));
                 return;
             }
 
-            if(replenishment.replenishment.number.length) {
+            if(replenishment.replenishment.number.length > 0) {
                 navigate('/');
             } else {
                 navigate('success');
@@ -50,12 +50,11 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
 
     const formatTime = (time: number): string => {
         const minutes = Math.floor(time / 60);
-        const remainingSeconds = time % 60;
+        const remainingSeconds = Math.floor(time % 60);
         return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
     useEffect(() => {
-
         const interval = setInterval(() => {
             if (seconds > 0) {
                 setSeconds(prevSeconds => prevSeconds - 1);
@@ -81,7 +80,13 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
 
         const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
         getData(route, true)
-        .then(data => setSeconds(data.remaining_time))
+        .then(data => {
+            if(!totalPrice) {
+                totalPrice = data.result_price
+            }
+
+            setSeconds(data.remaining_time)
+        })
     }, []);
 
     

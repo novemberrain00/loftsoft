@@ -81,7 +81,7 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
                             <span className="profile__link">
                                 <img src={CartIcon} alt="Моя корзина" className="profile__link-icon" />
                                 Моя корзина
-                                <span className="profile__link-amount">{userData.shop_cart.length}</span>
+                                <span className="profile__link-amount">{userData.shop_cart.reduce((item, cur) => item + cur.quantity, 0)}</span>
                             </span>
                         </Link>
                     </li>

@@ -334,7 +334,7 @@
     }
 }
 
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 480px) {
     .catalog {
         &__filter {
             display: flex;
@@ -345,6 +345,10 @@
             &-input {
                 width: 200px !important;
             }
+        }
+
+        &__products {
+            justify-content: center;
         }
     }
 }

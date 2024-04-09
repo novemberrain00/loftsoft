@@ -44,7 +44,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
     const checkPromo = async (e: any) => {
         await getData(`/promocode/${straightOrder.promocode}/use`)
         .then((data) => {
-            if(data.detail === "Not Found") {
+            if(data.detail === "Not Found" || data.detail === "NOT_FOUND") {
                 setPromoState({
                     success: false,
                     failed: true
@@ -97,6 +97,11 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
             return;
         }
 
+        if(isNaN(+count)) {
+            setAlertMessage('Некорректное кол-во товара');
+            return;
+        }
+
         if(count <= 0) {
             setAlertMessage('Введите количество товара');
             return;
@@ -121,15 +126,15 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                 return;
             }
 
-            const { id, total_price} = data as PurchaseI;
-
+            const { id, result_price} = data as PurchaseI;
+            
             if(activePayment === 'Баланс сайта') {
                 dispatch(setPurchase({...(data as PurchaseI)}));
                 navigate(`/profile/cart/order/${id}/success`);
                 return;
             } else {
                 dispatch(setOrderId(id));
-                dispatch(setPrice(total_price));
+                dispatch(setPrice(result_price));
 
                 window.localStorage.setItem('timeToPay', '600')
                 navigate(`/profile/cart/order/${id}`);
@@ -251,7 +256,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                         </div>
                     </div>
                     <div className="purchase__form-footer">
-                        <span className="purchase__form-price">К оплате: {straightOrder.price * straightOrder.count} ₽</span>
+                        <span className="purchase__form-price">К оплате: {(straightOrder.price * straightOrder.count) || 0} ₽</span>
                         <span className="purchase__form-alert">{alertMessage}</span>
                         <div className="checkbox-container">
                             <input onChange={(e) => setIsAgreementChecked((e.target as HTMLInputElement).checked)} type="checkbox" className="checkbox purchase__checkbox" id="checkbox-4566"/>
