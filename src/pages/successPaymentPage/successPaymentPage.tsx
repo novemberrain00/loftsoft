@@ -38,6 +38,8 @@ const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
         .then((data: PurchaseI) => setOrderData(data))
     }, []);
 
+    document.title = "Поздравляем с покупкой";
+
     return (
         <RootPage>
             <ReviewSender isOpened={isSenderOpened} closeHandler={setIsSenderOpened}/>

@@ -75,7 +75,8 @@ const MainPage: FC<MainPageProps> = () => {
         .then(data => setReviews(data));
     }, [])
 
-    console.log(nextRef, prevRef)
+    
+    document.title = "LoftSoft";
 
     return (
         <RootPage>

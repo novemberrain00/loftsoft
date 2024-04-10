@@ -116,6 +116,8 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const clipboard = useClipboard();
     const debouncedTerm = useDebounce(seachTerm, 300);
 
+    window.scrollTo(0, 0)
+
     return ( 
         <>
             <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>

@@ -521,5 +521,14 @@
                 width: 20px;
             }
         }
+
+        &__sidebar {
+            padding: 25px;
+        }
+
+        &__payment {
+            padding: 4px 12px;
+            font-size: 10px;
+        }
     }
 }

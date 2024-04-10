@@ -31,6 +31,8 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
 
     let totalPrice = replenishment.replenishment.result_price || orderPrice;
 
+    document.title = "Оплата";
+
     const checkOrder = async () => {
         const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
         await getData(route, true)

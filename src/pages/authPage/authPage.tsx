@@ -28,6 +28,10 @@ const AuthPage: FC<AuthPagePropsI> = () => {
     
     const [activeForm, setActiveForm] = useState<'register' | 'login' | 'reset'>('login');
 
+    if(activeForm === 'login') document.title = 'Вход';
+    if(activeForm === 'reset') document.title = 'Восстановление пароля';
+    if(activeForm === 'register') document.title = 'Регистрация';
+
     return (
         <div className="auth">
             <SnackbarContainer>

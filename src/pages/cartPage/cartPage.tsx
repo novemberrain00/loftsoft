@@ -128,6 +128,8 @@ const CartPage: FC<CartPagePropsI> = () => {
         });
     }
 
+    document.title = 'Корзина';
+
     return (
         <RootPage>
             <main className="cart">
@@ -375,7 +377,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                             </label>
                         </div>
                             <div className="cart__info">
-                                <span className="cart__info-row text text_small">Ваш заказ: 2 {productWordForm}</span>
+                                <span className="cart__info-row text text_small">Ваш заказ: {totalAmount} {productWordForm}</span>
                                 <span className="cart__info-row text text_small">На сумму: {totalPrice} руб.</span>
                                 <span className="cart__info-row text text_small">Без учёта скидок: {totalPrice+totalDiscount} руб.</span>
                             </div>

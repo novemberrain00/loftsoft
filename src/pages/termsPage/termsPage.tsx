@@ -8,6 +8,7 @@ interface TermsPagePropsI {
 }
  
 const TermsPage: FC<TermsPagePropsI> = () => {
+    document.title = "Пользовательское сошлашение";
     return (
         <RootPage>
             <main className="terms">

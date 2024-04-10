@@ -28,6 +28,8 @@ const ProductPage: FC<ProductPagePropsI> = () => {
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
+    
+
     useEffect(() => {
         const getProductData = async () => {
             await getData(`/product/${product}`)
@@ -49,6 +51,8 @@ const ProductPage: FC<ProductPagePropsI> = () => {
         description,
         product_photos,
     } = productData;
+
+    document.title = title;
 
     return (
         <>

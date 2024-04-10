@@ -18,13 +18,18 @@ const PasswordResetForm: FC<PasswordResetFormPropsI> = () => {
         email: '',
         password: ''
     });
+    const [status, setStatus] = useState<'done' | 'processing'>('done');
 
     const dispatch = useDispatch();
 
     const submitHandler = async (e: FormEvent) => {
         e.preventDefault()
+        setStatus('processing')
         await postData('/user/password/drop', resetData)
-        .then(() => dispatch(addSnack({text: 'Ссылка для сброса пароля отправлена на почту'})));
+        .then(() => {
+            dispatch(addSnack({text: 'Ссылка для сброса пароля отправлена на почту'}))
+        })
+        .finally(() => setStatus('done'));
     }
 
     return (
@@ -45,7 +50,7 @@ const PasswordResetForm: FC<PasswordResetFormPropsI> = () => {
                         password: (e.target as HTMLInputElement).value
                     })} type="password" className="input__text" placeholder="Пароль" id="reset-password" required/>
                 </label>
-                <input type="submit" className="btn auth__form-btn" value="Сбросить пароль"/>
+                <input type="submit" disabled={status === 'processing'} className="btn auth__form-btn" value="Сбросить пароль"/>
             </form>
         </>
     );

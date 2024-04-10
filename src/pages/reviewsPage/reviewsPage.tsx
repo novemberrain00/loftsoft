@@ -24,6 +24,8 @@ const ReviewsPage: FC<ReviewsPagePropsI> = () => {
         .then(data => setReviews(data))
     }, [])
 
+    document.title = "Отзывы";
+
     return (
         <RootPage>
             <ReviewSender isOpened={isSenderOpened} closeHandler={setIsSenderOpened}/>
