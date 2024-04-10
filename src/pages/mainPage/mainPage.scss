@@ -117,8 +117,10 @@
             min-height: 502px;
 
             &_mobile {
-                width: 320px;
-                height: 199px;
+                width: 100%;
+                max-width: 320px;
+                height: 63%;
+                transform: translateY(10px);
             }
         }
     }
@@ -416,6 +418,7 @@
             background: #2667FF;
             padding: 0;
             margin-top: 0;
+            border-radius: 33px !important;
 
             &-title {
                 margin-top: 34px !important;
@@ -562,6 +565,12 @@
             &-img {
                 width: 100%;
             }
+
+            &-carousel {
+                &_mobile {
+                    height: 63%;
+                }
+            }
         }
 
         &__catalog {
@@ -621,7 +630,14 @@
 
         &__advantages {
             width: 100%;
+
+            &-carousel_mobile {
+                max-width: 480px;
+                height: 10%;
+            }
         }
+
+        
     }
 }
 

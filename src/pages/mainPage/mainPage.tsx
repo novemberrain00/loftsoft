@@ -213,6 +213,7 @@ const MainPage: FC<MainPageProps> = () => {
                                 <h3 className="subtitle promo__advantages-subtitle">Перед конкурентами</h3>
                                 <Swiper
                                         modules={[Autoplay]}
+                                        slidesPerView={1}
                                         autoplay={{
                                             delay: 1200,
                                             disableOnInteraction: false,
