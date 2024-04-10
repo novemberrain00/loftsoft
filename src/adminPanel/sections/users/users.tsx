@@ -29,13 +29,12 @@ interface UserUpdatedDataI {
 }
  
 const Users: FC<UsersPropsI> = () => {
-    const curUser = useSelector((state: RootState) => state.user.userInfo);
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     const [usersList, setUsersList] = useState<UserI[]>([]);
+    const [initialUsersList, setInitialUsersList] = useState<UserI[]>([]);
     const [editPopup, setEditPopup] = useState<'password' | 'login' | 'balance' | ''>('');
-    const [editingUserId, setEditingUserId] = useState<number>(-1);
-    const [alertMessage, setAlertMessage] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [userInitialData, setUserInitialData] = useState({
         id: -1,
         username: '',
@@ -50,7 +49,10 @@ const Users: FC<UsersPropsI> = () => {
 
     useEffect(() => {
         getData('/users', true)
-        .then(data => setUsersList(data));
+        .then(data => {
+            setInitialUsersList(data);
+            setUsersList(data)
+        });
     }, []);
 
     const updateUser = async () => {
@@ -79,7 +81,10 @@ const Users: FC<UsersPropsI> = () => {
         })
         .then(async () => {
             await getData('/users', true)
-            .then(data => setUsersList(data));
+            .then((data: UserI[]) => {
+                setInitialUsersList(data);
+                setUsersList(data);
+            });
 
             setUserInitialData({
                 id: -1,
@@ -102,6 +107,14 @@ const Users: FC<UsersPropsI> = () => {
             setUsersList(data)
         })
     }
+
+    useEffect(() => {
+        const newList = initialUsersList.filter(user => {
+            return user.username.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        });
+        
+        setUsersList(newList)
+    }, [searchTerm])
 
     return (
         <>
@@ -195,7 +208,7 @@ const Users: FC<UsersPropsI> = () => {
                 <div className="users__header">
                     <div className="search subcategories__search">
                         <img src={SearchIcon} alt="поиск" className="search__icon subcategories__search-icon"/>
-                        <input type="text" placeholder="Поиск" className="search__input" />
+                        <input onInput={(e) => setSearchTerm((e.target as HTMLInputElement).value)} type="text" placeholder="Поиск" className="search__input" />
                     </div>
                 </div>
                 <ul className="list users__list">

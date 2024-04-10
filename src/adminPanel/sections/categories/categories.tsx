@@ -155,7 +155,6 @@ const Categories: FC<CategoriesPropsI> = () => {
 
     useEffect(() => {
         const newCategories = categoriesInitialList.filter(cat => cat.title.toLowerCase().includes(searchQuery))
-        console.log(categoriesInitialList)
         setCategories(newCategories)
     }, [searchQuery])
 

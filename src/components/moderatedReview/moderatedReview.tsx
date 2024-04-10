@@ -111,10 +111,10 @@ const ModeratedReview: FC<ModeratedReviewPropsI> = ({
                 </div>
             </div>
             <div className="review__images">
-                <FsLightbox
+                {/* <FsLightbox
                     toggler={toggler}
                     sources={images && [...images.map(img => <img src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} />)]}
-                ></FsLightbox>
+                ></FsLightbox> */}
                 {
                     images && images.map(img => 
                         <img onClick={() => setToggler(true)} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />

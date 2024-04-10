@@ -192,7 +192,7 @@
     }
 
     &__search {
-        width: 640px;
+        width: 530px;
 
         &-input {
             width: calc(90% - 90px);
@@ -226,6 +226,10 @@
                 cursor: pointer;
                 text-decoration: underline;
             }
+        }
+
+        &:hover {
+            cursor: pointer;
         }
 
         #header-cart {
@@ -263,6 +267,8 @@
 
         &-icon {
             width: 24px;
+
+            
         }
     }
 

@@ -21,7 +21,7 @@ const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
 
     const closeTicket = async (e: MouseEvent, id: number) => {
         e.preventDefault();
-        await postData(`/ticket/${id}/close`, {}, true)
+        await postData(`/ticket/${id}/delete`, {}, true)
         .then(() => setTicketsList(ticketsList.filter(ticket => ticket.id !== id)))
     }
 
@@ -34,7 +34,7 @@ const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
 
     return (
         <>
-            <AdminHeader title="Начало работы">
+            <AdminHeader title="История тикетов">
                 <button onClick={() => navigate(-1)} className="admin__btn btn">
                     <img src={BackArrow} alt="назад"/>
                     Назад

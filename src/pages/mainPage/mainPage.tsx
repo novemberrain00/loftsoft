@@ -138,7 +138,7 @@ const MainPage: FC<MainPageProps> = () => {
                                 <h2 className="banner__title title">WINDOWS 11</h2>
                                 <h3 className="subtitle subtitle_black">Обновитесь уже сейчас!</h3>
                                 <div className="sale">
-                                    <Link to='/catalog/38/47' target="_blank">
+                                    <Link to='/catalog/38/51' target="_blank">
                                         <button className="btn sale__btn">Перейти</button>
                                     </Link>
                                     <div className="discount-value sale__value">-40%</div>

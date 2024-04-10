@@ -63,6 +63,8 @@
             background-color: #F2F2F2;
             padding: 20px;
             box-sizing: border-box;
+            font-family: Onest;
+            font-size: 16px;
         }
 
         &-bottom {
@@ -100,4 +102,39 @@
             width: calc(100% - 104px);
         }
     }
+}
+
+@media screen and (max-width: 576px) {
+    .ticket-page {
+        &__message {
+            max-width: 340px;
+            column-gap: 5px;
+
+            &-avatar {
+                img {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
+            &-body {
+                width: 280px;
+            }
+        }
+
+        &__sender {
+            img {
+                width: 40px;
+            }
+        }
+
+        &__form {
+            gap: 10px;
+            width: calc(100% - 50px);
+        }
+
+        &__input {
+            font-size: 16px;
+        }
+    }   
 }

@@ -39,18 +39,30 @@ const Start: FC<StartPropsI> = () => {
             <AdminHeader title="Начало работы"></AdminHeader>
             <div className="start">
                 <div className="start__top">
-                    <div className="start__top-item">
-                        <img src={BackIcon} alt="Перейти к последнему тикету" />
-                        Перейти к последнему тикету
-                    </div>
-                    <div className="start__top-item">
+                    {
+                        tickets.length ?
+                        <Link to={`${tickets[tickets.length-1]?.id}`}>
+                            <div className="start__top-item">
+                                <img src={BackIcon} alt="Перейти к последнему тикету" />
+                                Перейти к последнему тикету
+                            </div>
+                        </Link> : null
+                    }
+                    <div onClick={(e: MouseEvent) => {
+                        tickets.forEach(({id}) => {
+                            closeTicket(e, id)
+                            setTickets([])
+                        })
+                    }} className="start__top-item">
                         <img src={CloseIcon} alt="Закрыть все чаты" />
                         Закрыть все чаты
                     </div>
+                    <Link to="history">
                     <div className="start__top-item">
                         <img src={UpdateIcon} alt="История закрытых тикетов" />
                         История закрытых тикетов
                     </div>
+                    </Link>
                 </div>
                 <div className="start__tickets tickets">
                     <h2 className="tickets__title">
@@ -59,6 +71,8 @@ const Start: FC<StartPropsI> = () => {
                             selectedTickets.forEach(ticketId => {
                                 closeTicket(e, ticketId)
                             })
+
+                            setSelectedTickets([])
                         }} className="tickets__helper">
                             <img src={TrashIcon} alt="удалить" />
                         </div>
