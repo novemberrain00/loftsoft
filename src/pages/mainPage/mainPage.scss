@@ -175,8 +175,6 @@
 }
 
 .top {
-    overflow: auto;
-
     &__header {
         width: 340px;
         display: flex;
@@ -190,6 +188,7 @@
         gap: 40px;
         margin-top: 30px;
         padding-bottom: 24px;
+        overflow: auto;
     }
 }
 
