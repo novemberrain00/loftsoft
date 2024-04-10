@@ -57,24 +57,26 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     }
 
     useEffect(() => {
-        console.log(subcategory)
-        if(subcategory === undefined) return;
- 
-        getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
-        .then((data: ProductI[]) => {
-            setProducts(data);
-            if(!categories.length) return;
-            setPathString(categories);
-        });
-    }, [subcategory, filters]);
-
-    useEffect(() => {
         getData('/categories?empty_filter=true')
         .then(data => {
             setCategories(data)
             setPathString(data);
         });
-    }, []);
+
+        if(subcategory) {
+            getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
+            .then((data: ProductI[]) => {
+                setProducts(data);
+                if(!categories.length) return;
+                setPathString(categories);
+            });
+
+            return
+        }
+
+        getData(`/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
+        .then((data: ProductI[]) => setProducts(data))
+    }, [subcategory, filters]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -204,7 +206,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                         priceOld={product.card_price}
                                         priceNew={product.card_sale_price}
                                         discount={product.sale_percent}
-                                        url={product.id+''}
+                                        url={`/catalog/${product.subcategory_id}/${product.id}`}
                                     />
                                 }) : <Loader/>
                             }

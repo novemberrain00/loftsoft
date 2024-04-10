@@ -9,7 +9,6 @@ import DotsIcon from '../../assets/images/icons/dots-icon.svg';
 import WhiteCartIcon from '../../assets/images/icons/cart_white.svg';
 import RightArrow from '../../assets/images/icons/right-arrow_light.svg';
 import SBPIcon from '../../assets/images/icons/sbp.svg';
-import CryptoIcon from '../../assets/images/icons/cryptocurrency.svg'
 import WalletIcon from '../../assets/images/icons/wallet_blue.svg';
 
 import EmptyCartImg from '../../assets/images/img/cart/empty.jpg';
@@ -17,7 +16,7 @@ import EmptyCartImg from '../../assets/images/img/cart/empty.jpg';
 import { RootState } from "../../store";
 
 import CartItem from "../../components/cartItem/cartItem";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getData, postData } from "../../services/services";
 
 import CheckIcon from '../../assets/images/icons/check.svg';
@@ -28,9 +27,8 @@ import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 import { setUserInfo } from "../../redux/userSlice";
 import { OrderI } from "../../interfaces";
 
-import './cartPage.scss';
-import { setOrder } from "../../redux/straightOrderSlice";
 import { setPurchase } from "../../redux/purchaseSlice";
+import './cartPage.scss';
 
 interface CartPagePropsI {
     
@@ -187,6 +185,12 @@ const CartPage: FC<CartPagePropsI> = () => {
                                     }
                                 
                                 </div>
+                                <Link to="/catalog">
+                                    <button className="btn cart__btn">
+                                        <img src={DotsIcon} alt="Добавить товары" />
+                                        Добавить товары
+                                    </button>
+                                </Link>
                             </> :
                             <>
                                 <div className="cart__order-header cart__order-header_vertical">
@@ -194,6 +198,12 @@ const CartPage: FC<CartPagePropsI> = () => {
                                     <h3 className="cart__order-subtitle">Но вы можете добавить их из нашего каталога</h3>
                                 </div>
                                 <img src={EmptyCartImg} alt="В корзине пока нет товаров" className="cart__order-img" />
+                                <Link to="/catalog">
+                                    <button className="btn cart__btn">
+                                        <img src={DotsIcon} alt="Добавить товары" />
+                                        Добавить товары
+                                    </button>
+                                </Link>
                             </>
                         }
                         
