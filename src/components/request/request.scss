@@ -1,0 +1,97 @@
+.request {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 50px;
+    width: 28vw;
+
+    &__title {
+        font-family: Roboto;
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 600;
+    }
+
+    &__header {
+        &-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        &-tab {
+            width: max-content;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 100px;
+            border: 2px solid rgba(0, 0, 0, 0.10);
+            background: #DFEEFF;
+            padding: 12px;
+            font-family: Onest;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+
+            &:hover, &_active {
+                cursor: pointer;
+                background: rgba(223, 238, 255, .4);
+            }
+
+            img {
+                width: 20px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    &__alert {
+        display: block;
+        color: #FB6363;
+        font-family: Roboto;
+        font-size: 14px;
+        margin-top: 8px;
+        font-weight: 500;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        
+        &-link {
+            color: #2767FE;
+            font-family: Onest;
+            font-size: 16px;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .request {
+        &__footer {
+            &-link {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 980px) {
+    .request {
+        width: 50vw;
+    }
+}
+
+@media screen and (max-width: 756px) {
+    .request {
+        width: 75vw;
+    }
+}

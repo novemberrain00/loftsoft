@@ -212,6 +212,21 @@
         align-items: center;
         gap: 18px;
 
+        &-request {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #2667FF;
+            font-family: Roboto;
+            font-size: 14px;
+            font-weight: 400;
+
+            &:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+
         #header-cart {
             position: relative;
             display: block;

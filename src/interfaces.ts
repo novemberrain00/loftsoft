@@ -258,7 +258,7 @@ export interface PurchaseI {
     number: string
     result_price: number
     order_data:  {
-        count: number;
+        count: number
         give_type: string
         id: number
         items: string[]
@@ -293,12 +293,21 @@ export interface TelegramDataI {
 }
 
 export interface AdminOrderI {
-    number: string;
-    order_id: number;
-    date: string;
-    email: string;
-    product: string;
-    give_type: string;
-    count: number;
+    number: string
+    order_id: number
+    date: string
+    email: string
+    product: string
+    give_type: string
+    count: number
+}
+
+export interface RequestI {
+    contact_type: string
+    contact: string
+    files: string[]
+    count: number
+    full_name: string
+    description: string
 }
 

@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, MouseEvent} from 'react';
 
 import './overlay.scss';
 
@@ -21,7 +21,7 @@ const Overlay: FC<OverlayI> = ({children, closeHandler}) => {
     
 
     return (
-        <div onClick={(e: any) => handleClose(e)} className="overlay">
+        <div onClick={(e: MouseEvent) => handleClose(e)} className="overlay">
             <div className="overlay__children">
                 {children}
             </div>

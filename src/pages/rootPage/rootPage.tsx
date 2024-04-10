@@ -13,6 +13,7 @@ import CopyIcon from '../../assets/images/icons/copy.svg';
 import BlueSquareIcon from '../../assets/images/icons/blue-square.svg';
 import AccountIcon from '../../assets/images/icons/account.svg';
 import BackIcon from '../../assets/images/icons/arrow-left_black.svg';
+import RequestIcon from '../../assets/images/icons/request.svg';
 
 import DiscountImg from '../../assets/images/img/discount.png';
 
@@ -37,6 +38,7 @@ import useDebounce from '../../hooks/useDebounce';
 
 import './rootPage.scss';
 import ReplenishPopup from '../../components/replenishPopup/replenishPopup';
+import Request from '../../components/request/request';
 
 interface RootPagePropsI {
     isFooterHidden?:boolean
@@ -56,14 +58,15 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
         category: 0
     });
 
+    const [seachTerm, setSearchTerm] = useState<string>('');
+    const [categories, setCategories] = useState<CategoryI[]>([]);
     const [isHistoryShowed, setIsHistoryShowed] = useState<boolean>(false);
     const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false); 
-    const [categories, setCategories] = useState<CategoryI[]>([]);
-    const [seachTerm, setSearchTerm] = useState<string>('');
     const [isReplenishOpened, setIsReplenishOpened] = useState<boolean>(false);
     const [isChatOpened, setIsChatOpened] = useState<boolean>(false);
     const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
     const [isSubcatsOpened, setIsSubcatsOpened] = useState<boolean>(false);
+    const [isRequestOpened, setIsRequestOpened] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
@@ -123,6 +126,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
             />
             <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
             <Profile isOpened={isProfileOpened} data={userData} replenishOpener={setIsReplenishOpened} closeHandler={setIsProfileOpened}/>
+            <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
             <Dropdown 
                 text="Каталог товаров"
                 classList="header__menu-item header__menu-link link"
@@ -247,6 +251,10 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         </Link>
                         <span onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
                             <img src={UpdateIcon} alt="история" className="header__info-icon"/>
+                        </span>
+                        <span onClick={() => setIsRequestOpened(true)} className="header__info-item header__info-request">
+                            Запрос товара
+                            <img src={RequestIcon} alt="Запрос товара" />
                         </span>
                         {
                             username && 
