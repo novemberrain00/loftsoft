@@ -45,12 +45,12 @@ const Parameter: FC<ParameterPropsI> = ({
         setIsDataPosted(false)
         if(!window.localStorage.getItem('access_token')) {
             await postData('/user/register', {
-                username: Math.random().toString(36).substring(2, 14)
+                username: `user-${Math.random().toString(36).substring(2, 14)}`
             })
             .then(data => {
                 if(data.access_token) {
-                    window.localStorage.setItem('access_token', data.access_token)
-                    postToCart()
+                    window.localStorage.setItem('access_token', data.access_token);
+                    postToCart();
                 } 
             })
         }

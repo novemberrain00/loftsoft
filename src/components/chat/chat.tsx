@@ -1,4 +1,5 @@
-import { FC, useEffect, useState, MouseEvent, useRef } from "react";
+import { FC, useEffect, useState, MouseEvent } from "react";
+import { useDispatch } from "react-redux";
 
 import HamburgerIcon from '../../assets/images/icons/hamburger.svg';
 import CloserIcon from '../../assets/images/icons/close.svg';
@@ -12,8 +13,9 @@ import BackIcon from '../../assets/images/icons/back-bg-blue.svg';
 
 import { getData, postData, timestampToTime } from "../../services/services";
 
-import { SupportTicketI } from "../../interfaces";
+import { SupportTicketI, UserI } from "../../interfaces";
 import './chat.scss';
+import { setUserInfo } from "../../redux/userSlice";
 
 interface ChatPropsI {
     isChatOpened: boolean
@@ -21,19 +23,30 @@ interface ChatPropsI {
 }
  
 const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
+    const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
+
     const [message, setMessage] = useState<string>('');
     const [ticketsList, setTicketsList] = useState<SupportTicketI[]>([]);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
 
+    const dispatch = useDispatch();
+
     const sendMessage = async () => {
         if(!window.localStorage.getItem('access_token')) {
             await postData('/user/register', {
-                username: Math.random().toString(36).substring(2, 14)
+                username: `user-${Math.random().toString(36).substring(2, 14)}`
             })
-            .then(data => {
+            .then(async (data) => {
                 if(data.access_token) {
-                    window.localStorage.setItem('access_token', data.access_token)
-                }
+                    window.localStorage.setItem('access_token', data.access_token);
+
+                    await getData('/user/me', true).then((data: UserI) => dispatch(setUserInfo({
+                        ...data,
+                        username: `user-${data.username}`,
+                        photo: baseURL+'/uploads/'+data.photo
+                    })))
+                    sendMessage();
+                } 
             })
         }
 

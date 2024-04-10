@@ -128,7 +128,7 @@
 
     .search {
         position: relative;
-        margin-right: -35px;
+        margin-right: -100px;
 
         &__results {
             position: absolute;
@@ -195,7 +195,7 @@
         width: 640px;
 
         &-input {
-            width: calc(100% - 90px);
+            width: calc(90% - 90px);
             z-index: 12;
         }
 

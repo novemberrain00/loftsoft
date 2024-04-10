@@ -2,7 +2,7 @@ import {FC, useState, useEffect} from 'react';
 import { useClipboard } from 'use-clipboard-copy';
 import { Link } from 'react-router-dom';
 
-import { CategoryI, LinkI, SnackI, SubcategoryI } from '../../interfaces';
+import { CategoryI, LinkI, SnackI, SubcategoryI, UserI } from '../../interfaces';
 
 import LogoImg from '../../assets/images/logo/logo.svg';
 import LogoMobileImg from '../../assets/images/logo/logo_mobile.svg';
@@ -76,7 +76,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     useEffect(() => {
         const getUserData = async () => {
             await getData('/user/me', true)
-                .then(data => {
+                .then((data: UserI) => {
                     dispatch(setUserInfo({
                         ...data,
                         photo: baseURL+'/uploads/'+data.photo

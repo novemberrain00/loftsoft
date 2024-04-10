@@ -74,6 +74,41 @@
     }
 }
 
+.request-success {
+    text-align: center;
+
+    &__title {
+        font-family: Roboto;
+        font-size: 32px;
+        font-weight: 600;
+        margin: 70px 0 0;
+    }
+
+    &__subtitle {
+        color: #A4A4A4;
+        font-family: Onest;
+        font-size: 16px;
+        margin: 8px 0;
+        font-weight: 400;
+    }
+
+    &__img {
+        width: 200px;
+        margin-top: 70px;
+        margin-bottom: 40px;
+    }
+
+    &__text {
+        margin-bottom: 37px !important;
+    }
+
+    &__link {
+        display: block;
+        margin-left: auto;
+        width: max-content;
+    }
+}
+
 @media screen and (max-width: 1280px) {
     .request {
         &__footer {

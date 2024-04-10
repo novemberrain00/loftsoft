@@ -6,11 +6,11 @@ import TrashIcon from "../../assets/images/icons/trash_blue.svg";
 import TgIcon from "../../assets/images/icons/tg_round.svg";
 import WhatsAppIcon from "../../assets/images/icons/whatsapp_round.svg";
 import EmailIcon from "../../assets/images/icons/email.svg";
+import SuccessIcon from "../../assets/images/icons/request-success.svg";
 
 import { RequestI } from "../../interfaces";
-import "./request.scss";
 import { postData } from "../../services/services";
-import { count } from "console";
+import "./request.scss";
 
 interface RequestPropsI {
     isOpened: boolean
@@ -19,6 +19,7 @@ interface RequestPropsI {
  
 const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
     const [isConnectionsShowed, setIsConnectionsShowed] = useState(false);
+    const [isSuccessShowed, setIsSuccessShowed] = useState(false);
     const [requests, setRequests] = useState<RequestI[]>([
         {
             contact_type: "",
@@ -62,6 +63,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
         requestsRef.splice(i, 1);
         setRequests([...requestsRef]);
         setCurRequest(i === 0 ? requests[0] : requests[i - 1])
+        setActiveRequest(i === 0 ? 0 : i-1)
     }
 
     const changeConnectionType = (type: string) => {
@@ -117,7 +119,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
 
         if(isDataOk) {
             await postData('/product/request', requests)
-            .then(() => closeHandler(false))
+            .then(() => setIsSuccessShowed(true))
         }
     }
 
@@ -127,116 +129,140 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
         setRequests(newList);
     }, [curRequest]);
 
+    useEffect(() => setAlertMessage(''), [isOpened])
+
     useEffect(() => setCurRequest(requests[activeRequest]), [activeRequest])
 
     return isOpened ? (
-        <Overlay closeHandler={closeHandler}>
-            <div className="request">
-                <header className="request__header">
-                    <h3 className="request__title title">Запросить товар</h3>
-                    <div className="request__header-tabs">
-                        {
-                            requests.length ? requests.map((req, i) => {
-                                return (
-                                    <div 
-                                        key={Math.random()} 
-                                        onClick={() => setActiveRequest(i)} 
-                                        className={`request__header-tab ${activeRequest === i ? 'request__header-tab_active' : ''}`}
-                                    >
-                                        <img src={TrashIcon} onClick={() => deleteRequest(i)} alt="Удалить" />
-                                        Запрос #{i+1}
-                                    </div>
-                                ) 
-                            }) : null
-                        }
+        <>
+        {
+            isSuccessShowed ?
+            <Overlay closeHandler={closeHandler}>
+                <div className="request request-success">
+                    <div className="request__header">
+                        <h3 className="request-success__title">Запрос отправлен</h3>
+                        <h5 className="request-success__subtitle">Дождитесь ответа на указанные данные</h5>
                     </div>
-                </header>
-                <form action="post" className="purchase__form">
-                    <div className="purchase__dropdown">
-                        <div onClick={() => setIsConnectionsShowed(!isConnectionsShowed)} className="purchase__form-input purchase__dropdown-opener">
-                            {curRequest.contact_type || 'Способ связи'}
-                            <img src={ArrowIcon} style={{transform: isConnectionsShowed ? 'rotate(90deg)': ''}} alt="открыть" className="purchase__form-icon" />
-                        </div>
-                        <ul 
-                            className={`list purchase__dropdown-list ${isConnectionsShowed? 'purchase__dropdown-list_opened' : null}`}
-                        >
-                            <li onClick={() => changeConnectionType('email')} className="purchase__dropdown-item">
-                                <img src={EmailIcon} alt="Через почту" />
-                                Через почту
-                            </li>
-                            <li onClick={() => changeConnectionType('whatsapp')} className="purchase__dropdown-item">
-                                <img src={WhatsAppIcon} alt="WhatsApp" />
-                                WhatsApp
-                            </li>
-                            <li onClick={() => changeConnectionType('telegram')} className="purchase__dropdown-item">
-                                <img src={TgIcon} alt="Telegram" />
-                                Telegram
-                            </li>
-                        </ul>
-                    </div>
-                    <input  
-                        onInput={(e) => {
-                            setCurRequest({
-                                ...curRequest, 
-                                contact: (e.target as HTMLInputElement).value
-                            })
-                        }}
-                        value={curRequest.contact}
-                        placeholder="Контакт" 
-                        type="text" 
-                        className="purchase__form-input"
-                    />
-                    <input  
-                        onInput={(e) => {
-                            setCurRequest({
-                                ...curRequest, 
-                                count: +(e.target as HTMLInputElement).value || 0
-                            })
-                        }}
-                        value={curRequest.count}
-                        style={{marginTop: '20px'}}
-                        placeholder="Количество (Мин.: 1)" 
-                        type="text" 
-                        className="purchase__form-input"
-                    />
-                    <input  
-                        onInput={(e) => {
-                            setCurRequest({
-                                ...curRequest, 
-                                full_name: (e.target as HTMLInputElement).value
-                            })
-                        }}
-                        value={curRequest.full_name}
-                        style={{marginTop: '20px'}}
-                        placeholder="Полное название товара" 
-                        type="text" 
-                        className="purchase__form-input"
-                    />
-                    <input  
-                        onInput={(e) => {
-                            setCurRequest({
-                                ...curRequest, 
-                                description: (e.target as HTMLInputElement).value
-                            })
-                        }}
-                        value={curRequest.description}
-                        style={{marginTop: '20px'}}
-                        placeholder="Описание товара" 
-                        type="text" 
-                        className="purchase__form-input"
-                    />
-                </form>
-                <span className="request__alert">{alertMessage}</span>
-                <footer className="request__footer">
-                    <a href="#" onClick={(e: MouseEvent) => createRequest(e)} className="request__footer-link">Создать ещё</a>
-                    <a href="#" onClick={(e: MouseEvent) => sendRequests(e)} className="request__footer-link">Отправить всё</a>
+                    <img src={SuccessIcon} alt="Запрос отправлен" className="request-success__img"/>
+                    <p className="text text_large request-success__text">
+                        В письме будет указано наличие и цены товара, которые необходимо будет изучить перед покупкой. Если возникнут вопросы - мы всегда на связи!
+                    </p>
                     <a href="#" onClick={(e: MouseEvent) => {
                         e.preventDefault();
+                        setIsSuccessShowed(false);
                         closeHandler(false)
-                    }} className="request__footer-link">Закрыть</a>
-                </footer>
-            </div>
-        </Overlay>
+                    }} className="request__footer-link request-success__link">Готово</a>
+                </div>
+            </Overlay> : 
+            <Overlay closeHandler={closeHandler}>
+                <div className="request">
+                    <header className="request__header">
+                        <h3 className="request__title title">Запросить товар</h3>
+                        <div className="request__header-tabs">
+                            {
+                                requests.length ? requests.map((req, i) => {
+                                    return (
+                                        <div 
+                                            key={Math.random()} 
+                                            onClick={() => setActiveRequest(i)} 
+                                            className={`request__header-tab ${activeRequest === i ? 'request__header-tab_active' : ''}`}
+                                        >
+                                            <img src={TrashIcon} onClick={() => deleteRequest(i)} alt="Удалить" />
+                                            Запрос #{i+1}
+                                        </div>
+                                    ) 
+                                }) : null
+                            }
+                        </div>
+                    </header>
+                    <form action="post" className="purchase__form">
+                        <div className="purchase__dropdown">
+                            <div onClick={() => setIsConnectionsShowed(!isConnectionsShowed)} className="purchase__form-input purchase__dropdown-opener">
+                                {curRequest.contact_type || 'Способ связи'}
+                                <img src={ArrowIcon} style={{transform: isConnectionsShowed ? 'rotate(90deg)': ''}} alt="открыть" className="purchase__form-icon" />
+                            </div>
+                            <ul 
+                                className={`list purchase__dropdown-list ${isConnectionsShowed? 'purchase__dropdown-list_opened' : null}`}
+                            >
+                                <li onClick={() => changeConnectionType('email')} className="purchase__dropdown-item">
+                                    <img src={EmailIcon} alt="Через почту" />
+                                    Через почту
+                                </li>
+                                <li onClick={() => changeConnectionType('whatsapp')} className="purchase__dropdown-item">
+                                    <img src={WhatsAppIcon} alt="WhatsApp" />
+                                    WhatsApp
+                                </li>
+                                <li onClick={() => changeConnectionType('telegram')} className="purchase__dropdown-item">
+                                    <img src={TgIcon} alt="Telegram" />
+                                    Telegram
+                                </li>
+                            </ul>
+                        </div>
+                        <input  
+                            onInput={(e) => {
+                                setCurRequest({
+                                    ...curRequest, 
+                                    contact: (e.target as HTMLInputElement).value
+                                })
+                            }}
+                            value={curRequest.contact}
+                            placeholder="Контакт" 
+                            type="text" 
+                            className="purchase__form-input"
+                        />
+                        <input  
+                            onInput={(e) => {
+                                setCurRequest({
+                                    ...curRequest, 
+                                    count: +(e.target as HTMLInputElement).value || 0
+                                })
+                            }}
+                            value={curRequest.count}
+                            style={{marginTop: '20px'}}
+                            placeholder="Количество (Мин.: 1)" 
+                            type="text" 
+                            className="purchase__form-input"
+                        />
+                        <input  
+                            onInput={(e) => {
+                                setCurRequest({
+                                    ...curRequest, 
+                                    full_name: (e.target as HTMLInputElement).value
+                                })
+                            }}
+                            value={curRequest.full_name}
+                            style={{marginTop: '20px'}}
+                            placeholder="Полное название товара" 
+                            type="text" 
+                            className="purchase__form-input"
+                        />
+                        <input  
+                            onInput={(e) => {
+                                setCurRequest({
+                                    ...curRequest, 
+                                    description: (e.target as HTMLInputElement).value
+                                })
+                            }}
+                            value={curRequest.description}
+                            style={{marginTop: '20px'}}
+                            placeholder="Описание товара" 
+                            type="text" 
+                            className="purchase__form-input"
+                        />
+                    </form>
+                    <span className="request__alert">{alertMessage}</span>
+                    <footer className="request__footer">
+                        <a href="#" onClick={(e: MouseEvent) => createRequest(e)} className="request__footer-link">Создать ещё</a>
+                        <a href="#" onClick={(e: MouseEvent) => sendRequests(e)} className="request__footer-link">Отправить всё</a>
+                        <a href="#" onClick={(e: MouseEvent) => {
+                            e.preventDefault();
+                            closeHandler(false)
+                        }} className="request__footer-link">Закрыть</a>
+                    </footer>
+                </div>
+            </Overlay>
+        }
+        </>
     ) : null;
 }
  
