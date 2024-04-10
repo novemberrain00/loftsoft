@@ -6,7 +6,7 @@ import WalletIcon from '../../assets/images/icons/wallet.svg';
 import CartIcon from '../../assets/images/icons/shopping_cart.svg';
 import UpdateIcon from '../../assets/images/icons/update.svg';
 import DashboartIcon from '../../assets/images/icons/dashboard.svg';
-import LogoutIcon from '../../assets/images/icons/logout.svg';
+import LogoutIcon from '../../assets/images/icons/logout-profile.svg';
 
 import ProfileEditor from "../profileEditor/profileEditor";
 import Overlay from "../overlay/overlay";
