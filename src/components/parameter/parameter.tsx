@@ -43,6 +43,18 @@ const Parameter: FC<ParameterPropsI> = ({
 
     const postToCart = async () => {
         setIsDataPosted(false)
+        if(!window.localStorage.getItem('access_token')) {
+            await postData('/user/register', {
+                username: Math.random().toString(36).substring(2, 14)
+            })
+            .then(data => {
+                if(data.access_token) {
+                    window.localStorage.setItem('access_token', data.access_token)
+                    postToCart()
+                } 
+            })
+        }
+        
         await postData('/cart/add', {
             product_id: productId,
             parameter_id: id,

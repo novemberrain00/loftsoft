@@ -357,7 +357,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
             </header>
             {children}
             {
-                userData.is_admin || !window.localStorage.getItem('access_token') ?  
+                userData.is_admin ?  
                     null : 
                     <Chat isChatOpened={isChatOpened} setIsChatOpened={setIsChatOpened}/>
             }

@@ -431,6 +431,13 @@
             height: 42px;
         }
 
+        .discount {
+            &-value {
+                height: 20px;
+                margin: 0 10px;
+            }
+        }
+
         &__catalog {
             margin-top: -30px;
             &-title {

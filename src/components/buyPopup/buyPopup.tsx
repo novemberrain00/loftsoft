@@ -184,10 +184,13 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                                 <img src={SBPIcon} alt="сбп" />
                                 Система быстрых платежей
                             </li>
-                            <li onClick={() => setActivePayment('Баланс сайта')} className="purchase__dropdown-item">
-                                <img src={WalletIcon} alt="сбп" />
-                                Баланс сайта
-                            </li>
+                            {
+                                window.localStorage.getItem('access_token') ?
+                                <li onClick={() => setActivePayment('Баланс сайта')} className="purchase__dropdown-item">
+                                    <img src={WalletIcon} alt="сбп" />
+                                    Баланс сайта
+                                </li> : null
+                            }
                         </ul>
                     </div>
                     <input 

@@ -197,10 +197,6 @@ const CartPage: FC<CartPagePropsI> = () => {
                             </>
                         }
                         
-                        <button onClick={() => navigate('/catalog')} className="btn cart__btn">
-                            <img src={DotsIcon} alt="добавить товары"/>
-                            Добавить товары
-                        </button>
                     </div>
                     <aside className="cart__sidebar desktop-block block">
                         <div className="cart__widget">
@@ -268,10 +264,13 @@ const CartPage: FC<CartPagePropsI> = () => {
                                     <img src={CryptoIcon} alt="Криптовалюта" className="cart__payment-icon" />
                                     Криптовалюта
                                 </div> */}
-                                <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
-                                    <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
-                                    Баланс на сайте
-                                </div>
+                                {
+                                    window.localStorage.getItem('access_token') ?
+                                        <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
+                                            <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
+                                            Баланс на сайте
+                                        </div> : null
+                                }
                             </div>
                         </div>
                         <div className="cart__sidebar-footer">
@@ -300,10 +299,13 @@ const CartPage: FC<CartPagePropsI> = () => {
                                         <img src={CryptoIcon} alt="Криптовалюта" className="cart__payment-icon" />
                                         Криптовалюта
                                     </div> */}
-                                    <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
-                                        <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
-                                        Баланс на сайте
-                                    </div>
+                                    {
+                                    window.localStorage.getItem('access_token') ?
+                                        <div onClick={() => setActivePayment('site_balance')} className={`cart__payment ${activePayment === 'site_balance' && 'cart__payment_active'}`}>
+                                            <img src={WalletIcon} alt="Баланс на сайте" className="cart__payment-icon" />
+                                            Баланс на сайте
+                                        </div> : null
+                                }
                                 </div>
                             </div>
                             {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
