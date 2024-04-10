@@ -27,14 +27,13 @@
 
         &-items {
             display: flex;
-            flex-wrap: wrap;
             gap: 18px;
         }
 
         &-item {
            border-radius: 25px;
-
-            &_active {
+           
+           &_active {
                 animation: fadeIn .6s ease forwards;
             }
 
@@ -198,7 +197,7 @@
     }
 
     &__discount-value {
-        margin: 0 34px 0 8px !important;
+        margin: 0 0px 0 8px !important;
         border-radius: 10px !important;
     }
 }
@@ -208,6 +207,7 @@
         &__container {
             grid-template-columns: 2fr 3fr;
         }
+
         &__gallery {
             &-items {
                 gap: 10px;
@@ -286,40 +286,37 @@
             margin-bottom: 32px;
         }
 
-        &__text {
-            margin: 13px 0 !important;
-            font-size: 20px !important;
-        }
+        // &__text {
+        //     margin: 13px 0 !important;
+        //     font-size: 20px !important;
+        // }
 
-        &__price {
-            margin-right: initial;
+        // &__price {
+        //     margin-right: initial;
 
-            &_old {
-                margin: 0 8px;
-            }
-        }
+        //     &_old {
+        //         margin: 0 8px;
+        //     }
+        // }
 
-        &__btn {
-            margin-right: 16px;
-        }
+        // // &__btn {
+        // //     margin-right: 16px;
+        // // }
 
-        &__switch {
-            margin-left: auto;
-            margin-right: 16px;
-        }
+        // // &__switch {
+        // //     margin-left: auto;
+        // //     margin-right: 16px;
+        // // }
 
-        &__discount-value {
-            margin: 0 !important;
-        }
+        // // &__discount-value {
+        // //     margin: 0 !important;
+        // // }
     }
 }
 
 @media screen and (max-width: 756px) {
     .product-page {
-
         &__gallery {
-            flex-direction: column;
-
             &-active {
                 margin-bottom: 16px;
 
@@ -332,6 +329,63 @@
             &-items {
                 gap: 16px;
             }
+
+            &-item {
+                width: 100%;
+            }
+        }
+
+        &__discount {
+            &-value {
+                padding: 6px 12px !important;
+            }
+        }
+
+        &__switch {
+            margin-right: 8px;
+            font-size: 21px;
+
+            &-counter {
+                padding: 4px 12px;
+                width: 30px;
+            }
+
+            &-btn {
+                height: 34px;
+                padding: 0 10px;
+            }
+        }
+
+        &__price {
+            font-size: 18px;
+
+            &_old {
+                font-size: 16px;
+            }
+        }
+
+        &__btn {
+            font-size: 14px;
+            padding: 8px 12px;
+        }
+
+        &__var {
+            padding: 35px 20px 32px;
+
+            &-cart {
+                width: 30px;
+                height: 30px;
+
+                img {
+                    width: 20px;
+                }
+            }
+        }
+
+        .discount {
+            &-value {
+                margin: 0 8px !important;
+            }
         }
     }
 }
@@ -342,24 +396,46 @@
             display: none !important;
         }
 
-        &__btn {
-            font-size: 16px;
-            margin: 0;
+        &__gallery {
+            flex-direction: column;
+
+            &-items {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            &-item {
+                width: 30%;
+            }
         }
 
-        &__var-title {
-            text-align: center;
-            margin-bottom: 17px !important;
+        &__btn {
+            font-size: 10px;
+            margin: 0 4px;
+            padding: 8px;
         }
 
         &__switch {
-            margin-left: 0;
+            margin-right: 0;
+
+            &-btn {
+                padding: 0 8px;
+                height: 26px;
+            }
+
+            &-counter {
+                font-size: 19px;
+                width: 30px;
+                padding: 1px 12px;
+            }
         }
 
-        &__bottom {
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 15px;
+        &__price {
+            font-size: 14px;
+
+            &_old {
+                font-size: 10px;
+            }
         }
     }
 }

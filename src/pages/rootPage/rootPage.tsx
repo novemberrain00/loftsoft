@@ -14,8 +14,9 @@ import BlueSquareIcon from '../../assets/images/icons/blue-square.svg';
 import AccountIcon from '../../assets/images/icons/account.svg';
 import BackIcon from '../../assets/images/icons/arrow-left_black.svg';
 import RequestIcon from '../../assets/images/icons/request.svg';
+import MobileLogo from '../../assets/images/logo/logo_mobile.svg';
 
-import DiscountImg from '../../assets/images/img/discount.png';
+import DiscountImg from '../../assets/images/img/discount.svg';
 
 import Dropdown from '../../components/dropdown/dropdown';
 import History from '../../components/history/history';
@@ -36,9 +37,9 @@ import { getData } from '../../services/services';
 import { setUserInfo } from '../../redux/userSlice';
 import useDebounce from '../../hooks/useDebounce';
 
-import './rootPage.scss';
 import ReplenishPopup from '../../components/replenishPopup/replenishPopup';
 import Request from '../../components/request/request';
+import './rootPage.scss';
 
 interface RootPagePropsI {
     isFooterHidden?:boolean
@@ -210,6 +211,9 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
             </Dropdown>
             <header className="header header_mobile">
                 <div className="container header__container content__container">
+                    <Link to="/">
+                        <img src={MobileLogo} alt="LoftSoft" className="mobile-logo"/>
+                    </Link>
                     <div className="search header__search">
                         <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
                         <input 

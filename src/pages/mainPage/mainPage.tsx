@@ -211,7 +211,24 @@ const MainPage: FC<MainPageProps> = () => {
                             <div className="block promo__advantages">
                                 <h2 className="title promo__advantages-title">НАШИ ПРЕИМУЩЕСТВА</h2>
                                 <h3 className="subtitle promo__advantages-subtitle">Перед конкурентами</h3>
-                                <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                <Swiper
+                                        modules={[Autoplay]}
+                                        autoplay={{
+                                            delay: 1200,
+                                            disableOnInteraction: false,
+                                        }}
+                                        className="promo__advantages-carousel_mobile carousel"
+                                    >
+                                        <SwiperSlide>
+                                            <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                        </SwiperSlide>
+                                    </Swiper>
                             </div>
                         </div>
                         <section className="promo__catalog" id="promo__catalog">

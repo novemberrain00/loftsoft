@@ -21,7 +21,7 @@
         font-style: normal;
         font-weight: 400;
         word-wrap: break-word;
-        margin-bottom: 4px;
+        margin-bottom: 8px;
     }
 
     &-cart {
@@ -48,15 +48,15 @@
     }
 }
 
-@media screen and (max-width: 480px) {
-    .product-page__var {
-        &-cart {
-            width: 40px;
-            height: 40px;
+// @media screen and (max-width: 480px) {
+//     .product-page__var {
+//         &-cart {
+//             width: 40px;
+//             height: 40px;
 
-            img {
-                width: 30px;
-            }
-        }
-    }
-}
+//             img {
+//                 width: 30px;
+//             }
+//         }
+//     }
+// }

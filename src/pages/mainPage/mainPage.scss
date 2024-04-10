@@ -49,7 +49,7 @@
         }
 
         &-img {
-            max-width: 55px;
+            width: 45px;
         }
 
         &-info {
@@ -115,6 +115,11 @@
 
         &-carousel {
             min-height: 502px;
+
+            &_mobile {
+                width: 320px;
+                height: 199px;
+            }
         }
     }
 }
