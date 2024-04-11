@@ -97,3 +97,11 @@
         }
     }
 }
+
+@media screen and (max-width: 480px) {
+    .reviews {
+        &__wrapper {
+            padding: 10px 10px 75px;
+        }
+    }
+}

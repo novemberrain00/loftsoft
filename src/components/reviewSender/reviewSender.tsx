@@ -58,6 +58,11 @@ const ReviewSender: FC<ReviewSenderPropsI> = ({isOpened, closeHandler}) => {
             return;
         }
 
+        if(files.length > 3) {
+            setAlertMessage('Выберите не более 3-х файлов');
+            return;
+        }
+
         const newImages: string[] = [];
 
         if(files.length) {
@@ -176,7 +181,7 @@ const ReviewSender: FC<ReviewSenderPropsI> = ({isOpened, closeHandler}) => {
                         {(reviewData.files.length && Object.keys(reviewData.files).map(key => reviewData.files[key].name + ' ')) || 'Прикрепите сюда файлы'}
                     </label>
                     <div className="review-sender__form-bottom">
-                        <span className="text text_small">макс. файлов: 5. Поддерживаемые типы: image</span>
+                        <span className="text text_small">макс. файлов: 3. Поддерживаемые типы: image</span>
                         <span className="text review-sender__alert">{alertMessage}</span>
                         <div className="review-sender__form-buttons">
                             <a href="#" onClick={() => {

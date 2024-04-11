@@ -93,9 +93,13 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         window.addEventListener('scroll', handleScroll);
     
         return () => {
-          window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
       }, []);
+
+      useEffect(() => {
+
+      }, [])
 
     return (
         <RootPage>

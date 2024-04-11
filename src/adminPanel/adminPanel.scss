@@ -342,3 +342,17 @@
         }
     }
 }
+
+@media screen and (max-width: 480px) {
+    .admin {
+        &__sidebar {
+            width: 280px;
+
+            &-closer {
+                &-wrapper {
+                    left: 280px;
+                }
+            }
+        }
+    }
+}

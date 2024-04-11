@@ -116,7 +116,9 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const clipboard = useClipboard();
     const debouncedTerm = useDebounce(seachTerm, 300);
 
-    window.scrollTo(0, 0)
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     return ( 
         <>
@@ -128,7 +130,13 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                 menuOpener={setIsDropdownOpened}
             />
             <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
-            <Profile isOpened={isProfileOpened} data={userData} replenishOpener={setIsReplenishOpened} closeHandler={setIsProfileOpened}/>
+            <Profile 
+                historyOpener={setIsHistoryShowed}
+                isOpened={isProfileOpened} 
+                data={userData} 
+                replenishOpener={setIsReplenishOpened} 
+                closeHandler={setIsProfileOpened}
+            />
             <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
             <Dropdown 
                 text="Каталог товаров"

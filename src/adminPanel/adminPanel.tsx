@@ -15,9 +15,9 @@ import SnackbarContainer from "../components/snackbar/snackbar";
 import Snack from "../components/snack/snack";
 
 import { SnackI } from "../interfaces";
-import './adminPanel.scss';
 import Notifications from "./sections/notifications/notifications";
 import NotFoundPage from "../pages/404/notFoundPage";
+import './adminPanel.scss';
 
 interface AdminPanelPropsI {
     children: ReactNode

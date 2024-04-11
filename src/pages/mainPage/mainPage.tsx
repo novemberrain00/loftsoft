@@ -249,7 +249,7 @@ const MainPage: FC<MainPageProps> = () => {
                                                 <div className="promo__catalog-products">
                                                     {
                                                         subcategories.map(({id, title}, i) => {
-                                                            return <Link key={id} to={`/catalog/${convertToLatin(catTitle)}`}>
+                                                            return <Link key={id} to={`/catalog/${id}}`}>
                                                                 <span  className="link promo__catalog-product">{title}</span>
                                                             </Link>
                                                         })

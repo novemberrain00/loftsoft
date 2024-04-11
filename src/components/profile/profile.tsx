@@ -22,9 +22,10 @@ interface ProfilePropsI {
     data: UserI
     closeHandler: React.Dispatch<React.SetStateAction<boolean>>
     replenishOpener: React.Dispatch<React.SetStateAction<boolean>>
+    historyOpener: React.Dispatch<React.SetStateAction<boolean>>
 }
  
-const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpener}) => {
+const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpener, historyOpener}) => {
     const [isEditorOpened, setIsEditorOpened] = useState(false);
     const [editingData, setEditingData] = useState('login');
 
@@ -86,12 +87,13 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
                         </Link>
                     </li>
                     <li className="profile__menu-item">
-                        <Link to="/cart">
-                            <span className="profile__link">
-                                <img src={UpdateIcon} alt="История покупок" className="profile__link-icon" />
-                                История покупок
-                            </span>
-                        </Link>
+                        <span onClick={() => {
+                            closeHandler(false);
+                            historyOpener(true);
+                        }} className="profile__link">
+                            <img src={UpdateIcon} alt="История покупок" className="profile__link-icon" />
+                            История покупок
+                        </span>
                     </li>
                     <li onClick={() => logout()} className="profile__menu-item">
                         <Link to="/">
