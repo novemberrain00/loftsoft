@@ -37,6 +37,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
     });
 
     const straightOrder = useSelector((state: RootState) => state.straightOrder.straightOrder);
+    const userEmail = useSelector((state: RootState) => state.user.userInfo.email);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -163,6 +164,13 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
 
 
     useEffect(() => {
+        dispatch(setOrder({
+            ...straightOrder,
+            email: userEmail || ''
+        }))
+    }, [userEmail])
+
+    useEffect(() => {
         setIsPaymentListShowed(false);
     }, [activePayment])
 
@@ -198,6 +206,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                             ...straightOrder,
                             email: (e.target as HTMLInputElement).value
                         }))} 
+                        value={straightOrder.email}
                         placeholder="Почта E-Mail (предпочтительно Gmail)" 
                         type="email" 
                         className="purchase__form-input"
