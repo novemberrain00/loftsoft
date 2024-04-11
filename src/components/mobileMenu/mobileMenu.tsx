@@ -62,8 +62,6 @@ const MobileMenu: FC<MobileMenuPropsI> = ({ historyOpener, profileOpener, chatOp
                 {
                     window.localStorage.getItem('access_token') ? (
                         <li onClick={() => {
-                            document.body.style.overflowX = 'hidden';
-                            document.body.style.height = '100vh';
                             profileOpener(true)
                         }} className="menu__list-item">
                             <a href="#" className="menu__list-link">

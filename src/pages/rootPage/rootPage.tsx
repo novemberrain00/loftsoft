@@ -222,9 +222,18 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
             </Dropdown>
             <header className="header header_mobile">
                 <div className="container header__container content__container">
-                    <Link to="/">
-                        <img src={MobileLogo} alt="LoftSoft" className="mobile-logo"/>
-                    </Link>
+                    <ul className="list header__top">
+                        <Link to="/">
+                            <img src={MobileLogo} alt="LoftSoft" className="mobile-logo"/>
+                        </Link>
+                        
+                        <HeaderNavItem text='Отзывы' path='/reviews'/>
+                        <HeaderNavItem text='Правила' path='/terms'/>
+                        <div onClick={() => setIsRequestOpened(true)} className="header__info-request">
+                            <img src={RequestIcon} alt="Запрос товара" />
+                            <span>Запрос товара</span>
+                        </div>
+                    </ul>
                     <div className="search header__search">
                         <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
                         <input 
@@ -236,9 +245,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         />
                         <SearchList term={debouncedTerm}/>
                     </div>
-                    <div onClick={() => setIsRequestOpened(true)} className="header__request">
-                        <img src={RequestIcon} alt="Запрос товара" />
-                    </div>
+                    
                 </div>
             </header>
             <header className='header'>
@@ -277,8 +284,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         {
                             username && 
                                 <div onClick={() => {
-                                        document.body.style.overflowX = 'hidden';
-                                        document.body.style.height = '100vh';
                                         setIsProfileOpened(true)
                                     }} className="header__profile">
                                     <img src={photo} alt={username} className="header__profile-img" />

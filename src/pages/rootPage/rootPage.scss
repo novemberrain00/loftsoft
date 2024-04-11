@@ -493,6 +493,22 @@
             flex-direction: column;
         }
 
+        &__container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        &__search {
+            width: 100%;
+        }
+
         .search {
             &__results {
                 &-img {
@@ -552,11 +568,18 @@
 
 @media screen and (max-width: 480px) {
     .header {
+        &__menu-item {
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        &__info-request {
+            font-size: 14px;
+        }
+
         .search {
             &__results {
                 width: 70vw;
-                left: -60px;
-                right: 0;
                 font-size: 12px;
 
                 &-img {

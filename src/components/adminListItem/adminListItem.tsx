@@ -47,7 +47,7 @@ const AdminListItem: FC<AdminListItemPropsI> = ({
                             categoryTitle ?
                                 <div className="admin__list-category">
                                     {categoryTitle}
-                                    <img src={ArrowIcon} alt="dadad" />
+                                    <img src={ArrowIcon} alt={categoryTitle} />
                                 </div> 
                             : null
                         }

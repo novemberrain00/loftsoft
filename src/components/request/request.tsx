@@ -214,7 +214,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                             onInput={(e) => {
                                 setCurRequest({
                                     ...curRequest, 
-                                    count: +(e.target as HTMLInputElement).value || 0
+                                    count: +(e.target as HTMLInputElement).value 
                                 })
                             }}
                             value={curRequest.count}
