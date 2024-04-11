@@ -104,6 +104,21 @@
             background-color: #c2c0c0;
         }
     }
+
+    &-category {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #FFF;
+        font-family: Roboto;
+        font-size: 14px;
+        white-space: nowrap;
+        height: 24px;
+        padding: 0px 20px;
+        border-radius: 20px;
+        background: #2667FF;
+        box-shadow: 0px 4px 15px -9px #2667FF;
+    }
 }
 
 @media screen and (max-width: 480px) {

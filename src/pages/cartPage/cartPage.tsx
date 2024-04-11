@@ -180,6 +180,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                                                     price={price}
                                                     salePrice={sale_price}
                                                     quantity={quantity}
+                                                    subcategoryId={product.subcategory_id}
                                                     img={product.product_photos[0].photo}
                                                 />
                                             )

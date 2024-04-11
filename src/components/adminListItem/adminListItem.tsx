@@ -3,6 +3,7 @@ import { FC } from "react";
 import EditIcon from "../../assets/images/icons/edit.svg";
 import OptionsIcon from "../../assets/images/icons/options.svg";
 import TrashIcon from "../../assets/images/icons/trash.svg";
+import ArrowIcon from "../../assets/images/icons/dropdown_white.svg";
 
 import './adminListItem.scss';
 
@@ -15,9 +16,21 @@ interface AdminListItemPropsI {
     dndHandler: React.ReactNode
     optionsClickHandler: () => any
     deleteItem: (id: number) => Promise<void>
+    categoryTitle?: string
 }
  
-const AdminListItem: FC<AdminListItemPropsI> = ({id, photo, title, length, countItems, dndHandler, optionsClickHandler, deleteItem}) => {
+const AdminListItem: FC<AdminListItemPropsI> = ({
+        id, 
+        photo, 
+        title, 
+        length, 
+        countItems, 
+        dndHandler, 
+        categoryTitle,
+        optionsClickHandler, 
+        deleteItem
+    }) => {
+
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     return (
@@ -30,6 +43,14 @@ const AdminListItem: FC<AdminListItemPropsI> = ({id, photo, title, length, count
                         <img src={EditIcon} alt="Windows 10 " />
                     </h5>
                     <div className="admin__list-info-bottom">
+                        {
+                            categoryTitle ?
+                                <div className="admin__list-category">
+                                    {categoryTitle}
+                                    <img src={ArrowIcon} alt="dadad" />
+                                </div> 
+                            : null
+                        }
                         <div className="admin__list-amount">
                             <span className="admin__list-amount-value">{length}</span>
                             <span className="admin__list-amount-key">{countItems}</span>           

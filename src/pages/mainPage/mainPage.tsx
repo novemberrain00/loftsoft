@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef, useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import RootPage from "../rootPage/rootPage";
 
@@ -26,7 +26,7 @@ import Product from "../../components/product/product";
 import Review from "../../components/review/review";
 
 import { CategoryI, PartnerI, ProductI, ReviewI } from "../../interfaces";
-import { convertToLatin, getData } from "../../services/services";
+import { getData } from "../../services/services";
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -60,6 +60,7 @@ const MainPage: FC<MainPageProps> = () => {
       };
 
     const clipboard = useClipboard();
+    const navigate = useNavigate();
 
     useEffect(() => {
         getData('/categories?empty_filter=true')
@@ -249,7 +250,7 @@ const MainPage: FC<MainPageProps> = () => {
                                                 <div className="promo__catalog-products">
                                                     {
                                                         subcategories.map(({id, title}, i) => {
-                                                            return <Link key={id} to={`/catalog/${id}}`}>
+                                                            return <Link key={id} to={`/catalog/${id}`}>
                                                                 <span  className="link promo__catalog-product">{title}</span>
                                                             </Link>
                                                         })
@@ -429,12 +430,7 @@ const MainPage: FC<MainPageProps> = () => {
                             Вы получаете свой товар максимально быстро на указанную вами почту при покупке. Это позволяет вам как клиенту, не теряя ни минуты, приступить к использованию приобретенной лицензии.
                         </p>
                         <button 
-                            onClick={() => {
-                                const catalogBlock = document.querySelector('#promo__catalog');
-                                if (catalogBlock) {
-                                    catalogBlock.scrollIntoView({ behavior: "smooth" });
-                                }
-                            }} 
+                            onClick={() => navigate('/catalog')}
                             className="btn btn_large promo2__btn"
                         >
                             Перейти&nbsp;в&nbsp;каталог
@@ -461,13 +457,7 @@ const MainPage: FC<MainPageProps> = () => {
                         <div className="promo2__bottom-left">
                             <img src={Puzzle} alt="loftsoft" className="promo2__img" />
                             <button 
-                                onClick={() => {
-                                    const catalogBlock = document.querySelector('#promo__catalog');
-                                    if (catalogBlock) {
-                                        catalogBlock.scrollIntoView({ behavior: "smooth" });
-                                    }
-                                }} className="btn btn_large promo2__btn"
-                            >
+                                onClick={() => navigate('/catalog')}>
                                 Перейти&nbsp;в&nbsp;каталог
                                 <img src={ArrowRight} alt="Посмотреть все товары" className="btn_large-icon" />
                             </button>

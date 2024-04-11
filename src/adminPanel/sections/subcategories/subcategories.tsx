@@ -268,6 +268,7 @@ const Subcategories: FC<SubcategoriesPropsI> = () => {
                 </div>
                 {
                     categories.length ? categories.map(({id, subcategories, photo}, i) => {
+                        const categoryId = id;
                         return subcategories.length ? (
                             <ul key={id} className="list subcategories__list admin__list">
                                 <DragDropContext onDragStart={() => setDraggableList(i)} backend={TouchBackend} onDragEnd={onDragEnd}>
@@ -291,6 +292,7 @@ const Subcategories: FC<SubcategoriesPropsI> = () => {
                                                                                 <img src={DragIcon} {...provided.dragHandleProps} alt="перетащить" className="admin__list-drag"/>  
                     
                                                                             }
+                                                                            categoryTitle={categories.filter(cat => cat.id === categoryId)[0]?.title}
                                                                             id={id}
                                                                             key={id}
                                                                             title={title}

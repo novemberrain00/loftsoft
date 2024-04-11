@@ -551,6 +551,22 @@
 }
 
 @media screen and (max-width: 480px) {
+    .header {
+        .search {
+            &__results {
+                width: 70vw;
+                left: -60px;
+                right: 0;
+                font-size: 12px;
+
+                &-img {
+                    width: 65px;
+                    height: auto;
+                }
+            }
+        }
+    }
+
     .footer {
         position: relative;
         padding-bottom: 150px;

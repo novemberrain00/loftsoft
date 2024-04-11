@@ -51,12 +51,18 @@
         }
 
         &-name {
+            font-family: Roboto;
             color: #000;
             font-family: Roboto;
             font-size: 20px;
             font-weight: 400;
             max-width: 395px;
             margin-top: 12px;
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
 
         &-id {
@@ -379,13 +385,14 @@
         }
 
         &__order {
+            margin-top: 8px;
             &-header {
                 margin-bottom: 25px;
             }
         }
 
         &__items {
-            height: 415px;
+            max-height: 415px;
             overflow: auto;
 
             &::-webkit-scrollbar {
@@ -440,6 +447,12 @@
             margin-bottom: 0;
         }
 
+        &__item {
+            &-name {
+                margin-top: 0;
+            }
+        }
+
         &__sidebar {
             flex-direction: column-reverse;
             height: auto;
@@ -451,6 +464,12 @@
 
             &-right {
                 width: 100%;
+            }
+        }
+
+        &__cleaner {
+            &-icon {
+                width: 14px;
             }
         }
     }
@@ -517,6 +536,10 @@
                 }
             }
 
+            &-name {
+                font-size: 14px !important;
+            }
+
             &-body {
                 margin-left: 15px;
             }
@@ -533,6 +556,20 @@
         &__payment {
             padding: 4px 12px;
             font-size: 10px;
+        }
+
+        &__order {
+            &-title {
+                font-size: 16px;
+            }
+        }
+
+        &__cleaner {
+            font-size: 12px;
+
+            &-icon {
+                width: 14px;
+            }
         }
     }
 }

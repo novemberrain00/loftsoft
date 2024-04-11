@@ -124,9 +124,10 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
         <>
             <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>
             <MobileMenu 
-                chatOpener={setIsChatOpened} 
+                historyOpener={setIsHistoryShowed} 
                 profileOpener={setIsProfileOpened}
                 isDropdownOpened={isDropdownOpened}
+                chatOpener={setIsChatOpened}
                 menuOpener={setIsDropdownOpened}
             />
             <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
@@ -234,6 +235,9 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                             className="search__input header__search-input" 
                         />
                         <SearchList term={debouncedTerm}/>
+                    </div>
+                    <div onClick={() => setIsRequestOpened(true)} className="header__request">
+                        <img src={RequestIcon} alt="Запрос товара" />
                     </div>
                 </div>
             </header>

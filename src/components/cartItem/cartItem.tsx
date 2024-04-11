@@ -20,9 +20,10 @@ interface CartItemPropsI {
     quantity: number
     productId: number
     giveType: string
+    subcategoryId: number
 }
  
-const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img, quantity, productId, giveType}) => {
+const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img, quantity, productId, giveType, subcategoryId}) => {
     const [newQuantity, setNewQuantity] = useState<number>(quantity);
     const [isDataPosted, setIsDataPosted] = useState<boolean>(true);
 
@@ -57,13 +58,17 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                 <span className="cart__item-id">{'0'.repeat(3 - (''+id).length) + id}</span>
             </div>
             <div className="cart__item-footer">
-                <div className="cart__item-img">
-                    <img src={baseURL + '/uploads/' + img} alt={title}/>
-                </div>
+                <Link to={`/catalog/${subcategoryId}/${productId}`}>
+                    <div className="cart__item-img">
+                        <img src={baseURL + '/uploads/' + img} alt={title}/>
+                    </div>
+                </Link>
                 <div className="cart__item-body">
-                    <p className="text text_large cart__item-name">
-                        {title}
-                    </p>
+                    <Link to={`/catalog/${subcategoryId}/${productId}`}>
+                        <p className="cart__item-name">
+                            {title}
+                        </p>
+                    </Link>
                     <span className="cart__item-delivery">
                         {giveType === 'string' ? 'Ключ' : null}
                         {giveType === 'hand' ? 'Ручная выдача' : null}

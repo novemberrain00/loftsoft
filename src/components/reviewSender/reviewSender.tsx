@@ -74,8 +74,6 @@ const ReviewSender: FC<ReviewSenderPropsI> = ({isOpened, closeHandler}) => {
             }
         }
 
-        console.log(text)
-
         await postData('/reviews', {
             text,
             images: newImages,
@@ -143,7 +141,7 @@ const ReviewSender: FC<ReviewSenderPropsI> = ({isOpened, closeHandler}) => {
                         </div>
                         <ul className={`review-sender__select-list ${isProductsListOpened && 'review-sender__select-list_opened'} list`}>
                             {
-                                products.map((product: ReviewProductI) => {
+                                products.length ? products.map((product: ReviewProductI) => {
                                     return (
                                         <li 
                                             key={product.product_id}
@@ -156,7 +154,7 @@ const ReviewSender: FC<ReviewSenderPropsI> = ({isOpened, closeHandler}) => {
                                             className="review-sender__select-item"
                                         >{product.title}</li> 
                                     )
-                                }) || 'Нет доступных товаров для отзыва'
+                                }) : 'Нет покупок'
                             }
                         </ul>
                     </div>

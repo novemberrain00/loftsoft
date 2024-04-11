@@ -13,13 +13,14 @@ import { Link } from "react-router-dom";
 import './mobileMenu.scss';
 
 interface MobileMenuPropsI {
-    chatOpener: React.Dispatch<React.SetStateAction<boolean>>
+    historyOpener: React.Dispatch<React.SetStateAction<boolean>>
     profileOpener: React.Dispatch<React.SetStateAction<boolean>>
     menuOpener: React.Dispatch<React.SetStateAction<boolean>>
+    chatOpener: React.Dispatch<React.SetStateAction<boolean>>
     isDropdownOpened: boolean
 }
  
-const MobileMenu: FC<MobileMenuPropsI> = ({ chatOpener, profileOpener, menuOpener, isDropdownOpened }) => {
+const MobileMenu: FC<MobileMenuPropsI> = ({ historyOpener, profileOpener, chatOpener, menuOpener, isDropdownOpened }) => {
     const userPhoto = useSelector((state: RootState) => state.user.userInfo.photo)
     const userCartQuantity = useSelector((state: RootState) => state.user.userInfo.shop_cart.length)
 
@@ -27,7 +28,10 @@ const MobileMenu: FC<MobileMenuPropsI> = ({ chatOpener, profileOpener, menuOpene
         <nav className="menu">
             <ul className="list menu__list">
                 <li className="menu__list-item">
-                    <a href="#" className="menu__list-link">
+                    <a href="#" onClick={(e: MouseEvent) => {
+                        e.preventDefault()
+                        historyOpener(true)
+                    }} className="menu__list-link">
                         <img src={SearchIcon} className="menu__list-icon" alt="поиск" />
                     </a>
                 </li>
