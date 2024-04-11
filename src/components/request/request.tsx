@@ -1,4 +1,5 @@
 import { FC, MouseEvent, useEffect, useState } from "react";
+import { useSelector } from "react-redux"
 import Overlay from "../overlay/overlay";
 
 import ArrowIcon from "../../assets/images/icons/arrow_right_bold.svg";
@@ -11,6 +12,7 @@ import SuccessIcon from "../../assets/images/icons/request-success.svg";
 import { RequestI } from "../../interfaces";
 import { postData } from "../../services/services";
 import "./request.scss";
+import { RootState } from "../../store";
 
 interface RequestPropsI {
     isOpened: boolean
@@ -18,24 +20,26 @@ interface RequestPropsI {
 }
  
 const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
+    const userData = useSelector((state: RootState) => state.user.userInfo);
+
     const [isConnectionsShowed, setIsConnectionsShowed] = useState(false);
     const [isSuccessShowed, setIsSuccessShowed] = useState(false);
     const [requests, setRequests] = useState<RequestI[]>([
         {
-            contact_type: "",
-            contact: "",
+            contact_type: "email",
+            contact: userData.email || '',
             files: [],
-            count: 0,
+            count: "",
             full_name: "",
             description: ""
         }
     ]);
     const [activeRequest, setActiveRequest] = useState(0);
     const [curRequest, setCurRequest] = useState<RequestI>({
-        contact_type: "",
-        contact: "",
+        contact_type: "email",
+        contact: userData.email || '',
         files: [],
-        count: 0,
+        count: "",
         full_name: "",
         description: ""
     });
@@ -45,15 +49,15 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
         e.preventDefault();
         const requestsRef = requests;
         requestsRef.push({
-            contact_type: "",
-            contact: "",
+            contact_type: "email",
+            contact: userData.email || '',
             files: [],
-            count: 0,
+            count: "",
             full_name: "",
             description: ""
-        })
-        setRequests([...requestsRef])
-        setActiveRequest(requests.length-1)
+        });
+        setRequests([...requestsRef]);
+        setActiveRequest(requests.length-1);
     }
 
     const deleteRequest = (i: number) => {
@@ -92,8 +96,14 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                 return;
             }
 
-            if(count <= 0) {
+            if(+count <= 0) {
                 setAlertMessage(`Кол-во должно быть > 0. Запрос №${i+1}`);
+                isDataOk = false;
+                return;
+            }
+
+            if(isNaN(+count))  {
+                setAlertMessage(`Некорректное количество. Запрос №${i+1}`);
                 isDataOk = false;
                 return;
             }
@@ -122,6 +132,17 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
             .then(() => setIsSuccessShowed(true))
         }
     }
+
+    useEffect(() => {
+        setCurRequest({
+            contact_type: "email",
+            contact: userData.email || '',
+            files: [],
+            count: "",
+            full_name: "",
+            description: ""
+        })
+    }, [userData.email])
 
     useEffect(() => {
         const newList = requests;
@@ -214,7 +235,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                             onInput={(e) => {
                                 setCurRequest({
                                     ...curRequest, 
-                                    count: +(e.target as HTMLInputElement).value 
+                                    count: (e.target as HTMLInputElement).value 
                                 })
                             }}
                             value={curRequest.count}

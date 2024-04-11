@@ -45,6 +45,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
     }, []);
 
     const {
+        id,
         title,
         parameters,
         options,
@@ -125,10 +126,14 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                             <section className="product-page__section">
                                 <h3 className="product-page__section-title title title_small">Характеристики</h3>
                                 <div className="product-page__chars">
+                                    <div className="product-page__char text">
+                                        <span className="product-page__char-name">Код товара</span>
+                                        <span className="product-page__char-value">{id}</span>
+                                    </div>
                                     {
                                         options && options.map((opt, i) => {
                                             return (
-                                                <div key={i+""} className="product-page__char text">
+                                                <div key={opt.id} className="product-page__char text">
                                                     <span className="product-page__char-name">{opt.title}</span>
                                                     <span className="product-page__char-value">{opt.value}</span>
                                                 </div>

@@ -71,7 +71,7 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                     </Link>
                     <span className="cart__item-delivery">
                         {giveType === 'string' ? 'Ключ' : null}
-                        {giveType === 'hand' ? 'Ручная выдача' : null}
+                        {giveType === 'hand' ? 'Доставка на Email' : null}
                         {giveType === 'file' ? 'Файл' : null}
                     </span>
                     <div className="cart__item-bottom">

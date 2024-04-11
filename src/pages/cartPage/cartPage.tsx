@@ -47,7 +47,6 @@ const CartPage: FC<CartPagePropsI> = () => {
     const dispatch = useDispatch();
 
     const userData = useSelector((state: RootState) => state.user.userInfo);
-    const orderId = useSelector((state: RootState) => state.order.id);
 
     let productWordForm = 'товаров';
     let totalPrice = 0,
@@ -127,6 +126,8 @@ const CartPage: FC<CartPagePropsI> = () => {
             }));
         });
     }
+
+    useEffect(() => setEmail(userData.email), [userData.email])
 
     document.title = 'Корзина';
 
@@ -222,6 +223,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                                         setIsEmailEntered(true);
                                         setEmail((e.target as HTMLInputElement).value);
                                     }}
+                                    value={email}
                                     className={`cart__email cart__widget-input ${!isEmailEntered ? 'cart__widget-input_red' : 'gg'}`} 
                                     placeholder="Введите ваш E-mail" 
                                     required
@@ -338,6 +340,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                                         setIsEmailEntered(true);
                                         setEmail((e.target as HTMLInputElement).value);
                                     }}
+                                    value={email}
                                     className={`cart__email cart__widget-input ${!isEmailEntered ? 'cart__widget-input_red' : 'gg'}`} 
                                     placeholder="Введите ваш E-mail" 
                                     required

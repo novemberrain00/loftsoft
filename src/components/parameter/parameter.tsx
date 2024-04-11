@@ -33,7 +33,6 @@ const Parameter: FC<ParameterPropsI> = ({
         description, 
         buyPopupOpener
     }) => {
-    const [isSwitchOpened, setIsSwitchOpened] = useState<boolean>(false);
     const [quantity, setQuantity] = useState<number>(0);
     const [isDataPosted, setIsDataPosted] = useState<boolean>(true);
 
@@ -70,13 +69,6 @@ const Parameter: FC<ParameterPropsI> = ({
     } 
 
     useEffect(() => {
-        if(quantity > 0) {
-            setIsSwitchOpened(true);
-        } else {
-            setIsSwitchOpened(false);
-            return
-        }
-
         postToCart();
 
     }, [quantity])
@@ -91,7 +83,7 @@ const Parameter: FC<ParameterPropsI> = ({
             <span className="product-page__price">{+salePrice || +price}₽</span>
             {hasSale && <span className="product-page__price product-page__price_old">{+price}₽</span>}
             {hasSale && <span className="product-page__discount-value discount-value">-{salePercent}%</span>}
-            <div className={`product-page__switch ${!isSwitchOpened ? 'product-page__switch_hidden' : ''}`}>
+            <div className="product-page__switch">
                 <button className="product-page__switch-btn" disabled={!isDataPosted} onClick={() => {
                     setQuantity(quantity-1)
                 }}>

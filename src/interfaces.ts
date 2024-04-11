@@ -306,7 +306,7 @@ export interface RequestI {
     contact_type: string
     contact: string
     files: string[]
-    count: number
+    count: string
     full_name: string
     description: string
 }
