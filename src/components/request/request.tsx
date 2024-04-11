@@ -129,7 +129,27 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
 
         if(isDataOk) {
             await postData('/product/request', requests)
-            .then(() => setIsSuccessShowed(true))
+            .then(() =>{
+                setRequests([
+                    {
+                        contact_type: "email",
+                        contact: userData.email || '',
+                        files: [],
+                        count: "",
+                        full_name: "",
+                        description: ""
+                    }
+                ])
+                setCurRequest({
+                    contact_type: "email",
+                    contact: userData.email || '',
+                    files: [],
+                    count: "",
+                    full_name: "",
+                    description: ""
+                })
+                setIsSuccessShowed(true)
+            })
         }
     }
 
