@@ -15,6 +15,8 @@ import AccountIcon from '../../assets/images/icons/account.svg';
 import BackIcon from '../../assets/images/icons/arrow-left_black.svg';
 import RequestIcon from '../../assets/images/icons/request.svg';
 import MobileLogo from '../../assets/images/logo/logo_mobile.svg';
+import WhatsappIcon from '../../assets/images/icons/whatsapp.svg';
+import TelegamIcon from '../../assets/images/icons/tg.svg';
 
 import DiscountImg from '../../assets/images/img/discount.svg';
 
@@ -226,7 +228,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         <Link to="/">
                             <img src={MobileLogo} alt="LoftSoft" className="mobile-logo"/>
                         </Link>
-                        
                         <HeaderNavItem text='Отзывы' path='/reviews'/>
                         <HeaderNavItem text='Правила' path='/terms'/>
                         <div onClick={() => setIsRequestOpened(true)} className="header__info-request">
@@ -256,6 +257,14 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                             <img src={LogoMobileImg} alt="loftsoft" className="mobile-block header__logo-img" />
                         </div>
                     </Link>
+                    <div className="header__media">
+                        <a href="#" className="header__media-link">
+                            <img src={WhatsappIcon} alt="наш телеграм" />
+                        </a>
+                        <a href="#" className="header__media-link">
+                            <img src={TelegamIcon} alt="наш whatsapp" />
+                        </a>
+                    </div>
                     <div className="search header__search">
                         <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
                         <input 
@@ -268,6 +277,10 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         <SearchList term={debouncedTerm}/>
                     </div>
                     <div className="header__info">
+                        <span onClick={() => setIsRequestOpened(true)} className="header__info-item header__info-request">
+                            Запрос товара
+                            <img src={RequestIcon} alt="Запрос товара" />
+                        </span>
                         <Link to="/profile/cart">
                             <a href="/" className="header__info-item" id="header-cart">
                                 {!shop_cart?.length || <span id="header-cart-quantity">{shop_cart.reduce((acc, obj) => acc + obj.quantity, 0)}</span>}
@@ -276,10 +289,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         </Link>
                         <span onClick={() => setIsHistoryShowed(true)} className="header__info-item" id="header-update">
                             <img src={UpdateIcon} alt="история" className="header__info-icon"/>
-                        </span>
-                        <span onClick={() => setIsRequestOpened(true)} className="header__info-item header__info-request">
-                            Запрос товара
-                            <img src={RequestIcon} alt="Запрос товара" />
                         </span>
                         {
                             username && 

@@ -50,7 +50,11 @@ const ReviewsPage: FC<ReviewsPagePropsI> = () => {
                         </div>
                     </div>
                     <div className="reviews__wrapper block">
-                        <h2 className="reviews__wrapper-title">&gt;300 отзывов</h2>
+                        <h2 className="reviews__wrapper-title">
+                            {
+                                reviews.length > 300 ? '&gt;300 отзывов' : `${reviews.length} отзывов`
+                            }
+                        </h2>
                         <div className="reviews__wrapper-items">
                             {
                                 reviews.map(({id, user, user_photo, rate, text, images, product, created_datetime}) => {

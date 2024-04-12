@@ -214,7 +214,7 @@ const Users: FC<UsersPropsI> = () => {
                 <ul className="list users__list">
                     {
                         usersList && usersList.map(({id, username, email, is_active, is_admin, balance, photo}) => {
-                            return is_admin ? null : (
+                            return is_admin || !username ? null : (
                                 <li className="users__list-item user">
                                     <img src={baseURL + '/uploads/' + photo} alt="" className="user__avatar" />
                                     <div className="user__info">

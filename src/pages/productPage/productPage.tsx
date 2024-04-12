@@ -23,6 +23,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
     const [toggler, setToggler] = useState<boolean>(false);
     const [subcategoryName, setSubcategoryName] = useState<string>('');
     const [isBuyPopupOpened, setIsBuyPopupOpened] = useState<boolean>(false);
+    const [activeSlideIndex, setActiveSlideIndex] = useState(1);
 
     const { product, subcategory } = useParams();
 
@@ -82,11 +83,20 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                     <div className="container product-page__container">
                         <div className="product-page__gallery">
                             <div onClick={() => setToggler(!toggler)} className="product-page__gallery_animated product-page__gallery-active">
-                                {product_photos && <img src={baseURL + '/uploads/' + product_photos[0]?.photo} alt={title} className="product-page__gallery-item" />}
+                                {
+                                    product_photos && 
+                                        <img 
+                                            src={baseURL + '/uploads/' + product_photos[0]?.photo} 
+                                            alt={title} 
+                                            onClick={() => setActiveSlideIndex(1)} 
+                                            className="product-page__gallery-item" 
+                                        />
+                                }
                             </div>
                             <div className="product-page__gallery-items">
                                 <FsLightbox
                                     toggler={toggler}
+                                    slide={activeSlideIndex}
                                     sources={product_photos && [...product_photos.map((photo, i) => {
                                         return <img 
                                             key={photo.photo}
@@ -100,7 +110,10 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                                         key={photo.photo}
                                         src={baseURL + '/uploads/' + photo.photo} 
                                         alt={title} className="product-page__gallery-item" 
-                                        onClick={() => setToggler(!toggler)}
+                                        onClick={() => {
+                                            setActiveSlideIndex(i+2)
+                                            setToggler(!toggler)
+                                        }}
                                     />
                                 })}
                             </div>

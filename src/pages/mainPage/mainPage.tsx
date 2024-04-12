@@ -305,7 +305,7 @@ const MainPage: FC<MainPageProps> = () => {
                             <h3 className="subtitle">Более трёх лет</h3>
                         </div>
                         <div className="partners__carousel">
-                            <div className="partners__carousel-track">
+                            <div style={{animation: `scrollAnim calc(615*${partners.length}*25s/3500) infinite linear`}} className="partners__carousel-track">
                             {
                                 partners.length ? partners.map(partner => {
                                     return (
@@ -364,13 +364,24 @@ const MainPage: FC<MainPageProps> = () => {
                         onBeforeInit={(swiper: any) => {
                             swiper.params.navigation.prevEl = prevRef.current;
                             swiper.params.navigation.nextEl = nextRef.current;
+                            swiper.params.scrollbar.dragSize = '300%';
+                            console.log(swiper.params.scrollbar)
                         }}
-                        breakpoints={{
-                            1280: {
+                        breakpoints={{ //минимальная ширина
+                            1700: {
+                                slidesPerView: 3.5
+                            },
+                            1300: { 
                                 slidesPerView: 3
                             },
-                            756: {
+                            980: {
+                                slidesPerView: 2.5
+                            },
+                            810: {
                                 slidesPerView: 2
+                            },
+                            620: {
+                                slidesPerView: 1.5
                             }
                         }}
                             modules={[Navigation, Scrollbar]}
@@ -457,7 +468,9 @@ const MainPage: FC<MainPageProps> = () => {
                         <div className="promo2__bottom-left">
                             <img src={Puzzle} alt="loftsoft" className="promo2__img" />
                             <button 
-                                onClick={() => navigate('/catalog')}>
+                                onClick={() => navigate('/catalog')}
+                                className="btn btn_large promo2__btn"
+                            >
                                 Перейти&nbsp;в&nbsp;каталог
                                 <img src={ArrowRight} alt="Посмотреть все товары" className="btn_large-icon" />
                             </button>

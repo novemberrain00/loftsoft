@@ -23,6 +23,10 @@ const Overlay: FC<OverlayI> = ({children, closeHandler}) => {
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         document.body.style.height = '100vh';
+
+        return () => {
+           document.body.style.overflow = 'initial';
+        }
     }, [])
     
 

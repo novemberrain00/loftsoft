@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -106,7 +106,7 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
 
                    {
                     userData.is_admin && 
-                        <li className="profile__menu-item">
+                        <li onClick={() => closeHandler(false)} className="profile__menu-item">
                             <Link to="/admin">
                                 <span className="profile__link">
                                     <img src={DashboartIcon} alt="Перейти в админ-панель" className="profile__link-icon" />

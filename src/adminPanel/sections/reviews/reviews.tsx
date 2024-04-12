@@ -18,7 +18,7 @@ interface ReviewsPropsI {
 const Reviews: FC<ReviewsPropsI> = () => {
     const [unacceptedReviews, setUnacceptedReviews] = useState<ReviewI[]>([]);
     const [acceptedReviews, setAcceptedReviews] = useState<ReviewI[]>([]);
-    const [toggler, setToggler] = useState<boolean>(false);
+    const [togglers, setTogglers] = useState<{value: boolean; activeSlideIndex: number}[]>([]);
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
@@ -56,7 +56,11 @@ const Reviews: FC<ReviewsPropsI> = () => {
 
         getData('/reviews')
         .then(data => setAcceptedReviews(data))
+
+        setTogglers(new Array(acceptedReviews.length).fill({value: false, activeSlideIndex: 1}))
     }, []);
+
+    useEffect(() => {}, [togglers])
 
     return (
         <>
@@ -103,17 +107,25 @@ const Reviews: FC<ReviewsPropsI> = () => {
                                             </button>
                                         </div>
                                         <div className="review__images">
-                                            {/* <FsLightbox
-                                                toggler={toggler}
+                                            <FsLightbox
+                                                toggler={togglers[i]?.value}
+                                                slide={togglers[i]?.activeSlideIndex}
                                                 sources={images && [...images.map(img => <img src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} />)]}
-                                            ></FsLightbox> */}
+                                            />
                                             {
-                                                images && images.map(img => 
-                                                    <img onClick={() => setToggler(true)} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />
+                                                images && images.map((img, imgI) => 
+                                                    <img onClick={() =>  {
+                                                        const togglersRef = togglers;
+                                                        togglersRef[i] = {
+                                                            value: !togglersRef[i]?.value || false, 
+                                                            activeSlideIndex: imgI+1
+                                                        };
+                                                        setTogglers([...togglersRef])
+                                                    }} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />
                                                 )
                                             }
                                         </div>
-                                        <p className="text text_large review__text">
+                                        <p className={`text text_large review__text ${!images.length ? 'review__text_full' : ''}`}>
                                             {text}
                                         </p>
                                         <div className="review__footer">

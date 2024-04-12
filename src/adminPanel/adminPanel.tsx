@@ -41,11 +41,11 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                         photo: baseURL+'/uploads/'+data.photo
                     }));
                 })
-
         }
 
         if(window.localStorage.getItem('access_token')) getUserData();
     }, [])
+
 
     return isAdmin ? (
         <>

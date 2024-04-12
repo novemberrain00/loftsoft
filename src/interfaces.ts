@@ -1,3 +1,5 @@
+import { MutableRefObject } from "react"
+
 export interface LinkI {
     text: string
     path: string

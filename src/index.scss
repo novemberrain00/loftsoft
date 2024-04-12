@@ -270,6 +270,8 @@ html {
 	&__review {
 		width: auto;
 		flex-shrink: 0;
+		max-width: 500px;
+		margin: 0 auto;
 	}
 }
 
@@ -293,6 +295,9 @@ html {
 	&_main {
 		padding: 50px 38px;
 		width: calc(100% - 76px);
+		background-image: url('./assets/images/icons/banner-bg.svg');
+		background-repeat: no-repeat;
+		background-position: 90% 25%;
 	}
 
 	&__text {
@@ -699,6 +704,7 @@ a {
 		&_main {
 			padding: 44px 38px 36px;
 			height: 350px;
+			background: none;
 		}
 	}
 
@@ -745,7 +751,7 @@ a {
 
 	.reviews {
 		&__items {
-			padding-top: 20px;
+			padding-top: 40px;
 		}
 	}
 }

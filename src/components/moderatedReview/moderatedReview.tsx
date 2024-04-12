@@ -43,6 +43,7 @@ const ModeratedReview: FC<ModeratedReviewPropsI> = ({
     const [reviewText, setReviewText] = useState<string>(text);
     const [isTextEditable, setIsTextEditable] = useState(false);
     const [toggler, setToggler] = useState<boolean>(false);
+    const [activeSlideIndex, setActiveSlideIndex] = useState(1);
 
     const renderRating = () => {
         const res = [];
@@ -111,13 +112,17 @@ const ModeratedReview: FC<ModeratedReviewPropsI> = ({
                 </div>
             </div>
             <div className="review__images">
-                {/* <FsLightbox
+                <FsLightbox
                     toggler={toggler}
+                    slide={activeSlideIndex}
                     sources={images && [...images.map(img => <img src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} />)]}
-                ></FsLightbox> */}
+                />
                 {
-                    images && images.map(img => 
-                        <img onClick={() => setToggler(true)} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />
+                    images && images.map((img, i) => 
+                        <img onClick={() => {
+                            setActiveSlideIndex(i+1)
+                            setToggler(!toggler)
+                        }} src={baseURL + '/uploads/' + img} alt={`изображение - ${img}`} id={img} className="review__img" />
                     )
                 }
             </div>

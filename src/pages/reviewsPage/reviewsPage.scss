@@ -98,6 +98,17 @@
     }
 }
 
+@media screen and (max-width: 576px) {
+    .reviews__wrapper {
+        &-items {
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+    
+        }
+    }
+}
+
 @media screen and (max-width: 480px) {
     .reviews {
         &__wrapper {

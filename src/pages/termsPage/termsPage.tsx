@@ -2,6 +2,7 @@ import { FC } from "react";
 import RootPage from "../rootPage/rootPage";
 
 import './termsPage.scss';
+import Tabs from "../../components/tabs/tabs";
 
 interface TermsPagePropsI {
     

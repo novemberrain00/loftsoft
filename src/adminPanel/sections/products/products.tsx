@@ -9,7 +9,7 @@ import SearchIcon from "../../../assets/images/icons/search.svg";
 import DragIcon from "../../../assets/images/icons/drag-dots.svg";
 import PlusIcon from "../../../assets/images/icons/plus_squared.svg"
 
-import { ProductI, SubcategoryI } from "../../../interfaces";
+import { CategoryI, ProductI, SubcategoryI } from "../../../interfaces";
 import { deleteData, getData, postData } from "../../../services/services";
 import AdminListItem from "../../../components/adminListItem/adminListItem";
 import Loader from "../../../components/loader/loader";
@@ -23,6 +23,7 @@ interface ProductsPropsI {
 const Products: FC<ProductsPropsI> = () => {
     const [subcategories, setSubcategories] = useState<SubcategoryI[]>([]);
     const [draggableList, setDraggableList] = useState(0);
+    const [categories, setCategories] = useState<CategoryI[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
@@ -68,6 +69,9 @@ const Products: FC<ProductsPropsI> = () => {
     useEffect(() => {
         getData('/subcategories?empty_filter=false', true)
         .then(data => setSubcategories(data));
+
+        getData('/categories?empty_filter=false', true)
+        .then(data => setCategories(data));
     }, []);
 
     useEffect(() => console.log(searchQuery), [searchQuery]);
@@ -90,7 +94,7 @@ const Products: FC<ProductsPropsI> = () => {
                     <input onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())} type="text" placeholder="Поиск" className="search__input" />
                 </div>
                 {
-                    subcategories.length ? subcategories.map(({id, products}, i) => {
+                    subcategories.length ? subcategories.map(({id, products, category_id}, i) => {
                         return products.length ? ( 
                             <ul key={id} className="admin__list list subcategories__list">
                                 <DragDropContext 
@@ -123,6 +127,7 @@ const Products: FC<ProductsPropsI> = () => {
                                                                             length={parameters.length}
                                                                             countItems="параметров"
                                                                             photo={product_photos[0]?.photo}
+                                                                            categoryTitle={categories.filter(cat => cat.id === category_id)[0]?.title}
                                                                             optionsClickHandler={() => {
                                                                                 navigate(`edit/${id}`)
                                                                             }}
