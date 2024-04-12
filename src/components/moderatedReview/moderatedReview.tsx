@@ -73,7 +73,7 @@ const ModeratedReview: FC<ModeratedReviewPropsI> = ({
     const updateReviewData = async () => {
         await fetch(`${baseURL}/reviews/${id}`, {
             headers: {
-                "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                "Authorization": 'Bearer ' + window.localStorage.getItem('access_token') as string,
                 "Content-Type": "application/json"
             },
             method: "PATCH",
@@ -136,8 +136,8 @@ const ModeratedReview: FC<ModeratedReviewPropsI> = ({
             </p>
             <div className="review__footer">
                 <span className="review__date">{getValidDate()}</span>
-                <button onClick={() => setIsTextEditable(true)} className="btn review__edit admin__btn">
-                    Редактировать текст
+                <button onClick={() => setIsTextEditable(!isTextEditable)} className="btn review__edit admin__btn">
+                    {isTextEditable ? 'Сохранить текст' : 'Редактировать текст'}
                     <img src={EditIcon} alt="редактировать" />
                 </button>
                 <div className="review__rate">

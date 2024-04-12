@@ -364,7 +364,7 @@ const MainPage: FC<MainPageProps> = () => {
                         onBeforeInit={(swiper: any) => {
                             swiper.params.navigation.prevEl = prevRef.current;
                             swiper.params.navigation.nextEl = nextRef.current;
-                            swiper.params.scrollbar.dragSize = '300%';
+                            swiper.params.scrollbar.dragSize = '500%';
                             console.log(swiper.params.scrollbar)
                         }}
                         breakpoints={{ //минимальная ширина
@@ -388,7 +388,7 @@ const MainPage: FC<MainPageProps> = () => {
                             className="reviews__items"
                         >
                             {
-                                reviews && reviews.map(({id, product, user, user_photo, rate, text, images, created_datetime}, i) => {
+                                reviews && reviews.reverse().map(({id, product, user, user_photo, rate, text, images, created_datetime}, i) => {
                                     return (
                                         <SwiperSlide>
                                             <Review 

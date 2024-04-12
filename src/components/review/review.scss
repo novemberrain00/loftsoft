@@ -6,13 +6,15 @@
     box-sizing: border-box;
 
     &_moderated {
+        width: 520px !important;
+
         .review {
             &__header {
                 align-items: self-start;
             }
 
             &__name {
-                line-height: 70px;
+                line-height: 2.5;
             }
 
             &__images {
