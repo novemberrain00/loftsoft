@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, TouchEvent, useEffect, useState } from "react";
 
 import BlueStarIcon from '../../assets/images/icons/star_blue.svg';
 import { ReviewI } from "../../interfaces";
@@ -42,6 +42,14 @@ const Review: FC<ReviewI> = ({
     
         return `${day} ${month} ${year}`
     }
+
+    useEffect(() => {
+        document.querySelectorAll('.fslightbox-absoluted').forEach(slide => {
+            slide.addEventListener('touchmove', (e) => {
+                e.stopPropagation()
+            })
+        })
+    }, [])
 
     return (
         <>
