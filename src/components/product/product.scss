@@ -34,6 +34,7 @@
         justify-content: space-between;
         display: flex;
         align-items: center;
+        margin-top: 6px;
     }
 
     &__price {
@@ -134,3 +135,13 @@
 //         }
 //     }
 // }
+
+@media screen and (max-width: 480px) {
+    .product {
+        width: 250px;
+        
+        &__img {
+            height: 215px;
+        }
+    }
+}

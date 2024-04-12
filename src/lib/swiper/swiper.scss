@@ -40,15 +40,45 @@
 	}
 
 	&-scrollbar {
+		position: initial;
 		height: 15px !important;
 		background: #f2f2f2;
-		top: 0;
+		margin-bottom: 20px;
 		z-index: 0;
 
 		&-drag {
 			border-radius: 100px;
 			background: #2767ff;
 			height: 15px;
+		}
+	}
+}
+
+@media screen and (max-width: 1727px) {
+	.reviews .swiper {
+		&-scrollbar {
+			width: 1200px;
+			margin: 0 auto 20px;
+		}
+	}
+}
+
+
+@media screen and (max-width: 1280px) {
+	.reviews .swiper {
+		&-scrollbar {
+			width: 680px;
+			margin: 0 auto 20px;
+		}
+	}
+}
+
+
+@media screen and (max-width: 756px) {
+	.reviews .swiper {
+		&-scrollbar {
+			width: 84vw;
+			margin: 0 auto 20px;
 		}
 	}
 }

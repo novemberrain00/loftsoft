@@ -16,7 +16,6 @@ const Review: FC<ReviewI> = ({
         created_datetime, 
         rate, 
         additionalClass,
-        galleryOpener
     }) => {
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     const [toggler, setToggler] = useState<boolean>(false);
@@ -55,7 +54,7 @@ const Review: FC<ReviewI> = ({
                         const menu = document.querySelector('.menu') as HTMLElement;
                         const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
                         menu.style.zIndex = '10';
-                        chatWrapper.style.zIndex = '50';
+                        if(chatWrapper) chatWrapper.style.zIndex = '50';
                     
                         elem.classList.remove('swiper-wrapper_moved');
                         elem.style.transform = lastCarouselTransform;
@@ -77,7 +76,7 @@ const Review: FC<ReviewI> = ({
                                     const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
                                     const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
                                     elem.classList.add('swiper-wrapper_moved');
-                                    chatWrapper.style.zIndex = '0';
+                                    if(chatWrapper) chatWrapper.style.zIndex = '0';
 
                                     const menu = document.querySelector('.menu') as HTMLElement;
                                     menu.style.zIndex = '0';

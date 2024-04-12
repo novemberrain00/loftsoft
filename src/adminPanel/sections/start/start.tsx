@@ -57,6 +57,15 @@ const Start: FC<StartPropsI> = () => {
                         <img src={CloseIcon} alt="Закрыть все чаты" />
                         Закрыть все чаты
                     </div>
+                    <div onClick={(e: MouseEvent) => {
+                        tickets.forEach(({id}) => {
+                            closeTicket(e, id)
+                            setTickets([])
+                        })
+                    }} className="start__top-item">
+                        <img src={CloseIcon} alt="Закрыть все чаты" />
+                        Закрыть все чаты
+                    </div>
                     <Link to="history">
                     <div className="start__top-item">
                         <img src={UpdateIcon} alt="История закрытых тикетов" />

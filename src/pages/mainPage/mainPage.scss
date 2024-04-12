@@ -247,8 +247,9 @@
 
     &__items {
         display: flex;
+        flex-direction: column-reverse;
         box-shadow: inset -102px 0px 121px 0px rgba(250,250,250,1);
-        padding: 35px 10px 25px;
+        padding: 15px 10px 25px;
         //transform: scale(1, -1);
 
 

@@ -26,6 +26,25 @@ const Ticket: FC<TicketPropsI> = () => {
     const sendMessage = async () => {
         if(!message.length) return;
 
+        const messagesRef = ticket.messages;
+        messagesRef.push({
+            id: -1,
+            role: 'admin',
+            text: message,
+            created_at:  new Date(Date.now()).toISOString(),
+            attachments: []
+        });
+
+        setTicket({
+            ...ticket,
+            messages: messagesRef
+        });
+
+        setMessage('');
+            setTimeout(() => {
+                document.body.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+            }, 0);
+
         await postData('/tickets/send', {
             id,
             text: message,
@@ -33,44 +52,39 @@ const Ticket: FC<TicketPropsI> = () => {
         }, true)
         .then((data: SupportTicketI) => {
             setTicket(data);
-            setMessage('');
-            setTimeout(() => {
-                document.body.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
-            }, 0);
         });
     }
 
 
     useEffect(() => {
-        getData(`/ticket/${id}`, true)
-        .then((data: SupportTicketI) => {
-            setTicket(data)
-        });
-
-        let delay = 1000;
+        let delay = 3000;
         let timeout: NodeJS.Timeout | null = null;
-
+    
         const updateChat = () => {
             getData(`/ticket/${id}`, true)
             .then((data: SupportTicketI) => {
                 setTicket(data);
-                delay = 1000;
+                delay = 3000;
                 timeout = setTimeout(updateChat, delay);
-
-            }).catch(error => {
+            })
+            .catch(error => {
                 delay = delay * 2;
                 timeout = setTimeout(updateChat, delay);
             });
         }
     
-        updateChat();
-
+        getData(`/ticket/${id}`, true)
+        .then((data: SupportTicketI) => {
+            setTicket(data);
+            timeout = setTimeout(updateChat, delay);
+        });
+    
         return () => {
             if (timeout) {
                 clearTimeout(timeout);
             }
         }
-    }, []);
+    }, [id]);
 
     return (
         <>
