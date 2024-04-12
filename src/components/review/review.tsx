@@ -1,4 +1,4 @@
-import { FC, LegacyRef, useState } from "react";
+import { FC, LegacyRef, ReactNode, useEffect, useState } from "react";
 
 import BlueStarIcon from '../../assets/images/icons/star_blue.svg';
 import { ReviewI } from "../../interfaces";
@@ -26,7 +26,7 @@ const Review: FC<ReviewI> = ({
         const res = [];
     
         for(let i = 0; i < rate; i++) {
-            res.push(<img src={BlueStarIcon} alt="star" className="review__star"/>)
+            res.push(<img src={BlueStarIcon} key={i} alt="star" className="review__star"/>)
         }
 
         return res;
@@ -43,6 +43,14 @@ const Review: FC<ReviewI> = ({
         return `${day} ${month} ${year}`
     }
 
+    useEffect(() => {
+        document.querySelectorAll('.reviews__item .swiper-slide').forEach((slide, i) => {
+            slide.addEventListener('click', () => {
+                
+            })
+        })
+    }, [])
+
     return (
         <>
             <div className={`review block ${additionalClass || ''}`}>
@@ -51,7 +59,10 @@ const Review: FC<ReviewI> = ({
                     slide={selectedImageIndex}
                     onClose={() => {
                         const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
+                        const menu = document.querySelector('.menu') as HTMLElement;
+                        menu.style.zIndex = '10';
                         
+                        elem.classList.remove('swiper-wrapper_moved');
                         elem.style.transform = lastCarouselTransform;
                         elem.style.marginLeft = '0px'
                     }}
@@ -69,13 +80,25 @@ const Review: FC<ReviewI> = ({
                             <img 
                                 onClick={() => {
                                     const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
+                                    elem.classList.add('swiper-wrapper_moved');
+                                    
+
+                                    const menu = document.querySelector('.menu') as HTMLElement;
+                                    menu.style.zIndex = '0';
+                                    console.log(elem.style.transform)
+                                    
                                     setLastCarouselTransform(elem.style.transform);             
 
-                                    const margin = elem.style.transform.split('').splice(12, elem.style.transform.indexOf(',')-14).join('') + 'px'
-                                    
-                                    elem.style.marginLeft = margin;
-                                    elem.style.transform = "initial";
+                                        const margin = +elem.style.transform.split('').splice(12, elem.style.transform.indexOf(',')-14).join('') + 'px';
+                                                            
+                                        elem.style.marginLeft = margin;
 
+                                    setTimeout(() => {
+                                        
+                                    }, 50)
+                                    
+
+                
                                     setSelectedImageIndex(i+1);
                                     setToggler(!toggler);
                                 }} 

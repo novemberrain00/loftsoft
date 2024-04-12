@@ -18,6 +18,10 @@
 
 .reviews .swiper {
 
+	&-wrapper_moved {
+		transform: initial !important;
+	}
+
 	&-slide {
 		transform: unset !important;
 	}
@@ -33,10 +37,6 @@
 				fill-opacity: 0.5 !important;
 			}
 		}
-	}
-
-	&-slide {
-		position: initial;
 	}
 
 	&-scrollbar {
