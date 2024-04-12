@@ -148,6 +148,7 @@ export interface ReviewI {
     rate: number
     user_photo: string
     additionalClass?: string
+    galleryOpener?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface PostProductI {

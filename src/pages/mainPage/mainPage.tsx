@@ -51,6 +51,7 @@ const MainPage: FC<MainPageProps> = () => {
     const [reviews, setReviews] = useState<ReviewI[]>([]);
     const [products, setProducts] = useState<ProductI[]>([]);
     const [partners, setPartners] = useState<PartnerI[]>([]);
+    const [isGalleryOpened, setIsGalleryOpened] = useState(false)
 
     const pagination = {
         clickable: true,
@@ -354,6 +355,7 @@ const MainPage: FC<MainPageProps> = () => {
                     <Swiper
                         slidesPerView={1}
                         spaceBetween={40}
+                        
                         scrollbar={{
                             hide: false
                         }}
@@ -402,6 +404,7 @@ const MainPage: FC<MainPageProps> = () => {
                                                 images={images}
                                                 additionalClass="review_rotated content__review"
                                                 rate={rate}
+                                                galleryOpener={setIsGalleryOpened}
                                             />
                                         </SwiperSlide>
                                     )

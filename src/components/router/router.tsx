@@ -1,5 +1,6 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Routes, Route} from "react-router-dom";
+import {useSelector} from 'react-redux';
 
 import MainPage from '../../pages/mainPage/mainPage';
 import CatalogPage from '../../pages/catalogPage/catalogPage';
@@ -59,6 +60,7 @@ const Router: FC = () => {
             <Route path='/admin/tickets/history' element={<AdminPanel children={<TicketsHistory/>}/>}/>
             <Route path='/admin/tickets/:id' element={<AdminPanel children={<Ticket/>}/>}/>
             <Route path='/admin/tickets/history/:id' element={<AdminPanel children={<Ticket/>}/>}/>
+           
 
             <Route path="*" element={<NotFoundPage/>}/>
         </Routes>

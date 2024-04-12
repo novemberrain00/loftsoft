@@ -1,4 +1,4 @@
-import { FC, LegacyRef, ReactNode, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import BlueStarIcon from '../../assets/images/icons/star_blue.svg';
 import { ReviewI } from "../../interfaces";
@@ -16,6 +16,7 @@ const Review: FC<ReviewI> = ({
         created_datetime, 
         rate, 
         additionalClass,
+        galleryOpener
     }) => {
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     const [toggler, setToggler] = useState<boolean>(false);
@@ -43,14 +44,6 @@ const Review: FC<ReviewI> = ({
         return `${day} ${month} ${year}`
     }
 
-    useEffect(() => {
-        document.querySelectorAll('.reviews__item .swiper-slide').forEach((slide, i) => {
-            slide.addEventListener('click', () => {
-                
-            })
-        })
-    }, [])
-
     return (
         <>
             <div className={`review block ${additionalClass || ''}`}>
@@ -60,8 +53,10 @@ const Review: FC<ReviewI> = ({
                     onClose={() => {
                         const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
                         const menu = document.querySelector('.menu') as HTMLElement;
+                        const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
                         menu.style.zIndex = '10';
-                        
+                        chatWrapper.style.zIndex = '50';
+                    
                         elem.classList.remove('swiper-wrapper_moved');
                         elem.style.transform = lastCarouselTransform;
                         elem.style.marginLeft = '0px'
@@ -80,19 +75,16 @@ const Review: FC<ReviewI> = ({
                             <img 
                                 onClick={() => {
                                     const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
+                                    const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
                                     elem.classList.add('swiper-wrapper_moved');
-                                    
+                                    chatWrapper.style.zIndex = '0';
 
                                     const menu = document.querySelector('.menu') as HTMLElement;
                                     menu.style.zIndex = '0';
-                                    console.log(elem.style.transform)
                                     
                                     setLastCarouselTransform(elem.style.transform);             
-
-                                        const margin = +elem.style.transform.split('').splice(12, elem.style.transform.indexOf(',')-14).join('') + 'px';
-                                                            
+                                        const margin = +elem.style.transform.split('').splice(12, elem.style.transform.indexOf(',')-14).join('') + 'px';                   
                                         elem.style.marginLeft = margin;
-
                                     setTimeout(() => {
                                         
                                     }, 50)
