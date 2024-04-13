@@ -133,13 +133,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                 menuOpener={setIsDropdownOpened}
             />
             <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
-            <Profile 
-                historyOpener={setIsHistoryShowed}
-                isOpened={isProfileOpened} 
-                data={userData} 
-                replenishOpener={setIsReplenishOpened} 
-                closeHandler={setIsProfileOpened}
-            />
             <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
             <Dropdown 
                 text="Каталог товаров"
@@ -251,6 +244,15 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
             </header>
             <header className='header'>
                 <div className="container header__container">
+                    {
+                        isProfileOpened &&
+                        <Profile 
+                            historyOpener={setIsHistoryShowed}
+                            data={userData} 
+                            replenishOpener={setIsReplenishOpened} 
+                            closeHandler={setIsProfileOpened}
+                        />
+                    }
                     <Link to="/">
                         <div className="header__logo">
                             <img src={LogoImg} alt="loftsoft" className="desktop-block header__logo-img" />
@@ -293,7 +295,14 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         {
                             username && 
                                 <div onClick={() => {
-                                        setIsProfileOpened(true)
+                                        if(isProfileOpened) {
+                                            document.querySelector('.profile')?.classList.add('profile_disappeared')
+                                            setTimeout(() => {
+                                                setIsProfileOpened(false);
+                                            }, 600)
+                                        } else {
+                                            setIsProfileOpened(true);
+                                        }
                                     }} className="header__profile">
                                     <img src={photo} alt={username} className="header__profile-img" />
                                     <span className="header__profile-name">{username}</span>

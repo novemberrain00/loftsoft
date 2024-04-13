@@ -2,6 +2,7 @@
 .promo {
     display: grid;
     grid-template-columns: 60% 40%;
+    margin-top: 16px;
 
     &__left {
         max-width: 730px;

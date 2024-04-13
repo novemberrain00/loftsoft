@@ -1,10 +1,15 @@
 .editor {
+    position: absolute;
+    right: 0;
     display: flex;
     flex-direction: column;
     gap: 20px;
     background-color: #fff;
     border-radius: 20px;
     padding: 30px;
+    z-index: 100;
+    top: 70px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
 
     &__header {
         display: flex;

@@ -119,10 +119,6 @@ html {
 	}
 }
 
-.content {
-	overflow: hidden;
-}
-
 .search {
 	display: flex;
 	align-items: center;
@@ -252,11 +248,13 @@ html {
 }
 
 .container {
+	position: relative;
 	width: 1280px;
 	animation: fadeIn 0.3s ease;
 }
 
 .content {
+	overflow: hidden;
 	&__container {
 		margin: 0 auto;
 	}

@@ -8,24 +8,22 @@ import UpdateIcon from '../../assets/images/icons/update.svg';
 import DashboartIcon from '../../assets/images/icons/dashboard.svg';
 import LogoutIcon from '../../assets/images/icons/logout-profile.svg';
 
-import ProfileEditor from "../profileEditor/profileEditor";
-import Overlay from "../overlay/overlay";
-
 import { UserI } from "../../interfaces";
 import { RootState } from "../../store";
 
-import './profile.scss';
 import { setUserInfo } from "../../redux/userSlice";
+import ProfileEditor from "../profileEditor/profileEditor";
+
+import './profile.scss';
 
 interface ProfilePropsI {
-    isOpened: boolean
     data: UserI
     closeHandler: React.Dispatch<React.SetStateAction<boolean>>
     replenishOpener: React.Dispatch<React.SetStateAction<boolean>>
     historyOpener: React.Dispatch<React.SetStateAction<boolean>>
 }
  
-const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpener, historyOpener}) => {
+const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, historyOpener}) => {
     const [isEditorOpened, setIsEditorOpened] = useState(false);
     const [editingData, setEditingData] = useState('login');
 
@@ -55,9 +53,45 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
         closeHandler(false)
     }
 
-    return isOpened ? (
-        <Overlay closeHandler={closeHandler}>
-            {!isEditorOpened && <div className="profile">
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const profileElement = document.querySelector('.profile');
+            const headerProfileElement = document.querySelector('.header__profile');
+
+            if (
+                profileElement && 
+                headerProfileElement && 
+                !profileElement.contains(event.target as Node) && 
+                !headerProfileElement.contains(event.target as Node) &&
+                event.target !== headerProfileElement
+            ) {
+                profileElement.classList.add('profile_disappeared')
+
+                setTimeout(() => {
+                    closeHandler(false);
+                }, 600)
+            }
+        };
+        
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('scroll', () => {
+            document.querySelector('.profile')?.classList.add('profile_disappeared')
+            setTimeout(() => {
+                closeHandler(false);
+            }, 600)
+        });
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+
+    return  (
+        <>
+            {
+            !isEditorOpened && 
+            <div className="profile">
                 <div className="profile__header">
                     <img src={data.photo} alt={data.username} className="profile__img" />
                     <h3 className="profile__name">{data.username}</h3>
@@ -116,10 +150,10 @@ const Profile: FC<ProfilePropsI> = ({isOpened, data, closeHandler, replenishOpen
                         </li>
                     }
                 </ul>
-            </div>}
-            {isEditorOpened && <ProfileEditor editingData={editingData} closeHandler={closeHandler}/>}
-        </Overlay>
-    ): null;
+            </div> || <ProfileEditor closeHandler={closeHandler} editingData={editingData}/>
+            }
+        </>
+    );
 }
  
 export default Profile;
