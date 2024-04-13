@@ -95,6 +95,8 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         txtFiles: 'idle'
     });
 
+    
+
     const createOption = () => {
         if(!curOption.title.length) {
             setAlertMessages({

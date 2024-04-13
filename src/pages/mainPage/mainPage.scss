@@ -662,7 +662,7 @@
             height: 450px;
             position: absolute;
             left: 0;
-            bottom: -420px;
+            bottom: -470px;
             border-radius: 0 !important;
             padding: 24px 0 0 24px;
 
@@ -694,7 +694,7 @@
         }
 
         &__catalog {
-            margin-top: 470px;
+            margin-top: 510px;
         }
     }
 
@@ -715,12 +715,19 @@
             border-radius: 0 !important;
             padding: 24px 0px 48px 24px;
             height: 340px;
+            bottom: -420px;
 
             &-img {
                 width: 247px;
             }
         }
+
+        &__catalog {
+            margin-top: 470px;
+        }
     }
+
+    
 
     .reviews {
         &__bottom {
