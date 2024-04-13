@@ -154,7 +154,15 @@
             box-sizing: border-box;
             padding: 8px 12px;
             background: #F0F0F0;
+            font-family: Onest;
+            font-size: 20px;
             color: #3F3F3F;
+            border: none;
+            text-align: center;
+
+            &:focus {
+                outline: none;
+            }
         }
 
         &-btn {
@@ -182,7 +190,10 @@
                 border-bottom-right-radius: 0;
                 border-top-left-radius: 100%;
                 border-bottom-left-radius: 100%;
-                background: #D4D4D4;
+            }
+
+            &_disabled {
+                background-color: #D4D4D4;
             }
         }
     }

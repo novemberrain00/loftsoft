@@ -9,6 +9,7 @@ import { RootState } from "../../store";
 
 import './cartItem.scss';
 import { Link } from "react-router-dom";
+import useDebounce from "../../hooks/useDebounce";
 
 interface CartItemPropsI {
     id: number
@@ -32,12 +33,12 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
-    const postToCart = async () => {
+    const postToCart = async (quantity: number) => {
         setIsDataPosted(false);
         await postData('/cart/add', {
             product_id: productId,
             parameter_id: id,
-            count: newQuantity
+            count: quantity
           }, true)
           .then(data => {
             setIsDataPosted(true)
@@ -48,9 +49,9 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
           })
     } 
 
-    useEffect(() => {
-        postToCart();
-    }, [newQuantity])
+    const onQuantityEdited = (quantity: number) => {
+        postToCart(quantity);
+    }
 
     return (
         <div className="cart__item">
@@ -76,13 +77,33 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                     </span>
                     <div className="cart__item-bottom">
                         <div className="cart__switch">
-                            <button disabled={!isDataPosted} className="cart__switch-btn" onClick={() => setNewQuantity(newQuantity-1)}>
+                            <button disabled={!isDataPosted} className="cart__switch-btn" onClick={() => {
+                                if(quantity > 0) { 
+                                    const quantity = newQuantity-1;
+                                    setNewQuantity(quantity);
+                                    onQuantityEdited(quantity);
+                                }
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="2" viewBox="0 0 12 2" fill="none">
                                     <path d="M11 1L1 0.999999" stroke="#3F3F3F" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
                             </button>
-                            <span className="cart__switch-counter">{newQuantity}</span>
-                            <button disabled={!isDataPosted} className="cart__switch-btn" onClick={() => setNewQuantity(newQuantity+1)}>
+                            <input 
+                                type="text" 
+                                className="cart__switch-counter" 
+                                onInput={e => {
+                                    const quantity = +(e.target as HTMLInputElement).value
+                                    setNewQuantity(quantity)
+                                    
+                                }}
+                                onBlur={() => onQuantityEdited(newQuantity)}
+                                value={newQuantity}
+                            />
+                            <button disabled={!isDataPosted} className="cart__switch-btn" onClick={() => {
+                                const quantity = newQuantity+1;
+                                setNewQuantity(quantity)
+                                onQuantityEdited(quantity)
+                            }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                                     <path d="M6 1L6 11" stroke="#3F3F3F" stroke-width="2" stroke-linecap="round"/>
                                     <path d="M11 6L1 6" stroke="#3F3F3F" stroke-width="2" stroke-linecap="round"/>

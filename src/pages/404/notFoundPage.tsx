@@ -2,9 +2,9 @@ import { FC } from "react";
 import RootPage from "../rootPage/rootPage";
 
 import NotFoundImg from "../../assets/images/img/404.png";
+import { Link } from "react-router-dom";
 
 import "./notFoundPage.scss";
-import { Link } from "react-router-dom";
 
 interface NotFoundPagePropsI {
     
@@ -14,6 +14,7 @@ const NotFoundPage: FC<NotFoundPagePropsI> = () => {
     return (
         <RootPage isFooterHidden={true}>
             <img src={NotFoundImg} alt="страница не найдена" className="not-found-image"/>
+            <h1 className="not-found-title"> 404 <br /> Страница не найдена </h1>
             <Link to="/">
                 <a href="/" className="not-found-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="37" height="22" viewBox="0 0 37 22" fill="none">

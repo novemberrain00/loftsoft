@@ -80,6 +80,8 @@
     .admin {
         .start {
             &__top {
+                gap: 5px;
+                
                 &-item {
                     width: 100px;
                     height: 100px;

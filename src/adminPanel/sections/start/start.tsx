@@ -39,24 +39,6 @@ const Start: FC<StartPropsI> = () => {
             <AdminHeader title="Начало работы"></AdminHeader>
             <div className="start">
                 <div className="start__top">
-                    {
-                        tickets.length ?
-                        <Link to={`${tickets[tickets.length-1]?.id}`}>
-                            <div className="start__top-item">
-                                <img src={BackIcon} alt="Перейти к последнему тикету" />
-                                Перейти к последнему тикету
-                            </div>
-                        </Link> : null
-                    }
-                    <div onClick={(e: MouseEvent) => {
-                        tickets.forEach(({id}) => {
-                            closeTicket(e, id)
-                            setTickets([])
-                        })
-                    }} className="start__top-item">
-                        <img src={CloseIcon} alt="Закрыть все чаты" />
-                        Закрыть все чаты
-                    </div>
                     <div onClick={(e: MouseEvent) => {
                         tickets.forEach(({id}) => {
                             closeTicket(e, id)
@@ -67,10 +49,10 @@ const Start: FC<StartPropsI> = () => {
                         Закрыть все чаты
                     </div>
                     <Link to="history">
-                    <div className="start__top-item">
-                        <img src={UpdateIcon} alt="История закрытых тикетов" />
-                        История закрытых тикетов
-                    </div>
+                        <div className="start__top-item">
+                            <img src={UpdateIcon} alt="История закрытых тикетов" />
+                            История закрытых тикетов
+                        </div>
                     </Link>
                 </div>
                 <div className="start__tickets tickets">

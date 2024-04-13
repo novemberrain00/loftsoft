@@ -1,16 +1,15 @@
 import { FC, useEffect, useState } from "react";
 
 import Windows from '../../assets/images/img/history/windows.png';
-import Maxon from '../../assets/images/img/history/maxon.png';
-import Nanocad from '../../assets/images/img/history/nanocad.png';
 
 import CloseIcon from '../../assets/images/icons/close.svg';
 import AccountIcon from '../../assets/images/icons/account_white.svg';
 
-import { getCookie, getData, timestampToTime } from "../../services/services";
-import './history.scss';
+import { getData, timestampToTime } from "../../services/services";
 import { OrderI, ReplenishI } from "../../interfaces";
 import Overlay from "../overlay/overlay";
+
+import './history.scss';
 
 interface HistoryPropsI {
     isOpened: boolean

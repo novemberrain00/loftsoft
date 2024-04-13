@@ -213,6 +213,7 @@
             font-family: Roboto;
             font-size: 14px;
             font-weight: 400;
+            width: max-content;
 
             &:hover {
                 cursor: pointer;
@@ -508,6 +509,13 @@
         &__search {
             width: 100%;
             max-width: none;
+        }
+
+        &__info {
+            &-request {
+                position: relative;
+                right: -60px;
+            }
         }
 
         .search {

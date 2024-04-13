@@ -270,7 +270,7 @@ html {
 	&__review {
 		width: auto;
 		flex-shrink: 0;
-		max-width: 500px;
+		max-width: 620px;
 		margin: 0 auto;
 	}
 }
@@ -320,10 +320,13 @@ html {
 		font-size: 20px;
 		border-radius: 15px;
 		border: none;
+		box-sizing: border-box;
 		padding: 0 20px;
 		background: #f0f0f0;
 		width: 208px;
 		transition: 0.3s;
+
+		
 
 		&:hover {
 			cursor: pointer;
@@ -332,6 +335,10 @@ html {
 
 		&:focus {
 			outline: none;
+		}
+
+		&_outlined {
+			border: 1px solid #000;
 		}
 
 		&-label {
@@ -344,6 +351,10 @@ html {
 		right: 20px;
 		top: 16px;
 		position: absolute;
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 
 	&-value {
@@ -648,7 +659,7 @@ a {
 
 	.header {
 		&__container {
-			gap: 36px;
+			gap: 16px;
 		}
 	}
 

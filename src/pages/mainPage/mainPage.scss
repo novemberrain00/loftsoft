@@ -94,6 +94,10 @@
         padding: 46px 46px 26px;
         background: linear-gradient(151deg, #2667FF 1.03%, #678EEA 33.5%, rgba(35, 90, 218, 0.42) 62.89%, #2767FE 100%);
     
+        &_mobile {
+            display: none;
+        }
+
         &-title {
             font-family: Roboto;
             font-size: 36px;
@@ -299,6 +303,20 @@
     }
 }
 
+@keyframes PuzzleBouncing {
+    0% {
+        transform: scaleY(1.5) translateY(-30px);
+    }
+
+    50% {
+        transform: scaleY(1.5) translateY(-50px);;
+    }
+
+    100% {
+        transform: scaleY(1.5) translateY(-30px);
+    }
+}
+
 .promo2 {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -307,6 +325,19 @@
 
     &__img {
         max-width: 630px;
+
+        &-wrapper {
+            transform: scaleY(.7) translateY(20px);
+            border-radius: 25px;
+            background: #DEE8FF;
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+            width: 290px;
+        }
+    }
+
+    &__puzzle {
+        animation: PuzzleBouncing 3s ease infinite;
+        transform: scaleY(1.5) translateY(-30px);
     }
 
     &__text {
@@ -569,7 +600,7 @@
 
             &-carousel {
                 &_mobile {
-                    height: 63%;
+                    max-width: none;
                 }
             }
         }
@@ -597,10 +628,6 @@
             gap: 12px;
         }
 
-        &__bottom {
-            flex-direction: column;
-        }
-
         &__btn {
             display: none !important;
         }
@@ -623,6 +650,7 @@
     }
 }
 
+
 @media screen and (max-width: 576px) {
     .promo {
         &__right {
@@ -631,11 +659,42 @@
 
         &__advantages {
             width: 100%;
+            height: 450px;
+            position: absolute;
+            left: 0;
+            bottom: -555px;
+            border-radius: 0 !important;
+            padding: 24px 0 0 24px;
+
+            &_desktop {
+                display: none;
+            }
+
+            &_mobile {
+                display: block;
+            }
+
+            &-title {
+                margin-top: 0 !important;
+                text-align: left;
+            }
+
+            &-subtitle {
+                text-align: left;
+            }
+
 
             &-carousel_mobile {
-                max-width: 480px;
-                height: 10%;
+                height: 100%;
             }
+
+            &-img {
+                width: 85%;
+            }
+        }
+
+        &__catalog {
+            margin-top: 550px;
         }
     }
 
@@ -649,11 +708,36 @@
 }
 
 @media screen and (max-width: 480px) {
+    .promo {
+        &__advantages {
+            position: absolute;
+            left: 0;
+            border-radius: 0 !important;
+            padding: 24px 0px 48px 24px;
+            height: 340px;
+            bottom: -480px;
+
+            &-img {
+                width: 247px;
+            }
+        }
+
+        &__catalog {
+            margin-top: 460px;
+        }
+    }
+
     .reviews {
         &__bottom {
             &-button {
                 display: none !important;
             }
+        }
+    }
+
+    .promo2 {
+        &__bottom {
+            flex-direction: column;
         }
     }
 }

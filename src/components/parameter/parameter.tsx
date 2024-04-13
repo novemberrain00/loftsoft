@@ -7,8 +7,11 @@ import { setUserInfo } from "../../redux/userSlice";
 
 import BlueCartIcon from "../../assets/images/icons/cart_blue.svg";
 
-import './parameter.scss';
 import { setOrder } from "../../redux/straightOrderSlice";
+import { Link } from "react-router-dom";
+
+import './parameter.scss';
+import useDebounce from "../../hooks/useDebounce";
 
 interface ParameterPropsI {
     id: number
@@ -17,7 +20,7 @@ interface ParameterPropsI {
     salePrice: number
     price: number
     hasSale: boolean
-    salePercent: string | null,
+    salePercent: string | null
     description: string
     buyPopupOpener: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -40,7 +43,7 @@ const Parameter: FC<ParameterPropsI> = ({
     const straightOrder = useSelector((state: RootState) => state.straightOrder.straightOrder);
     const dispatch = useDispatch();
 
-    const postToCart = async () => {
+    const postToCart = async (quantity: number) => {
         setIsDataPosted(false)
         if(!window.localStorage.getItem('access_token')) {
             await postData('/user/register', {
@@ -49,7 +52,7 @@ const Parameter: FC<ParameterPropsI> = ({
             .then(data => {
                 if(data.access_token) {
                     window.localStorage.setItem('access_token', data.access_token);
-                    postToCart();
+                    postToCart(quantity);
                 } 
             })
         }
@@ -69,9 +72,13 @@ const Parameter: FC<ParameterPropsI> = ({
     } 
 
     useEffect(() => {
-        postToCart();
+        const curQuantity = userInfo.shop_cart.filter(par => par.parameter.id === id)[0]?.quantity || 0
+        setQuantity(curQuantity)
+    }, [])
 
-    }, [quantity])
+    const onQuantityEdited = (quantity: number) => {
+        postToCart(quantity);
+    }
 
     return (
     <div className="product-page__var block">
@@ -84,16 +91,36 @@ const Parameter: FC<ParameterPropsI> = ({
             {hasSale && <span className="product-page__price product-page__price_old">{+price}₽</span>}
             {hasSale && <span className="product-page__discount-value discount-value">-{salePercent}%</span>}
             <div className="product-page__switch">
-                <button className="product-page__switch-btn" disabled={!isDataPosted} onClick={() => {
-                    setQuantity(quantity-1)
-                }}>
+                <button 
+                    className={`product-page__switch-btn ${quantity === 0 ? 'product-page__switch-btn_disabled' : ''}`} 
+                    disabled={!isDataPosted} 
+                    onClick={() => {
+                        if(quantity > 0) { 
+                            const newQuantity = quantity-1;
+                            setQuantity(newQuantity)    
+                            onQuantityEdited(newQuantity)
+                        }
+                    }}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="3" viewBox="0 0 12 3" fill="none">
-                        <path d="M11 1.64258L1 1.64258" stroke="#3F3F3F" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M11 1.64258L1 1.64258" stroke={quantity > 0 ? 'white' : 'black'} stroke-width="2" stroke-linecap="round"/>
                     </svg>
                 </button>
-                <span className="product-page__switch-counter">{quantity}</span>
+                <input 
+                    type="text" 
+                    className="product-page__switch-counter" 
+                    value={quantity} 
+                    onInput={(e) => {
+                        const newQuantity = +(e.target as HTMLInputElement).value;
+                        setQuantity(newQuantity)
+                        
+                    }}
+                    onBlur={() => onQuantityEdited(quantity)}
+                />
                 <button className="product-page__switch-btn" disabled={!isDataPosted} onClick={() => {
-                    setQuantity(quantity+1)
+                    const newQuantity = quantity+1;
+                    setQuantity(newQuantity)    
+                    onQuantityEdited(newQuantity)
                 }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path d="M6 1L6 10.2857" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -114,12 +141,12 @@ const Parameter: FC<ParameterPropsI> = ({
                 }} 
                 className="btn product-page__btn"
             >Приобрести</button>
-            <a onClick={(e) => {
-                e.preventDefault();
-                setQuantity(quantity+1);
-            }} href="#" className="link product-page__var-cart">
-                <img src={BlueCartIcon} alt="в корзину" />
-            </a>
+            <Link to="/profile/cart">
+                <a href="/" className={`link product-page__var-cart ${quantity === 0 ? 'product-page__var-cart_disabled' : ''}`}>
+                    <img src={BlueCartIcon} alt="в корзину" />
+                </a>
+            </Link>
+            
         </div>
     </div>
     )

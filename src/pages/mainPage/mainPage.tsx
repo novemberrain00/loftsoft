@@ -6,21 +6,19 @@ import RootPage from "../rootPage/rootPage";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation, Scrollbar } from 'swiper/modules';
 
-import { useClipboard } from 'use-clipboard-copy';
-
-import CopyIcon from '../../assets/images/icons/copy.svg';
 import ArrowIcon from '../../assets/images/icons/dropdown-arrow-grey.svg';
 import BlueStar from '../../assets/images/icons/star_blue.svg';
 import ArrowRight from '../../assets/images/icons/arrow_right.svg';
 
 import LoftsoftImg from '../../assets/images/img/loftsoft.png';
-import Puzzle from '../../assets/images/img/puzzle.svg';
+import PuzzleImg from '../../assets/images/img/puzzle.svg';
 
 import Slide1 from '../../assets/images/img/carousel/slide1.png';
 import Slide2 from '../../assets/images/img/carousel/slide2.png';
 import Slide3 from '../../assets/images/img/carousel/slide3.png';
 import Slide1Mobile from '../../assets/images/img/carousel/slide1-mobile.png';
 
+import DiscountInput from "../../components/discountInput/discountInput";
 import Loader from "../../components/loader/loader";
 import Product from "../../components/product/product";
 import Review from "../../components/review/review";
@@ -51,8 +49,7 @@ const MainPage: FC<MainPageProps> = () => {
     const [reviews, setReviews] = useState<ReviewI[]>([]);
     const [products, setProducts] = useState<ProductI[]>([]);
     const [partners, setPartners] = useState<PartnerI[]>([]);
-    const [isGalleryOpened, setIsGalleryOpened] = useState(false)
-
+    
     const pagination = {
         clickable: true,
         renderBullet: function (index: number, className: string) {
@@ -60,9 +57,8 @@ const MainPage: FC<MainPageProps> = () => {
         },
       };
 
-    const clipboard = useClipboard();
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         getData('/categories?empty_filter=true')
         .then(data => setCategories(data));
@@ -95,10 +91,7 @@ const MainPage: FC<MainPageProps> = () => {
                                     Выбирай лучшее - выбирай LOFTSOFT
                                 </p>
                                 <div className="discount promo__discount">
-                                    <label onClick={clipboard.copy} htmlFor="discount-input" className="discount__input-label">
-                                        <input type="text" ref={clipboard.target} value="OPENSOFT23" placeholder="OPENSOFT23" className="discount__input" id="discount-input" readOnly/>
-                                        <img src={CopyIcon} alt="скопировать" className="discount__icon"/>
-                                    </label>
+                                    <DiscountInput/>
                                     <span className="discount-value">-5%</span>
                                     <p className="discount__text text">
                                         Скидка новым пользователям в честь открытия лучшего в магазина лицензионных программ
@@ -155,7 +148,7 @@ const MainPage: FC<MainPageProps> = () => {
                                         pagination={pagination}
                                         modules={[Autoplay, Pagination]}
                                         autoplay={{
-                                            delay: 1200,
+                                            delay: 2000,
                                             disableOnInteraction: false,
                                         }}
                                         className="promo__advantages-carousel carousel"
@@ -190,10 +183,7 @@ const MainPage: FC<MainPageProps> = () => {
                                 Выбирай лучшее - выбирай LOFTSOFT
                             </p>
                             <div className="discount promo__discount">
-                                <label onClick={clipboard.copy} htmlFor="discount-input" className="discount__input-label">
-                                    <input type="text" ref={clipboard.target} value="OPENSOFT23" placeholder="OPENSOFT23" className="discount__input" id="discount-input" readOnly/>
-                                    <img src={CopyIcon} alt="скопировать" className="discount__icon"/>
-                                </label>
+                                <DiscountInput/>
                                 <span className="discount-value">-5%</span>
                                 <p className="discount__text text">
                                     Скидка новым пользователям в честь открытия лучшего в магазина лицензионных программ
@@ -211,7 +201,7 @@ const MainPage: FC<MainPageProps> = () => {
                                     <div className="discount-value sale__value">-40%</div>
                                 </div>
                             </div>
-                            <div className="block promo__advantages">
+                            <div className="block promo__advantages promo__advantages_desktop">
                                 <h2 className="title promo__advantages-title">НАШИ ПРЕИМУЩЕСТВА</h2>
                                 <h3 className="subtitle promo__advantages-subtitle">Перед конкурентами</h3>
                                 <Swiper
@@ -231,6 +221,46 @@ const MainPage: FC<MainPageProps> = () => {
                                         </SwiperSlide>
                                         <SwiperSlide>
                                             <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                        </SwiperSlide>
+                                    </Swiper>
+                            </div>
+
+                            <div className="block promo__advantages promo__advantages_mobile">
+                                <h2 className="title promo__advantages-title">НАШИ ПРЕИМУЩЕСТВА</h2>
+                                <h3 className="subtitle promo__advantages-subtitle">Перед конкурентами</h3>
+                                <Swiper
+                                        modules={[Autoplay, Navigation, Scrollbar, Pagination]}
+                                        scrollbar={{
+                                            hide: false
+                                        }}
+                                        onBeforeInit={(swiper: any) => {
+                                            swiper.params.scrollbar.dragSize = "100%"
+                                        }}
+                                        slidesPerView={1.5}
+                                        loopPreventsSliding={false}
+                                        loop={true}
+                                        loopAdditionalSlides={0}
+                                        spaceBetween={21}
+                                        pagination={pagination}
+                                        breakpoints={{
+                                            480:  {
+                                                spaceBetween: 20
+                                            }
+                                        }}
+                                        autoplay={{
+                                            delay: 2000,
+                                            disableOnInteraction: false,
+                                        }}
+                                        className="promo__advantages-carousel_mobile carousel"
+                                    >
+                                        <SwiperSlide>
+                                            <img src={Slide1} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <img src={Slide2} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <img src={Slide3} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
                                         </SwiperSlide>
                                     </Swiper>
                             </div>
@@ -404,7 +434,6 @@ const MainPage: FC<MainPageProps> = () => {
                                                 images={images}
                                                 additionalClass="review_rotated content__review"
                                                 rate={rate}
-                                                galleryOpener={setIsGalleryOpened}
                                             />
                                         </SwiperSlide>
                                     )
@@ -452,7 +481,9 @@ const MainPage: FC<MainPageProps> = () => {
                         </button>
                     </div>
                     <div className="promo2__coop">
-                        <img src={Puzzle} alt="loftsoft" className="promo2__img" />
+                        <div className="promo2__img-wrapper">
+                            <img src={PuzzleImg} alt="loftsoft" className="promo2__puzzle" />
+                        </div>
                         <h5 className="title title_small promo2__title">Сотрудничество напрямую с вендорами</h5>
                         <p className="text text_large promo2__text">
                             Мы сотрудничаем напрямую с ведущими мировыми вендорами, такими как Microsoft, Maxon, Nanosoft и другими.
@@ -469,7 +500,9 @@ const MainPage: FC<MainPageProps> = () => {
                     </div>
                     <div className="promo2__bottom">
                         <div className="promo2__bottom-left">
-                            <img src={Puzzle} alt="loftsoft" className="promo2__img" />
+                            <div className="promo2__img-wrapper">
+                                <img src={PuzzleImg} alt="loftsoft" className="promo2__puzzle" />
+                            </div>
                             <button 
                                 onClick={() => navigate('/catalog')}
                                 className="btn btn_large promo2__btn"

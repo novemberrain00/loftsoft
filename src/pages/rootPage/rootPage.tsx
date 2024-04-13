@@ -42,6 +42,7 @@ import useDebounce from '../../hooks/useDebounce';
 import ReplenishPopup from '../../components/replenishPopup/replenishPopup';
 import Request from '../../components/request/request';
 import './rootPage.scss';
+import DiscountInput from '../../components/discountInput/discountInput';
 
 interface RootPagePropsI {
     isFooterHidden?:boolean
@@ -115,7 +116,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
         shop_cart
     } = userData;
 
-    const clipboard = useClipboard();
     const debouncedTerm = useDebounce(seachTerm, 300);
 
     useEffect(() => {
@@ -153,7 +153,14 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         !isSubcatsOpened ? 
                         (
                             <div className="header__dropdown-categories">
-                                <h3 className="header__dropdown-title">Категории</h3>
+                                
+                                <h3 className="header__dropdown-title">
+                                    Категории
+                                    <div onClick={() => setIsRequestOpened(true)} className="header__info-request">
+                                        <img src={RequestIcon} alt="Запрос товара" />
+                                        <span>Запрос товара</span>
+                                    </div>
+                                </h3>
                                 {
                                     categories?.length && categories.map(({id, title, subcategories, photo}, i) => {
                                         return (
@@ -184,10 +191,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                     <div className="header__discount-content">
                                         <h5 className="text header__discount-title">Ваша персональная скидка</h5>
                                         <div className="discount header__dropdown-discount">
-                                            <label onClick={clipboard.copy} htmlFor="discount-input" className="discount__input-label">
-                                                <input type="text" ref={clipboard.target} value="OPENSOFT23" className="discount__input header__discount-input" id="discount-input" readOnly/>
-                                                <img src={CopyIcon} alt="скопировать" className="discount__icon"/>
-                                            </label>
+                                            <DiscountInput additionalClass='header__discount-input'/>
                                             <span className="discount-value">-5%</span>
                                         </div>
                                     </div>
@@ -230,10 +234,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         </Link>
                         <HeaderNavItem text='Отзывы' path='/reviews'/>
                         <HeaderNavItem text='Правила' path='/terms'/>
-                        <div onClick={() => setIsRequestOpened(true)} className="header__info-request">
-                            <img src={RequestIcon} alt="Запрос товара" />
-                            <span>Запрос товара</span>
-                        </div>
                     </ul>
                     <div className="search header__search">
                         <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
@@ -369,10 +369,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                             <div className="header__discount-content">
                                                 <h5 className="text header__discount-title">Ваша персональная скидка</h5>
                                                 <div className="discount header__dropdown-discount">
-                                                    <label onClick={clipboard.copy} htmlFor="discount-input" className="discount__input-label">
-                                                        <input type="text" ref={clipboard.target} value="OPENSOFT23" className="discount__input header__discount-input" id="discount-input" readOnly/>
-                                                        <img src={CopyIcon} alt="скопировать" className="discount__icon"/>
-                                                    </label>
+                                                    <DiscountInput additionalClass='header__discount-input'/>
                                                     <span className="discount-value">-5%</span>
                                                 </div>
                                             </div>

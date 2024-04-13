@@ -149,6 +149,27 @@
 
 @media screen and (max-width: 576px) {
     .history {
-        width: auto;
+        padding: 30px 15px;
+        width: 95vw;
+
+        &__items {
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        &__item {
+            border-radius: 15px;
+            gap: 10px;
+            padding: 10px;
+
+            &-title {
+                font-size: 16px;
+            }
+
+            &-date {
+                font-size: 10px;
+            }
+        }
     }
 }

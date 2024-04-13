@@ -1,3 +1,15 @@
+@keyframes gradientChange {
+    0% {
+        background-position: 0% 50%; /* Начальная позиция */
+    }
+    50% {
+        background-position: 100% 50%; /* Середина анимации */
+    }
+    100% {
+        background-position: 0% 50%; /* Конечная позиция */
+    }
+}
+
 .catalog {
     &__container {
         margin-bottom: 64px;
@@ -54,7 +66,9 @@
             justify-content: space-between;
             border-radius: 25px;
             padding: 20px 21px 21px 30px;
-            background: linear-gradient(90deg, #4BDFDF 0%, #49A8FF 100%);
+            background: linear-gradient(90deg, #32DBDB 0%, #49B3FF 100%);
+            background-size: 200% 200%;
+            animation: gradientChange 2s ease infinite;
         }
 
         &-title {

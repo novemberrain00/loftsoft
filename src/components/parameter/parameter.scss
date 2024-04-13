@@ -33,6 +33,12 @@
         border: 2px solid #2767FE;
         border-radius: 100%;
         flex-shrink: 0;
+        opacity: 1;
+        transition: .1s;
+
+        &_disabled {
+            opacity: 0;
+        }
     } 
 }
 

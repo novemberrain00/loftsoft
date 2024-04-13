@@ -1,19 +1,18 @@
 import { FC, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useClipboard } from "use-clipboard-copy";
 
 import RootPage from "../rootPage/rootPage";
-import CopyIcon from '../../assets/images/icons/copy.svg';
 
 import FilterArrowIcon from '../../assets/images/icons/filter-arrow.svg'; 
 
 import Product from "../../components/product/product";
 import CatalogSection from "../../components/catalogSection/catalogSection";
+import DiscountInput from "../../components/discountInput/discountInput";
+import Loader from "../../components/loader/loader";
 
 import { convertToLatin, getData } from "../../services/services";
 import { CategoryI, ProductI, SubcategoryI } from "../../interfaces";
 
-import Loader from "../../components/loader/loader";
 import './catalogPage.scss';
 
 interface CatalogPagePropsI {
@@ -40,8 +39,6 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     const catalogBodyRef = useRef<HTMLDivElement>(null);
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
-    const clipboard = useClipboard();
-
     const setPathString = (data: CategoryI[]) => {
         const curCategory = data.filter((cat: CategoryI) => {
             return cat.subcategories.includes(cat.subcategories.filter(subcat => subcat.id === +(subcategory || 0))[0])
@@ -57,25 +54,31 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     }
 
     useEffect(() => {
-        getData('/categories?empty_filter=true')
-        .then(data => {
-            setCategories(data)
-            setPathString(data);
-        });
-
-        if(subcategory) {
-            getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
-            .then((data: ProductI[]) => {
-                setProducts(data);
-                if(!categories.length) return;
-                setPathString(categories);
+        const fetchData = async () => { 
+            await getData('/categories?empty_filter=true')
+            .then(data => {
+                setCategories(data)
+                setPathString(data);
             });
 
-            return
+            if(subcategory) {
+                await getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
+                .then((data: ProductI[]) => {
+                    setProducts(data);
+                    if(!categories.length) return;
+                    setPathString(categories);
+                });
+
+                return
+            } else {
+                await getData(`/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
+                .then((data: ProductI[]) => setProducts(data))
+            }
+
+            
         }
 
-        getData(`/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
-        .then((data: ProductI[]) => setProducts(data))
+        fetchData(); 
     }, [subcategory, filters]);
 
     useEffect(() => {
@@ -97,9 +100,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         };
       }, []);
 
-      useEffect(() => {
-
-      }, [])
+    document.title = path.subcategoryName ? `Товары - ${path.subcategoryName}` : 'Все товары'
 
     return (
         <RootPage>
@@ -109,10 +110,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                         <div className="catalog__banner-top">
                             <h2 className="title catalog__banner-title">Ваша персональная скидка</h2>
                             <div className="discount banner__discount">
-                                <label onClick={clipboard.copy} htmlFor="discount-input" className="discount__input-label">
-                                    <input ref={clipboard.target} type="text" value="OPENSOFT23" className="discount__input catalog__discount-input" id="discount-input" readOnly/>
-                                    <img src={CopyIcon} alt="скопировать" className="discount__icon"/>
-                                </label>
+                                <DiscountInput additionalClass="catalog__discount-input"/>
                                 <span className="discount-value">-5%</span>
                             </div>
                         </div>
