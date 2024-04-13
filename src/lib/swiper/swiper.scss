@@ -19,6 +19,7 @@
 .reviews .swiper {
 	&-wrapper_moved {
 		transform: initial !important;
+		z-index: 11;
 	}
 
 	&-slide {
@@ -124,7 +125,8 @@
 		}
 
 		&-scrollbar {
-			top: 275px
+			top: 275px;
+			width: 65%;
 		}
 	}
 }

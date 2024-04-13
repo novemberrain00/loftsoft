@@ -1,11 +1,46 @@
+@keyframes ProfileAppearance {
+    0% {
+        opacity: 0;
+        transform: translate(29vw, -45vh) scale(.01);
+    }
+
+    70% {
+        opacity: .7;
+        transform: translate(30vw*0.3, -35vh*0.3) scale(.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes ProfileAppearanceMobile {
+    0% {
+        opacity: 0;
+        transform: translate(30vw, 38vh) scale(.01);
+    }
+
+    70% {
+        opacity: .7;
+        transform: translate(30vw*0.3, 38vh*0.3) scale(.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+}
+
 .profile {
     display: flex;
     flex-direction: column;
     background: #fff;
     border-radius: 20px;
     gap: 16px;
-    min-height: 550px; //681
+    min-height: 550px; 
     padding: 20px 12px;
+    animation: ProfileAppearance .6s  forwards;
 
     &__img {
         width: 100px;
@@ -99,3 +134,8 @@
     }
 }
 
+@media screen and (max-width: 756px) {
+    .profile {
+        animation: ProfileAppearanceMobile .7s ease forwards;
+    }
+}

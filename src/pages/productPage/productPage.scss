@@ -152,7 +152,7 @@
             justify-content: center;
             width: 43px;
             box-sizing: border-box;
-            padding: 8px 12px;
+            padding: 8px 0;
             background: #F0F0F0;
             font-family: Onest;
             font-size: 20px;
@@ -296,32 +296,6 @@
         &__section {
             margin-bottom: 32px;
         }
-
-        // &__text {
-        //     margin: 13px 0 !important;
-        //     font-size: 20px !important;
-        // }
-
-        // &__price {
-        //     margin-right: initial;
-
-        //     &_old {
-        //         margin: 0 8px;
-        //     }
-        // }
-
-        // // &__btn {
-        // //     margin-right: 16px;
-        // // }
-
-        // // &__switch {
-        // //     margin-left: auto;
-        // //     margin-right: 16px;
-        // // }
-
-        // // &__discount-value {
-        // //     margin: 0 !important;
-        // // }
     }
 }
 
@@ -357,7 +331,7 @@
             font-size: 21px;
 
             &-counter {
-                padding: 4px 12px;
+                padding: 4px 0;
                 width: 30px;
             }
 
@@ -435,9 +409,9 @@
             }
 
             &-counter {
-                font-size: 19px;
+                font-size: 12px;
                 width: 30px;
-                padding: 1px 12px;
+                padding: 5px 0;
             }
         }
 

@@ -49,10 +49,6 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
           })
     } 
 
-    const onQuantityEdited = (quantity: number) => {
-        postToCart(quantity);
-    }
-
     return (
         <div className="cart__item">
             <div className="cart__item-header">
@@ -81,7 +77,7 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                                 if(quantity > 0) { 
                                     const quantity = newQuantity-1;
                                     setNewQuantity(quantity);
-                                    onQuantityEdited(quantity);
+                                    postToCart(quantity);
                                 }
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="2" viewBox="0 0 12 2" fill="none">
@@ -92,17 +88,17 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                                 type="text" 
                                 className="cart__switch-counter" 
                                 onInput={e => {
-                                    const quantity = +(e.target as HTMLInputElement).value
+                                    const quantity = +(e.target as HTMLInputElement).value || 1
                                     setNewQuantity(quantity)
                                     
                                 }}
-                                onBlur={() => onQuantityEdited(newQuantity)}
+                                onBlur={() => postToCart(newQuantity)}
                                 value={newQuantity}
                             />
                             <button disabled={!isDataPosted} className="cart__switch-btn" onClick={() => {
                                 const quantity = newQuantity+1;
                                 setNewQuantity(quantity)
-                                onQuantityEdited(quantity)
+                                postToCart(quantity)
                             }}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                                     <path d="M6 1L6 11" stroke="#3F3F3F" stroke-width="2" stroke-linecap="round"/>
@@ -114,7 +110,7 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                         {hasSale && <span className="cart__item-price cart__item-price_old">{price} ₽</span>}
                     </div>
                 </div>
-                <div onClick={() => setNewQuantity(0)} className="cart__item-icon">
+                <div onClick={() => postToCart(0)} className="cart__item-icon">
                     <img src={TrashIcon} alt="Удалить" className="cart__item-trash" />
                 </div>
             </div>

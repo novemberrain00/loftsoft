@@ -401,6 +401,7 @@ const MainPage: FC<MainPageProps> = () => {
                             swiper.params.scrollbar.dragSize = '500%';
                             console.log(swiper.params.scrollbar)
                         }}
+                        centeredSlides={false}
                         breakpoints={{ //минимальная ширина
                             1700: {
                                 slidesPerView: 3.5
@@ -415,8 +416,9 @@ const MainPage: FC<MainPageProps> = () => {
                                 slidesPerView: 2
                             },
                             620: {
-                                slidesPerView: 1.5
-                            }
+                                slidesPerView: 1.5,
+                                centeredSlides: true
+                            },
                         }}
                             modules={[Navigation, Scrollbar]}
                             className="reviews__items"

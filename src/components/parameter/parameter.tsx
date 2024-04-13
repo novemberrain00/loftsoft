@@ -56,6 +56,8 @@ const Parameter: FC<ParameterPropsI> = ({
                 } 
             })
         }
+
+        console.log(quantity)
         
         await postData('/cart/add', {
             product_id: productId,
@@ -74,11 +76,7 @@ const Parameter: FC<ParameterPropsI> = ({
     useEffect(() => {
         const curQuantity = userInfo.shop_cart.filter(par => par.parameter.id === id)[0]?.quantity || 0
         setQuantity(curQuantity)
-    }, [])
-
-    const onQuantityEdited = (quantity: number) => {
-        postToCart(quantity);
-    }
+    }, []);
 
     return (
     <div className="product-page__var block">
@@ -98,7 +96,7 @@ const Parameter: FC<ParameterPropsI> = ({
                         if(quantity > 0) { 
                             const newQuantity = quantity-1;
                             setQuantity(newQuantity)    
-                            onQuantityEdited(newQuantity)
+                            postToCart(newQuantity);
                         }
                     }}
                 >
@@ -111,16 +109,16 @@ const Parameter: FC<ParameterPropsI> = ({
                     className="product-page__switch-counter" 
                     value={quantity} 
                     onInput={(e) => {
-                        const newQuantity = +(e.target as HTMLInputElement).value;
+                        const newQuantity = +(e.target as HTMLInputElement).value || 1;
                         setQuantity(newQuantity)
                         
                     }}
-                    onBlur={() => onQuantityEdited(quantity)}
+                    onBlur={() => postToCart(quantity)}
                 />
                 <button className="product-page__switch-btn" disabled={!isDataPosted} onClick={() => {
                     const newQuantity = quantity+1;
                     setQuantity(newQuantity)    
-                    onQuantityEdited(newQuantity)
+                    postToCart(newQuantity)
                 }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path d="M6 1L6 10.2857" stroke="white" stroke-width="2" stroke-linecap="round"/>

@@ -22,7 +22,7 @@ interface MobileMenuPropsI {
  
 const MobileMenu: FC<MobileMenuPropsI> = ({ historyOpener, profileOpener, chatOpener, menuOpener, isDropdownOpened }) => {
     const userPhoto = useSelector((state: RootState) => state.user.userInfo.photo)
-    const userCartQuantity = useSelector((state: RootState) => state.user.userInfo.shop_cart.length)
+    const userCart= useSelector((state: RootState) => state.user.userInfo.shop_cart)
 
     return (
         <nav className="menu">
@@ -38,7 +38,7 @@ const MobileMenu: FC<MobileMenuPropsI> = ({ historyOpener, profileOpener, chatOp
                 <li className="menu__list-item menu__list-cart">
                     <Link to="/profile/cart">
                         <a href="#" className="menu__list-link">
-                            <span className="menu__list-quantity">{userCartQuantity}</span>
+                            <span className="menu__list-quantity">{userCart.reduce((acc, cur) => acc + cur.quantity, 0)}</span>
                             <img src={CartIcon} className="menu__list-icon" alt="корзина" />
                         </a>
                     </Link>

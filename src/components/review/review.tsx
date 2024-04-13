@@ -46,9 +46,23 @@ const Review: FC<ReviewI> = ({
     useEffect(() => {
         document.querySelectorAll('.fslightbox-absoluted').forEach(slide => {
             slide.addEventListener('touchmove', (e) => {
+                console.log('lol')
                 e.stopPropagation()
             })
+
+            // slide.addEventListener('mousedown', (e) => {
+            //     console.log('lol')
+            //     e.stopPropagation()
+            // })
         })
+
+        return () => {
+            document.querySelectorAll('.fslightbox-absoluted').forEach(slide => {
+                slide.removeEventListener('touchmove', (e) => {
+                    e.stopPropagation()
+                })
+            })
+        }
     }, [])
 
     return (
@@ -63,6 +77,7 @@ const Review: FC<ReviewI> = ({
                         const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
                         menu.style.zIndex = '10';
                         if(chatWrapper) chatWrapper.style.zIndex = '50';
+
                     
                         elem.classList.remove('swiper-wrapper_moved');
                         elem.style.transform = lastCarouselTransform;
@@ -83,7 +98,7 @@ const Review: FC<ReviewI> = ({
                                 onClick={() => {
                                     const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
                                     const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
-                                    elem.classList.add('swiper-wrapper_moved');
+                                    elem.classList.add('swiper-wrapper_moved', 'reviews__items_disabled');
                                     if(chatWrapper) chatWrapper.style.zIndex = '0';
 
                                     const menu = document.querySelector('.menu') as HTMLElement;
