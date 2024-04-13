@@ -195,6 +195,23 @@
         color: #2667FF;
         font-family: Onest;
         font-size: 16px;
+        font-weight: 500;
+    }
+}
+
+@media screen and (max-width: 756px) {
+    .purchase {
+        &__form {
+            &-input {
+                padding: 20px 23px;
+                font-size: 14px;
+                border-radius: 10px;
+            }
+
+            &-icon {
+                width: 15px;
+            }
+        }
     }
 }
 

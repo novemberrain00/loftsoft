@@ -1,8 +1,9 @@
 .request {
     background-color: #fff;
     padding: 40px;
-    border-radius: 50px;
+    border-radius: 40px;
     width: 28vw;
+    max-width: 620px;
 
     &__title {
         font-family: Roboto;
@@ -126,6 +127,25 @@
 }
 
 @media screen and (max-width: 756px) {
+    .request {
+        padding: 32px;
+        border-radius: 25px;
+        max-width: 350px;
+
+        &__title {
+            font-size: 20px;
+        }
+
+        &__header {
+            &-tab {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 576px) {
     .request {
         width: 75vw;
     }

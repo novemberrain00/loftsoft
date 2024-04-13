@@ -16,7 +16,9 @@ import PuzzleImg from '../../assets/images/img/puzzle.svg';
 import Slide1 from '../../assets/images/img/carousel/slide1.png';
 import Slide2 from '../../assets/images/img/carousel/slide2.png';
 import Slide3 from '../../assets/images/img/carousel/slide3.png';
-import Slide1Mobile from '../../assets/images/img/carousel/slide1-mobile.png';
+import Slide1Mobile from '../../assets/images/img/carousel/slide1-mobile.svg';
+import Slide2Mobile from '../../assets/images/img/carousel/slide2-mobile.svg';
+import Slide3Mobile from '../../assets/images/img/carousel/slide3-mobile.svg';
 
 import DiscountInput from "../../components/discountInput/discountInput";
 import Loader from "../../components/loader/loader";
@@ -217,10 +219,10 @@ const MainPage: FC<MainPageProps> = () => {
                                             <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
                                         </SwiperSlide>
                                         <SwiperSlide>
-                                            <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                            <img src={Slide2Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
                                         </SwiperSlide>
                                         <SwiperSlide>
-                                            <img src={Slide1Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
+                                            <img src={Slide3Mobile} alt="ТЕХНИЧЕСКАЯ ПОДДЕРЖКА РАБОТАЕТ 24/7" className="promo__advantages-img" />
                                         </SwiperSlide>
                                     </Swiper>
                             </div>
@@ -318,7 +320,7 @@ const MainPage: FC<MainPageProps> = () => {
                                         key={id}
                                         id={id}
                                         name={title}
-                                        imgPath={baseURL + '/uploads/' + product_photos[0].photo}
+                                        imgPath={baseURL + '/uploads/' + product_photos[0]?.photo}
                                         descr={description}
                                         priceNew={card_sale_price}
                                         priceOld={card_price}
