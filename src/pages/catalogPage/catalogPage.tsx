@@ -203,7 +203,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                         key={product.id}
                                         id={product.id} 
                                         name={product.title}
-                                        imgPath={baseURL + '/uploads/' + product.product_photos[0].photo}
+                                        imgPath={baseURL + '/uploads/' + product.product_photos[0]?.photo}
                                         descr={product.description}
                                         priceOld={product.card_price}
                                         priceNew={product.card_sale_price}
