@@ -10,15 +10,17 @@ import StarIcon from '../../assets/images/icons/star-bg-blue.svg';
 import ClockIcon from '../../assets/images/icons/clock-bg-blue.svg';
 import RulesIcon from '../../assets/images/icons/rules-bg-blue.svg';
 import BackIcon from '../../assets/images/icons/back-bg-blue.svg';
+import TrashIcon from '../../assets/images/icons/trash.svg';
 import AttachmentIcon from '../../assets/images/icons/attachment.svg';
 import AttachmentImgIcon from '../../assets/images/icons/attachment-img.svg';
 
 import { getData, postData, timestampToTime, uploadFile } from "../../services/services";
 
-import { SupportTicketI, UserI } from "../../interfaces";
+import { Attachment, SupportTicketI, UserI } from "../../interfaces";
 import { setUserInfo } from "../../redux/userSlice";
 
 import './chat.scss';
+import FsLightbox from "fslightbox-react";
 
 interface ChatPropsI {
     isChatOpened: boolean
@@ -32,6 +34,10 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
     const [attachments, setAttachments] = useState<string[]>([]);
     const [ticketsList, setTicketsList] = useState<SupportTicketI[]>([]);
     const [isMenuOpened, setIsMenuOpened] = useState<boolean>(false);
+
+    const [toggler, setToggler] = useState(false);
+    const [curImages, setCurImages] = useState<Attachment[]>([]);
+    const [activeSlideIndex, setActiveSlideIndex] = useState(1);
 
     const dispatch = useDispatch();
 
@@ -91,6 +97,12 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
     let touchStartY: number = 0;
     let touchEndY: number = 0;
     let menu: HTMLElement | null = document.querySelector('.chat__menu');
+
+    const deleteAttachment = (i: number) => {
+        const attachmentsRef = attachments;
+        attachmentsRef.splice(i, 1);
+        setAttachments([...attachmentsRef]);
+    }
 
     const touchStartHandler = (e: TouchEvent) => {
         touchStartY = e.touches[0].clientY;
@@ -177,8 +189,15 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
         };
     }, [isChatOpened]);
 
+    useEffect(() => console.log(activeSlideIndex), [activeSlideIndex])
+
     return (
         <div className="chat-wrapper">
+            <FsLightbox
+                toggler={toggler}
+                slide={activeSlideIndex}
+                sources={[...curImages.map(attach => <img src={baseURL + '/uploads/' + attach.file} alt="Не удалось загрузить изображение"/>)]}
+            />
             {
                 isChatOpened ? 
                 <div className="chat">
@@ -215,14 +234,19 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                                             }
                                             
                                             {
-                                                attachments.length && attachments.map(attach => {
+                                                attachments.length ? attachments.map((attach, index) => {
                                                     return <img 
                                                         key={attach.id} 
+                                                        onClick={() => {
+                                                            setCurImages(attachments)
+                                                            setToggler(!toggler)
+                                                            setActiveSlideIndex(index+1)
+                                                        }}
                                                         src={baseURL + '/uploads/' + attach.file}
                                                         alt="не удалось загрузить изображение" 
                                                         className="chat__message-attachment"
                                                     />
-                                                })
+                                                }) : null
                                             }
                                             <span className="chat__message-time">{timestampToTime(created_at)}</span>
                                         </div>
@@ -231,22 +255,27 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                                 
                             }) : null
                         }
-                        <div className="chat__body-attachments">
-                            {
-                                attachments.map(attach => {
-                                    return (
-                                        <a key={attach} target="blank" href={baseURL + '/uploads/' + attach} className="chat__body-attachment">
-                                            <span className="chat__body-attachment-icon">
-                                                <img src={AttachmentImgIcon} alt={attach} />
-                                            </span>
-                                            {attach}
-                                        </a>
-                                    )
-                                })
-                            }
-                        </div>
                     </div>
                     <form className="chat__footer">
+                        <div className="chat__footer-attachments">
+                            {
+                                attachments.length ? attachments.map((attach, i) => {
+                                    return (
+                                        <div className="chat__footer-attachment-wrapper">
+                                            <a key={attach} target="blank" href={baseURL + '/uploads/' + attach} className="chat__footer-attachment">
+                                                <span className="chat__footer-attachment-icon">
+                                                    <img src={AttachmentImgIcon} alt={attach} />
+                                                </span>
+                                                {attach}
+                                            </a>
+                                            <span onClick={() => deleteAttachment(i)} className="chat__footer-attachment-trash chat__footer-attachment-icon">
+                                                <img src={TrashIcon} alt="удалить" />
+                                            </span>
+                                        </div>
+                                    )
+                                }) : null
+                            }
+                        </div>
                         <input 
                             onInput={e => setMessage((e.target as HTMLInputElement).value)} 
                             type="text" 

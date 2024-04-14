@@ -6,10 +6,11 @@ import BackArrow from '../../../assets/images/icons/arrow_left.svg';
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
-import { SupportTicketI } from "../../../interfaces";
+import { Attachment, SupportTicketI } from "../../../interfaces";
 import { getData, postData, timestampToTime } from "../../../services/services";
 
 import './ticket.scss'; 
+import FsLightbox from "fslightbox-react";
 
 interface TicketPropsI {
 }
@@ -17,11 +18,13 @@ interface TicketPropsI {
 const Ticket: FC<TicketPropsI> = () => {
     const [ticket, setTicket] = useState<SupportTicketI>({} as SupportTicketI);
     const [message, setMessage] = useState<string>('');
+    const [curImages, setCurImages] = useState<Attachment[]>([]);
+    const [toggler, setToggler] = useState(false);
+    const [activeSlideIndex, setActiveSlideIndex] = useState(1);
+
     const {id} = useParams();
     const navigate = useNavigate();
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
-
-
 
     const sendMessage = async () => {
         if(!message.length) return;
@@ -95,9 +98,14 @@ const Ticket: FC<TicketPropsI> = () => {
                 </button>
             </AdminHeader>
             <div className="ticket-page">
+                <FsLightbox 
+                    toggler={toggler}
+                    slide={activeSlideIndex}
+                    sources={[...curImages.map(attach => <img src={baseURL + '/uploads/' + attach.file} alt="Не удалось загрузить изображение"/>)]}
+                />
                 <div className="ticket-page__messages">
                     {
-                        ticket.messages?.length ? ticket.messages.map(({text, id, role, created_at}) => {
+                        ticket.messages?.length ? ticket.messages.map(({text, id, role, attachments, created_at}) => {
                             return (
                                 <div key={id} className={role === 'user' ? "ticket-page__message" : "ticket-page__message ticket-page__message_mine"}>
                                     {
@@ -110,6 +118,18 @@ const Ticket: FC<TicketPropsI> = () => {
                                     }
                                     <div className="ticket-page__message-body">
                                         {text}
+
+                                        {
+                                            attachments.length && attachments.map(({id, file}, i) => {
+                                                return (
+                                                    <img key={id} src={baseURL + '/uploads/' + file} onClick={() => {
+                                                        setCurImages(attachments)
+                                                        setToggler(!toggler)
+                                                        setActiveSlideIndex(i+1)
+                                                    }} alt="Не удалось загрузить изображение" className="ticket-page__message-attachment"/>
+                                                )
+                                            })
+                                        }    
                                     </div>
                                     <div className="ticket-page__message-bottom">
                                         {role === 'user' ? <span>{ticket.user.email}</span> : null}

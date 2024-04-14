@@ -196,48 +196,6 @@
         &::-webkit-scrollbar {
             width: 9px;
         }
-
-        &-attachments {
-            position: fixed;
-            width: 100%;
-            max-width: 400px;
-            bottom: 112px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            background-color: #fff;
-        }
-
-        &-attachment {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #000;
-            font-family: Roboto;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 400;
-
-            &:hover {
-                cursor: pointer;
-                text-decoration: underline;
-            }
-
-            &-icon {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 8px;
-                box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
-                width: 25px;
-                height: 25px;
-                
-                img {
-                    width: 15px;
-                }
-            }
-            
-        }
     }
 
     &__message {
@@ -297,12 +255,68 @@
     &__footer {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        flex-direction: row;
         padding: 9px 25px;
         box-sizing: border-box;
         height: 62px;
         border-top: 1px solid #cccccc;
         border-radius: 4px;
+
+        &-attachments {
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            width: 90%;
+            max-height: 100px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding-left: 18px;
+            background: #fff;
+        }
+
+        &-attachment {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #000;
+            font-family: Roboto;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            padding: 6px 0;
+
+            &:hover {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+
+            &-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+                width: 25px;
+                height: 25px;
+                
+                img {
+                    width: 15px;
+                }
+            }
+
+            &-wrapper {
+                display: flex;
+                align-items: center;
+            }
+
+            &-trash {
+                margin-right: 10px;
+                margin-left: auto;
+            }
+            
+        }
     }
 
     &__input {
@@ -310,9 +324,11 @@
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
-        color: #cccccc;
+        color: #000;
         line-height: 44px;
         border: none;
+        width: 90%;
+        margin-right: 10px;
 
         &:focus {
             outline: none;
@@ -339,6 +355,7 @@
         border: none;
         border-radius: 10px;
         background-color: #E8F4FF;
+        margin-left: 20px;
 
         &:hover {
             cursor: pointer;
@@ -401,9 +418,16 @@
 @media screen and (max-width: 480px) {
     .chat {
         width: 100vw;
+
         &-wrapper {
             right: 0;
             bottom: 0;
+        }
+
+        &__footer {
+            &-attachments {
+
+            }
         }
     }
 }
