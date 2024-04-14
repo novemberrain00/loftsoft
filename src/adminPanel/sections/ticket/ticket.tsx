@@ -120,7 +120,7 @@ const Ticket: FC<TicketPropsI> = () => {
                                         {text}
 
                                         {
-                                            attachments.length && attachments.map(({id, file}, i) => {
+                                            attachments.length ? attachments.map(({id, file}, i) => {
                                                 return (
                                                     <img key={id} src={baseURL + '/uploads/' + file} onClick={() => {
                                                         setCurImages(attachments)
@@ -128,7 +128,7 @@ const Ticket: FC<TicketPropsI> = () => {
                                                         setActiveSlideIndex(i+1)
                                                     }} alt="Не удалось загрузить изображение" className="ticket-page__message-attachment"/>
                                                 )
-                                            })
+                                            }) : null
                                         }    
                                     </div>
                                     <div className="ticket-page__message-bottom">
