@@ -270,6 +270,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         background: #E8F4FF;
         padding: 3px 10px;
         border-radius: 50px;
@@ -280,7 +281,7 @@
         }
 
         &-name {
-            max-width: 75px;
+            max-width: 100px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -385,26 +386,13 @@
         &__media {
             margin: 0;
         }
-
-        .search {
-            &__input {
-                height: 36px;
-                width: 36px;
-                padding: 0;
-                
-                &::placeholder {
-                    color: rgba(232, 244, 255, 1);
-                }
-            }
-        }
-
         &__search {
             position: relative;
             display: block;
 
             &-icon {
                 left: 10px;
-                top: 10px;
+                top: -7px;
                 position: absolute;
                 width: 15px;
             }
@@ -412,9 +400,21 @@
 
         .search {
             margin-right: 0;
+
             &__results {
                 right: 0;
                 left: 0;
+            }
+
+            &__input {
+                position: absolute;
+                height: 36px;
+                width: 36px;
+                padding: 0;
+                
+                &::placeholder {
+                    color: rgba(232, 244, 255, 1);
+                }
             }
         }
 

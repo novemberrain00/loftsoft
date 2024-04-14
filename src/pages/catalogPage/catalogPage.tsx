@@ -22,10 +22,10 @@ interface CatalogPagePropsI {
 const CatalogPage: FC<CatalogPagePropsI> = () => {
     const {subcategory} = useParams();
 
-    const [filters, setFilters] = useState({ //false - по возрастанию, true - по убыванию
-        price: false,
-        rating: true,
-        sale: false
+    const [filters, setFilters] = useState({ // 0 - по возрастанию, 1 - по убыванию
+        price: 1,
+        rating: 1,
+        sale: 1
 
     });
     const [categories, setCategories] = useState<CategoryI[]>([]);
@@ -55,14 +55,9 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
 
     useEffect(() => {
         const fetchData = async () => { 
-            await getData('/categories?empty_filter=true')
-            .then(data => {
-                setCategories(data)
-                setPathString(data);
-            });
 
             if(subcategory) {
-                await getData(`/subcategory/${subcategory}/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
+                await getData(`/subcategory/${subcategory}/products?${filters.price < 2 ? `price_sort=${filters.price}` : ''}&${filters.rating < 2 ? `rating_sort=${filters.rating}&` : ''}&sale_sort=${filters.sale}&limit=20&offset=0`)
                 .then((data: ProductI[]) => {
                     setProducts(data);
                     if(!categories.length) return;
@@ -94,6 +89,12 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         };
     
         window.addEventListener('scroll', handleScroll);
+
+        getData('/categories?empty_filter=true')
+            .then(data => {
+                setCategories(data)
+                setPathString(data);
+            });
     
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -142,9 +143,14 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                         <span 
                                             onClick={() => setFilters({
                                                 ...filters,
-                                                price: !filters.price
+                                                price: filters.price > 0 ? 0 : 1,
+                                                rating: 2
                                             })}
-                                            className={`block catalog__filter-value ${filters.price && 'catalog__filter-value_active'}`}
+                                            className={
+                                                `block catalog__filter-value 
+                                                ${filters.price === 0 ? 'catalog__filter-value_active' : ''} 
+                                                ${filters.price === 2 ? 'catalog__filter-value_disabled' : ''}`
+                                            }
                                         >
                                             {filters.price ? `По\u00A0возрастанию` : 'По убыванию'}
                                             <img src={FilterArrowIcon} alt="По убыванию"/>
@@ -155,9 +161,16 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                         <span 
                                             onClick={() => setFilters({
                                                 ...filters,
-                                                rating: !filters.rating
+                                                rating: filters.rating ? 0 : 1,
+                                                price: 2
                                             })}
-                                            className={`block catalog__filter-value ${!filters.rating && 'catalog__filter-value_active'}`}
+                                            className={
+                                                `
+                                                    block catalog__filter-value 
+                                                    ${filters.rating === 0 ? 'catalog__filter-value_active' : ''} 
+                                                    ${filters.rating === 2 ? 'catalog__filter-value_disabled' : ''}
+                                                `
+                                            }
                                         >
                                             По убыванию
                                             <img src={FilterArrowIcon} alt="По убыванию"/>
@@ -167,9 +180,15 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                         <button 
                                             onClick={() => setFilters({
                                                 ...filters,
-                                                sale: !filters.sale
+                                                sale: filters.sale ? 0 : 1
                                             })}
-                                            className={`block catalog__filter-value ${filters.sale && 'catalog__filter-value_active'}`}
+                                            className={
+                                                `
+                                                    block catalog__filter-value 
+                                                    ${filters.sale === 0 ? 'catalog__filter-value_active' : ''} 
+                                                    ${filters.sale === 2 ? 'catalog__filter-value_disabled' : ''}
+                                                `
+                                            }
                                         >
                                             Товары по скидке
                                         </button>
