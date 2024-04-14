@@ -91,7 +91,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
         })
     }, []);
 
-    
+    console.log(seconds)    
 
     return (
         <RootPage>
@@ -122,6 +122,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
                         <label htmlFor="payment-phone" className="input payment__input">
                             <span className="input__label">Номер телефона</span>
                             <input 
+                                readOnly
                                 value={data.phone}
                                 type="text" 
                                 className="payment__input-text input__text input__text_rounded" 
@@ -131,11 +132,19 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
                         </label>
                         <label htmlFor="payment-bank" className="input payment__input">
                             <span className="input__label">Банк получателя</span>
-                            <input value="Озон Банк" type="text" className="payment__input-text input__text input__text_rounded" placeholder="Банк получателя" id="payment-bank"/>
+                            <input 
+                                readOnly 
+                                value="Озон Банк" 
+                                type="text" 
+                                className="payment__input-text input__text input__text_rounded" 
+                                placeholder="Банк получателя" 
+                                id="payment-bank"
+                            />
                         </label>
                         <label htmlFor="payment-seller" className="input payment__input">
                             <span className="input__label">Инициалы получателя</span>
                             <input 
+                                readOnly
                                 value={data.seller}
                                 type="text" 
                                 className="payment__input-text input__text input__text_rounded" 

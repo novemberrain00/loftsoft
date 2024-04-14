@@ -15,11 +15,12 @@ import ArrowBlueIcon from "../../assets/images/icons/arrow_right_blue.svg";
 import { RootState } from "../../store";
 import { resetInputData, setOrder } from "../../redux/straightOrderSlice";
 import { getData, postData } from "../../services/services";
-import { PurchaseI } from "../../interfaces";
+import { PurchaseI, UserI } from "../../interfaces";
 import { setOrderId, setPrice } from "../../redux/orderPriceSlice";
 
 import { setPurchase } from "../../redux/purchaseSlice";
 import './buyPopup.scss';
+import { setUserInfo } from "../../redux/userSlice";
 
 interface BuyPopupPropsI {
     isOpened: boolean
@@ -27,6 +28,8 @@ interface BuyPopupPropsI {
 }
  
 const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
+    const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
+
     const [activePayment, setActivePayment] = useState<string>('Способ оплаты');
     const [isPaymentsListShowed, setIsPaymentListShowed] = useState<boolean>(false);
     const [isAgreementChecked, setIsAgreementChecked] = useState<boolean>(false);
@@ -87,6 +90,25 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
     const createOrder = async (e: FormEvent) => {
         e.preventDefault();
         const {promocode, parameter_id, count, email} = straightOrder;
+
+        if(!window.localStorage.getItem('access_token')) {
+            await postData('/user/register', {
+                username: `user-${Math.random().toString(36).substring(2, 14)}`
+            })
+            .then(async (data) => {
+                if(data.access_token) {
+                    window.localStorage.setItem('access_token', data.access_token);
+
+                    await getData('/user/me', true).then((data: UserI) => dispatch(setUserInfo({
+                        ...data,
+                        username: `user-${data.username}`,
+                        photo: baseURL+'/uploads/'+data.photo
+                    })))
+                    
+                    createOrder(e)
+                } 
+            })
+        }
         
         if(email.length === 0) {
             setAlertMessage('Введите email');
