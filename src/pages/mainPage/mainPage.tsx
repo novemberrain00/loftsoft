@@ -403,6 +403,9 @@ const MainPage: FC<MainPageProps> = () => {
                         }}
                         centeredSlides={false}
                         breakpoints={{ //минимальная ширина
+                            2300: {
+                                slidesPerView: 4.5
+                            },
                             1700: {
                                 slidesPerView: 3.5
                             },

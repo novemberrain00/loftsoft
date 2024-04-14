@@ -211,7 +211,6 @@
         background: #F2F2F2;
         padding: 85px 0;
         overflow: hidden;
-        max-width: 2300px;
 
         &-track {
             display: flex;
@@ -220,7 +219,7 @@
 
         &-slide {
             width: 365px;
-            padding-right: 150px;
+            padding-right: 100px;
         }
     }
 }
@@ -254,7 +253,6 @@
         display: flex;
         flex-direction: column-reverse;
         padding: 15px 10px 25px;
-        max-width: 2300px;
 
         // &::after {
         //     content: '';
