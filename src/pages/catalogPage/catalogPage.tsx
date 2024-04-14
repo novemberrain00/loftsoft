@@ -172,7 +172,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                                 `
                                             }
                                         >
-                                            По убыванию
+                                            {filters.rating ? `По\u00A0возрастанию` : 'По убыванию'}
                                             <img src={FilterArrowIcon} alt="По убыванию"/>
                                         </span>
                                     </li>
