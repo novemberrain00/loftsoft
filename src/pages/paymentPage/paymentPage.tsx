@@ -91,8 +91,6 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
         })
     }, []);
 
-    console.log(seconds)    
-
     return (
         <RootPage>
             <div className="container content__container">
