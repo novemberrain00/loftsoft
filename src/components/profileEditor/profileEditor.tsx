@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 
 import CloseIcon from '../../assets/images/icons/close.svg';
@@ -14,6 +14,7 @@ import './profileEditor.scss';
 interface ProfileEditorPropsI {
     editingData: string
     closeHandler: React.Dispatch<React.SetStateAction<boolean>>
+    isOpened: boolean
 }
 
 interface UpdatedDataI {
@@ -21,7 +22,7 @@ interface UpdatedDataI {
     photo: any
 }
  
-const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler}) => {
+const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler, isOpened}) => {
     const dispatch = useDispatch();
     const userData =  useSelector((state: RootState) => state.user.userInfo);
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
@@ -30,6 +31,15 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler}) => 
         username: userData.username,
         photo: []
     });
+    const [shouldEditorDisappear, setShouldEditorDisappear] = useState(false);
+
+    const closeEditor = () => {
+        setShouldEditorDisappear(true);
+
+        setTimeout(() => {
+            closeHandler(false);
+        }, 600)
+    }
 
     const submitHandler = async (e: FormEvent) => {
         e.preventDefault();
@@ -44,6 +54,8 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler}) => 
             photo: updatedImg || userData.photo.substring(userData.photo.lastIndexOf("/")+1)
         }
 
+        closeEditor();
+
         await updateCurrentUser(updatePayload)
         .then(res => {
             console.log(res)
@@ -53,16 +65,43 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler}) => 
                 photo: baseURL + '/uploads/' + res.photo
             }))
         });
-
-        closeHandler(false);
-
     }
 
-    return (
-        <div className="editor">
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const editorElement = document.querySelector('.edior');
+            const headerProfileElement = document.querySelector('.header__profile');
+
+            if (
+                editorElement && 
+                headerProfileElement && 
+                !editorElement.contains(event.target as Node) && 
+                !headerProfileElement.contains(event.target as Node) &&
+                event.target !== headerProfileElement
+            ) {
+                closeEditor()
+            }
+        };
+        
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('scroll', () => {
+            closeEditor()
+        });
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+
+            document.removeEventListener('scroll', () => {
+                closeEditor()
+            });
+        };
+    }, []);
+
+    return isOpened ? (
+        <div className={`editor ${shouldEditorDisappear ? 'editor_disappeared' : ''}`}>
             <div className="editor__header">
                 <h2 className="title editor__title">Персонализация</h2>
-                <img src={CloseIcon} onClick={() => closeHandler(false)} alt="Персонализация" className="editor__closer" />
+                <img src={CloseIcon} onClick={() => closeEditor()} alt="Персонализация" className="editor__closer" />
             </div>
             <form onSubmit={(e: FormEvent) => submitHandler(e)} action="post" className="editor__form">
                 <div className="editor__avatar">
@@ -91,7 +130,7 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler}) => 
                 <input type="submit" value="Сохранить" className="editor__saver"/>
             </form>
         </div>
-    );
+    ): null;
 }
  
 export default ProfileEditor;

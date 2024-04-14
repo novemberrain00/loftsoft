@@ -30,11 +30,6 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
     const userData = useSelector((state: RootState) => state.user.userInfo);
     const dispatch = useDispatch();
 
-    const clickHandler = (data: string) => {
-        setEditingData(data);
-        setIsEditorOpened(true);
-    }
-
     const logout = () => {
         window.localStorage.removeItem('access_token');
         dispatch(setUserInfo({
@@ -53,6 +48,23 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
         closeHandler(false)
     }
 
+    const closeProfile = () => {
+        const profileElement = document.querySelector('.profile');
+        profileElement?.classList.add('profile_disappeared')
+
+        if(isEditorOpened) { 
+            setTimeout(() => {
+                closeHandler(false);
+            }, 600)
+        }
+    }
+
+    const clickHandler = (data: string) => {
+        setEditingData(data);
+        setIsEditorOpened(true);
+        closeProfile()
+    }
+
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const profileElement = document.querySelector('.profile');
@@ -65,32 +77,27 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
                 !headerProfileElement.contains(event.target as Node) &&
                 event.target !== headerProfileElement
             ) {
-                profileElement.classList.add('profile_disappeared')
-
-                setTimeout(() => {
-                    closeHandler(false);
-                }, 600)
+                closeProfile()
             }
         };
         
         document.addEventListener('click', handleClickOutside);
         document.addEventListener('scroll', () => {
-            document.querySelector('.profile')?.classList.add('profile_disappeared')
-            setTimeout(() => {
-                closeHandler(false);
-            }, 600)
+            closeProfile()
         });
 
         return () => {
             document.removeEventListener('click', handleClickOutside);
+
+            document.removeEventListener('scroll', () => {
+                closeProfile()
+            });
         };
     }, []);
 
 
     return  (
         <>
-            {
-            !isEditorOpened && 
             <div className="profile">
                 <div className="profile__header">
                     <img src={data.photo} alt={data.username} className="profile__img" />
@@ -150,8 +157,8 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
                         </li>
                     }
                 </ul>
-            </div> || <ProfileEditor closeHandler={closeHandler} editingData={editingData}/>
-            }
+            </div> 
+            <ProfileEditor isOpened={isEditorOpened} closeHandler={closeHandler} editingData={editingData}/>
         </>
     );
 }
