@@ -40,6 +40,7 @@ const MobileMenu: FC<MobileMenuPropsI> = ({
             {
                 isProfileOpened &&
                     <Profile
+                        isOpened={isProfileOpened}
                         historyOpener={historyOpener}
                         data={userData} 
                         replenishOpener={replenishOpener} 
@@ -82,7 +83,17 @@ const MobileMenu: FC<MobileMenuPropsI> = ({
                     </li>
                     {
                         window.localStorage.getItem('access_token') ? (
-                            <li onClick={() => setIsProfileOpened(true)} className="menu__list-item menu__profile-trigger">
+                            <li onClick={() => {
+                                if(!isProfileOpened) {
+                                    setIsProfileOpened(true)
+                                } else {
+                                    const profileElement = document.querySelector('.profile');
+                                    profileElement?.classList.add('profile_disappeared')
+
+                                    setTimeout(() => setIsProfileOpened(false), 600)
+                                }
+                            }
+                            } className="menu__list-item menu__profile-trigger">
                                 <span className="menu__list-link">
                                     <img src={userData.photo} className="menu__list-icon menu__list-avatar" alt="профиль" />
                                 </span>

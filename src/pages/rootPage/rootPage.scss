@@ -267,11 +267,13 @@
     }
 
     &__profile {
+        position: relative;
         display: flex;
         align-items: center;
         background: #E8F4FF;
         padding: 3px 10px;
         border-radius: 50px;
+        min-width: 225px;
 
         &:hover {
             cursor: pointer;

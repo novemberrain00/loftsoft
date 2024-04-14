@@ -10,9 +10,10 @@ import TrashIcon from "../../../assets/images/icons/trash.svg";
 
 import Popup from "../../../components/categoryPopup/categoryPopup";
 
-import "./promocodes.scss";
 import { PostPromocodeI } from "../../../interfaces";
-import { deleteData, getCookie, getData, postData } from "../../../services/services";
+import { deleteData, getData, postData } from "../../../services/services";
+
+import "./promocodes.scss";
 
 interface PromocodesPropsI {
     
@@ -81,7 +82,7 @@ const Promocodes: FC<PromocodesPropsI> = () => {
             method: 'PATCH',
             headers: {
                 "Accept": "application/json",
-                "Authorization": 'Bearer ' + getCookie('access_token') as string,
+                "Authorization": 'Bearer ' + window.localStorage.getItem('access_token') as string,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
@@ -213,7 +214,7 @@ const Promocodes: FC<PromocodesPropsI> = () => {
                                     <span className="promocodes__text promocodes__text_bold">{name}</span>
                                     <span className="promocodes__text">{sale_percent}%</span>
                                     <span className="promocodes__text">
-                                        Количество использований: {activations_count > -1 ? activations_count : 'неограниченно'} <br />Активировано: {usage_count} раз
+                                        Количество использований: {activations_count > -1 ? activations_count : 'неограниченно'} <br />Активировано: {usage_count || 0} раз
                                     </span>
                                     <div className="promocodes__item-helpers">
                                         <div onClick={() => {

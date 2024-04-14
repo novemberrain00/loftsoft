@@ -249,15 +249,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
             </header>
             <header className='header'>
                 <div className="container header__container">
-                    {
-                        isProfileOpened &&
-                        <Profile 
-                            historyOpener={setIsHistoryShowed}
-                            data={userData} 
-                            replenishOpener={setIsReplenishOpened} 
-                            closeHandler={setIsProfileOpened}
-                        />
-                    }
                     <Link to="/">
                         <div className="header__logo">
                             <img src={LogoImg} alt="loftsoft" className="desktop-block header__logo-img" />
@@ -299,7 +290,35 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         </span>
                         {
                             username && 
-                                <div onClick={() => setIsProfileOpened(true)} className="header__profile">
+                                <div onClick={(e) => {
+                                    if(!isProfileOpened) {
+                                        setIsProfileOpened(true)
+                                    } else {
+
+                                        const target = e.target as HTMLElement;
+                                        const profileElement = document.querySelector('.profile') as Node;
+                                        const editorElement = document.querySelector('.editor') as Node;
+
+                                        console.log(target)
+
+                                        if(!profileElement.contains(target) && !editorElement?.contains(target)) {
+                                            (profileElement as HTMLElement)?.classList.add('profile_disappeared')
+                                            setTimeout(() => setIsProfileOpened(false), 600)
+                                        } 
+                                        
+                                        
+                                    }
+                                }} className="header__profile">
+                                    {
+                                        isProfileOpened &&
+                                        <Profile 
+                                            isOpened={isProfileOpened}
+                                            historyOpener={setIsHistoryShowed}
+                                            data={userData} 
+                                            replenishOpener={setIsReplenishOpened} 
+                                            closeHandler={setIsProfileOpened}
+                                        />
+                                    }
                                     <img src={photo} alt={username} className="header__profile-img" />
                                     <span className="header__profile-name">{username}</span>
                                     <button className="btn header__profile-price">{balance}&nbsp;₽</button>

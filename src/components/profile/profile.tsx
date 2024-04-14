@@ -17,13 +17,14 @@ import ProfileEditor from "../profileEditor/profileEditor";
 import './profile.scss';
 
 interface ProfilePropsI {
+    isOpened: boolean
     data: UserI
     closeHandler: React.Dispatch<React.SetStateAction<boolean>>
     replenishOpener: React.Dispatch<React.SetStateAction<boolean>>
     historyOpener: React.Dispatch<React.SetStateAction<boolean>>
 }
  
-const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, historyOpener}) => {
+const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, historyOpener, isOpened}) => {
     const [isEditorOpened, setIsEditorOpened] = useState(false);
     const [editingData, setEditingData] = useState('login');
 
@@ -50,11 +51,13 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
 
     const closeProfile = () => {
         const profileElement = document.querySelector('.profile');
+        const editorElement = document.querySelector('.editor');
         profileElement?.classList.add('profile_disappeared')
+        editorElement?.classList.add('editor_disappeared')
 
         setTimeout(() => {
             closeHandler(false);
-        }, 600)
+        }, 600);
     }
 
     const clickHandler = (data: string) => {
@@ -71,7 +74,7 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
         const menuElement = document.querySelector('.menu__profile-trigger');
     
         const profileTrigger = window.innerWidth <= 756 ? menuElement : headerProfileElement;
-    
+
         if (
             profileElement && 
             profileTrigger && 
@@ -79,7 +82,7 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
             !profileElement.contains(event.target as Node) && 
             !(profileTrigger)?.contains(event.target as Node) &&
             
-            event.target !== profileTrigger
+            event.target !== profileTrigger 
         ) {
             closeProfile()
         }
@@ -89,20 +92,17 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
         closeProfile();
     };
     
-    useEffect(() => {
-        if(isEditorOpened) {
-            document.removeEventListener('click', handleClickOutside);
-            document.removeEventListener('scroll', handleScroll);
-        } else {
-            document.addEventListener('click', handleClickOutside);
-            document.addEventListener('scroll', handleScroll);
-        }
+    // useEffect(() => {
+    //     if(!isEditorOpened) {
+    //         document.addEventListener('click', handleClickOutside);
+    //         document.addEventListener('scroll', handleScroll);
+    //     }
     
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
-            document.removeEventListener('scroll', handleScroll);
-        };
-    }, [isEditorOpened]);
+    //     return () => {
+    //         document.removeEventListener('click', handleClickOutside);
+    //         document.removeEventListener('scroll', handleScroll);
+    //     };
+    // }, [isEditorOpened]);
 
     useEffect(() => {
         document.addEventListener('click', handleClickOutside);

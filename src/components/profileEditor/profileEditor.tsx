@@ -42,6 +42,7 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler, isOp
 
     const submitHandler = async (e: FormEvent) => {
         e.preventDefault();
+        closeEditor();
 
         const updatedImg = await uploadFile(updatedData.photo[0]).then((res) => res.upload);
         const updatePayload = updatedData.username === userData.username ?
@@ -53,11 +54,10 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler, isOp
             photo: updatedImg || userData.photo.substring(userData.photo.lastIndexOf("/")+1)
         }
 
-        closeEditor();
+        
 
         await updateCurrentUser(updatePayload)
         .then(res => {
-            console.log(res)
             dispatch(setUserInfo({
                 ...userData,
                 username: res.username,
@@ -66,24 +66,26 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler, isOp
         });
     }
 
+    const handleClickOutside = (event: MouseEvent) => {
+        const editorElement = document.querySelector('.edior');
+        const headerProfileElement = document.querySelector('.header__profile');
+
+        if (
+            editorElement && 
+            headerProfileElement && 
+            
+            !editorElement.contains(event.target as Node) && 
+            !headerProfileElement.contains(event.target as Node) &&
+            
+            event.target !== headerProfileElement
+        ) {
+            closeEditor()
+        }
+    };
+    
+    const handleScroll = () => closeEditor()
+
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const editorElement = document.querySelector('.edior');
-            const headerProfileElement = document.querySelector('.header__profile');
-
-            if (
-                editorElement && 
-                headerProfileElement && 
-                !editorElement.contains(event.target as Node) && 
-                !headerProfileElement.contains(event.target as Node) &&
-                event.target !== headerProfileElement
-            ) {
-                closeEditor()
-            }
-        };
-        
-        const handleScroll = () => closeEditor()
-
         document.addEventListener('click', handleClickOutside);
         document.addEventListener('scroll', () => handleScroll);
 
