@@ -10,9 +10,21 @@
     }
 }
 
+@keyframes DisappearanceMobile {
+    from {
+        opacity: 1;
+        transform: scale(1) translate(0, 0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(50%, 50%) scale(.1);
+    }
+}
+
 .editor {
-    position: absolute;
-    right: 0;
+    position: fixed;
+    right: 170px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -120,6 +132,18 @@
         &:hover {
             text-decoration: underline;
             cursor: pointer;
+        }
+    }
+}
+
+@media screen and (max-width: 756px) {
+    .editor {
+        top: unset;
+        right: 50px;
+        bottom: 120px;
+
+        &_disappeared {
+            animation: DisappearanceMobile .6s ease forwards;
         }
     }
 }

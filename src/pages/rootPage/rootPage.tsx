@@ -133,7 +133,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         isDropdownOpened={isDropdownOpened}
                         chatOpener={setIsChatOpened}
                         menuOpener={setIsDropdownOpened}
-                        isProfileOpened={isProfileOpened}
                         replenishOpener={setIsReplenishOpened}
                     />
             }
@@ -300,16 +299,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         </span>
                         {
                             username && 
-                                <div onClick={() => {
-                                        if(isProfileOpened) {
-                                            document.querySelector('.profile')?.classList.add('profile_disappeared')
-                                            setTimeout(() => {
-                                                setIsProfileOpened(false);
-                                            }, 600)
-                                        } else {
-                                            setIsProfileOpened(true);
-                                        }
-                                    }} className="header__profile">
+                                <div onClick={() => setIsProfileOpened(true)} className="header__profile">
                                     <img src={photo} alt={username} className="header__profile-img" />
                                     <span className="header__profile-name">{username}</span>
                                     <button className="btn header__profile-price">{balance}&nbsp;₽</button>

@@ -35,7 +35,6 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler, isOp
 
     const closeEditor = () => {
         setShouldEditorDisappear(true);
-
         setTimeout(() => {
             closeHandler(false);
         }, 600)
@@ -83,17 +82,14 @@ const ProfileEditor: FC<ProfileEditorPropsI> = ({editingData, closeHandler, isOp
             }
         };
         
+        const handleScroll = () => closeEditor()
+
         document.addEventListener('click', handleClickOutside);
-        document.addEventListener('scroll', () => {
-            closeEditor()
-        });
+        document.addEventListener('scroll', () => handleScroll);
 
         return () => {
             document.removeEventListener('click', handleClickOutside);
-
-            document.removeEventListener('scroll', () => {
-                closeEditor()
-            });
+            document.removeEventListener('scroll', handleScroll);
         };
     }, []);
 

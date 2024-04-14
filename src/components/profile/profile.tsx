@@ -52,52 +52,67 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
         const profileElement = document.querySelector('.profile');
         profileElement?.classList.add('profile_disappeared')
 
-        if(isEditorOpened) { 
-            setTimeout(() => {
-                closeHandler(false);
-            }, 600)
-        }
+        setTimeout(() => {
+            closeHandler(false);
+        }, 600)
     }
 
     const clickHandler = (data: string) => {
         setEditingData(data);
         setIsEditorOpened(true);
-        closeProfile()
+
+        const profileElement = document.querySelector('.profile');
+        profileElement?.classList.add('profile_disappeared')
     }
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            const profileElement = document.querySelector('.profile');
-            const headerProfileElement = document.querySelector('.header__profile');
-            const menuElement = document.querySelector('.menu');
+    const handleClickOutside = (event: MouseEvent) => {
+        const profileElement = document.querySelector('.profile');
+        const headerProfileElement = document.querySelector('.header__profile');
+        const menuElement = document.querySelector('.menu__profile-trigger');
+    
+        const profileTrigger = window.innerWidth <= 756 ? menuElement : headerProfileElement;
+    
+        if (
+            profileElement && 
+            profileTrigger && 
 
-            if (
-                profileElement && 
-                headerProfileElement && 
-                menuElement && 
-                !profileElement.contains(event.target as Node) && 
-                !headerProfileElement.contains(event.target as Node) &&
-                !menuElement.contains(event.target as Node) &&
-                event.target !== headerProfileElement
-            ) {
-                closeProfile()
-            }
-        };
-        
-        document.addEventListener('click', handleClickOutside);
-        document.addEventListener('scroll', () => {
+            !profileElement.contains(event.target as Node) && 
+            !(profileTrigger)?.contains(event.target as Node) &&
+            
+            event.target !== profileTrigger
+        ) {
             closeProfile()
-        });
-
+        }
+    };
+    
+    const handleScroll = () => {
+        closeProfile();
+    };
+    
+    useEffect(() => {
+        if(isEditorOpened) {
+            document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('scroll', handleScroll);
+        } else {
+            document.addEventListener('click', handleClickOutside);
+            document.addEventListener('scroll', handleScroll);
+        }
+    
         return () => {
             document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('scroll', handleScroll);
+        };
+    }, [isEditorOpened]);
 
-            document.removeEventListener('scroll', () => {
-                closeProfile()
-            });
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('scroll', handleScroll);
+    
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+            document.removeEventListener('scroll', handleScroll);
         };
     }, []);
-
 
     return  (
         <>

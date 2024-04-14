@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect } from "react";
+import { FC, MouseEvent, useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 
 import SearchIcon from '../../assets/images/icons/search_grey.svg';
@@ -20,7 +20,6 @@ interface MobileMenuPropsI {
     chatOpener: React.Dispatch<React.SetStateAction<boolean>>
     replenishOpener: React.Dispatch<React.SetStateAction<boolean>>
     isDropdownOpened: boolean
-    isProfileOpened: boolean
 }
  
 const MobileMenu: FC<MobileMenuPropsI> = ({ 
@@ -30,21 +29,22 @@ const MobileMenu: FC<MobileMenuPropsI> = ({
         menuOpener, 
         replenishOpener, 
         isDropdownOpened,
-        isProfileOpened
     }) => {
-    const userData = useSelector((state: RootState) => state.user.userInfo)
-    const userCart= useSelector((state: RootState) => state.user.userInfo.shop_cart)
+    const userData = useSelector((state: RootState) => state.user.userInfo);
+    const userCart= useSelector((state: RootState) => state.user.userInfo.shop_cart);
+
+    const [isProfileOpened, setIsProfileOpened] = useState(false);
 
     return (
         <>
             {
                 isProfileOpened &&
-                <Profile
-                    historyOpener={historyOpener}
-                    data={userData} 
-                    replenishOpener={replenishOpener} 
-                    closeHandler={profileOpener}
-                />
+                    <Profile
+                        historyOpener={historyOpener}
+                        data={userData} 
+                        replenishOpener={replenishOpener} 
+                        closeHandler={setIsProfileOpened}
+                    />
             }
             <nav className="menu">
                 <ul className="list menu__list">
@@ -82,9 +82,7 @@ const MobileMenu: FC<MobileMenuPropsI> = ({
                     </li>
                     {
                         window.localStorage.getItem('access_token') ? (
-                            <li onClick={() => {
-                                profileOpener(true)
-                            }} className="menu__list-item">
+                            <li onClick={() => setIsProfileOpened(true)} className="menu__list-item menu__profile-trigger">
                                 <span className="menu__list-link">
                                     <img src={userData.photo} className="menu__list-icon menu__list-avatar" alt="профиль" />
                                 </span>
