@@ -125,13 +125,19 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     return ( 
         <>
             <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>
-            <MobileMenu 
-                historyOpener={setIsHistoryShowed} 
-                profileOpener={setIsProfileOpened}
-                isDropdownOpened={isDropdownOpened}
-                chatOpener={setIsChatOpened}
-                menuOpener={setIsDropdownOpened}
-            />
+            {
+                window.innerWidth <= 756 &&
+                    <MobileMenu 
+                        historyOpener={setIsHistoryShowed} 
+                        profileOpener={setIsProfileOpened}
+                        isDropdownOpened={isDropdownOpened}
+                        chatOpener={setIsChatOpened}
+                        menuOpener={setIsDropdownOpened}
+                        isProfileOpened={isProfileOpened}
+                        replenishOpener={setIsReplenishOpened}
+                    />
+            }
+            
             <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
             <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
             <Dropdown 

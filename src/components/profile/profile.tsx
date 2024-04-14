@@ -69,12 +69,15 @@ const Profile: FC<ProfilePropsI> = ({data, closeHandler, replenishOpener, histor
         const handleClickOutside = (event: MouseEvent) => {
             const profileElement = document.querySelector('.profile');
             const headerProfileElement = document.querySelector('.header__profile');
+            const menuElement = document.querySelector('.menu');
 
             if (
                 profileElement && 
                 headerProfileElement && 
+                menuElement && 
                 !profileElement.contains(event.target as Node) && 
                 !headerProfileElement.contains(event.target as Node) &&
+                !menuElement.contains(event.target as Node) &&
                 event.target !== headerProfileElement
             ) {
                 closeProfile()
