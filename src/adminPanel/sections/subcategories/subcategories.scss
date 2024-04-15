@@ -23,6 +23,10 @@
             margin-top: 16px;
             border-bottom: 2px solid rgba(0, 0, 0, 0.20);
 
+            &:last-child {
+                border: none;
+            }
+
             &-item {
                 padding: 15px 25px;
                 border-radius: 15px;

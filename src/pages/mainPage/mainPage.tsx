@@ -25,7 +25,7 @@ import Loader from "../../components/loader/loader";
 import Product from "../../components/product/product";
 import Review from "../../components/review/review";
 
-import { CategoriesContext } from "../../context";
+import { CategoriesContext, ReviewsContext } from "../../context";
 import {  PartnerI, ProductI, ReviewI } from "../../interfaces";
 import { getData } from "../../services/services";
 
@@ -48,7 +48,7 @@ const MainPage: FC<MainPageProps> = () => {
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     
-    const [reviews, setReviews] = useState<ReviewI[]>([]);
+   const reviews = useContext(ReviewsContext);
     const [products, setProducts] = useState<ProductI[]>([]);
     const [partners, setPartners] = useState<PartnerI[]>([]);
 
@@ -69,9 +69,6 @@ const MainPage: FC<MainPageProps> = () => {
 
         getData('/partners', true)
         .then(data => setPartners(data));
-
-        getData('/reviews')
-        .then(data => setReviews(data));
     }, [])
 
     
@@ -79,7 +76,6 @@ const MainPage: FC<MainPageProps> = () => {
 
     return (
         <RootPage>
-            <main className='content'>
                 <div className="container content__container">
                     <div className="promo desktop-grid">
                         <div className="promo__left">
@@ -526,7 +522,6 @@ const MainPage: FC<MainPageProps> = () => {
                     </div>
                     
                 </div>
-            </main>
         </RootPage>
     );
 }

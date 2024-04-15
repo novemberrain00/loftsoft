@@ -55,8 +55,8 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
 
     useEffect(() => {
         const fetchData = async () => { 
-
             if(subcategory) {
+                console.log('lol')
                 await getData(`/subcategory/${subcategory}/products?${filters.price < 2 ? `price_sort=${filters.price}` : ''}&${filters.rating < 2 ? `rating_sort=${filters.rating}&` : ''}&sale_sort=${filters.sale}&limit=20&offset=0`)
                 .then((data: ProductI[]) => {
                     setProducts(data);
@@ -66,6 +66,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
 
                 return
             } else {
+                console.log('lol2')
                 await getData(`/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
                 .then((data: ProductI[]) => setProducts(data))
             }

@@ -19,7 +19,7 @@ const Overlay: FC<OverlayI> = ({children, closeHandler}) => {
 
     useEffect(() => {
         
-        if(!overlayClasses.contains('overlay_disappeared')) {
+        if(!overlayClasses?.contains('overlay_disappeared')) {
             (document.querySelector('html') as HTMLElement).style.overflowY = 'hidden';
         } else {
             (document.querySelector('html') as HTMLElement).style.height = 'auto';

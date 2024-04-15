@@ -80,7 +80,7 @@
 
     &-drag {
         display: block;
-        margin: 0 auto;
+        margin: 0 20vw 0 auto;
     }
 
     &-helpers {
@@ -123,6 +123,7 @@
 @media screen and (max-width: 980px) {
     .admin__list {
         &-drag {
+            margin: 0 10vw 0 auto;
         }
 
         &-img {
@@ -173,6 +174,7 @@
 
         &-drag {
             width: 32px;
+            margin: 0 8vw 0 auto;
         }
     }
 }

@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useState } from "react";
 import { createContext } from "react";
-import { CategoryI, UserI } from "./interfaces";
+import { CategoryI, ReviewI } from "./interfaces";
 import { getData } from "./services/services";
 
 interface ContextProviderProps {
@@ -8,15 +8,19 @@ interface ContextProviderProps {
 }
 
 export const CategoriesContext = createContext<CategoryI[]>([]);
-export const UserContext = createContext<UserI | null>(null);
+export const ReviewsContext = createContext<ReviewI[]>([]);
 
 const ContextProvider: FC<ContextProviderProps> = ({children}) => {
     const [categories, setCategories] = useState<CategoryI[]>([]);
+    const [reviews, setReviews] = useState<ReviewI[]>([]);
   
     useEffect(() => {
         const fetchData = async () => {
-        await getData('/categories?empty_filter=true')
-            .then((data: CategoryI[]) => setCategories(data));
+            await getData('/categories?empty_filter=true')
+                .then((data: CategoryI[]) => setCategories(data));
+
+            await getData('/reviews')
+                .then((data: ReviewI[]) => setReviews(data));
         }
 
 
@@ -24,9 +28,11 @@ const ContextProvider: FC<ContextProviderProps> = ({children}) => {
     }, [])
     
     return (
-        <CategoriesContext.Provider value={categories}>
-            {children}
-        </CategoriesContext.Provider>
+        <ReviewsContext.Provider value={reviews}>
+            <CategoriesContext.Provider value={categories}>
+                {children}
+            </CategoriesContext.Provider>
+        </ReviewsContext.Provider>
     );
 }
  

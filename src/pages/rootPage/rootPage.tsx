@@ -395,7 +395,9 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                     </nav>
                 </div>
             </header>
-            {children}
+            <main className="content">
+                {children}
+            </main>
             {
                 userData.is_admin ?  
                     null : 
