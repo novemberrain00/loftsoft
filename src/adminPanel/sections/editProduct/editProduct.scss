@@ -1,8 +1,10 @@
 .admin {
     .editor {
+        position: initial;
         margin-top: 45px;
         margin-bottom: 93px;
         display: grid;
+        animation: none;
         grid-template-columns: 2fr 1fr;
 
         &__info {
