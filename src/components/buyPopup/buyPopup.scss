@@ -3,7 +3,7 @@
     border-radius: 50px;
     padding: 40px;
     width: 60vw;
-    max-width: 620px;
+    max-width: 520px;
     box-sizing: border-box;
     margin: 0 auto;
 
@@ -75,7 +75,8 @@
 
     &__promocode {
         position: relative;
-        min-width: 290px;
+        min-width: 50%;
+        width: 200px;
 
         &-submitter {
             position: absolute;
@@ -103,6 +104,10 @@
             img {
                 margin-left: auto;
             }
+        }
+
+        &-input {
+            padding-right: 50px !important;
         }
 
         &-success {

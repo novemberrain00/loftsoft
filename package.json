@@ -20,6 +20,7 @@
     "fslightbox-react": "^1.7.6",
     "jsonwebtoken": "^9.0.2",
     "lightbox.js-react": "^1.0.5",
+    "loadash": "^1.0.0",
     "net": "^1.0.2",
     "nodemailer": "^6.9.9",
     "nodemailer-react": "^1.0.2",

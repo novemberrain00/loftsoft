@@ -192,10 +192,6 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
         }))
     }, [userEmail])
 
-    useEffect(() => {
-        setIsPaymentListShowed(false);
-    }, [activePayment])
-
     return isOpened ?     
     (
         <Overlay closeHandler={closeHandler}>
@@ -210,13 +206,19 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                         <ul 
                             className={`list purchase__dropdown-list ${isPaymentsListShowed? 'purchase__dropdown-list_opened' : null}`}
                         >
-                            <li onClick={() => setActivePayment('Система быстрых платежей')} className="purchase__dropdown-item">
+                            <li onClick={() => {
+                                setIsPaymentListShowed(false);
+                                setActivePayment('Система быстрых платежей')
+                            }} className="purchase__dropdown-item">
                                 <img src={SBPIcon} alt="сбп" />
                                 Система быстрых платежей
                             </li>
                             {
                                 window.localStorage.getItem('access_token') ?
-                                <li onClick={() => setActivePayment('Баланс сайта')} className="purchase__dropdown-item">
+                                <li onClick={() => {
+                                    setIsPaymentListShowed(false);
+                                    setActivePayment('Баланс сайта')
+                                }} className="purchase__dropdown-item">
                                     <img src={WalletIcon} alt="сбп" />
                                     Баланс сайта
                                 </li> : null
@@ -239,7 +241,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                                 ...straightOrder,
                                 count: +(e.target as HTMLInputElement).value
                             }))} 
-                            placeholder="Количество (мин.: 1)" 
+                            placeholder="Кол-во (мин.: 1)" 
                             type="text" 
                             className="purchase__form-input"
                         />
@@ -251,7 +253,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                                 }))} 
                                 placeholder="Промокод" 
                                 type="text" 
-                                className="purchase__form-input"
+                                className="purchase__form-input purchase__promocode-input"
                             />
                             {
                                 straightOrder.promocode.length ? (

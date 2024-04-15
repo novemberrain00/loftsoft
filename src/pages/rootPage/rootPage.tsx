@@ -1,4 +1,4 @@
-import {FC, useState, useEffect} from 'react';
+import {FC, useState, useEffect, useContext} from 'react';
 import { useClipboard } from 'use-clipboard-copy';
 import { Link } from 'react-router-dom';
 
@@ -43,6 +43,7 @@ import ReplenishPopup from '../../components/replenishPopup/replenishPopup';
 import Request from '../../components/request/request';
 import './rootPage.scss';
 import DiscountInput from '../../components/discountInput/discountInput';
+import { CategoriesContext } from '../../context';
 
 interface RootPagePropsI {
     isFooterHidden?:boolean
@@ -63,7 +64,6 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     });
 
     const [seachTerm, setSearchTerm] = useState<string>('');
-    const [categories, setCategories] = useState<CategoryI[]>([]);
     const [isHistoryShowed, setIsHistoryShowed] = useState<boolean>(false);
     const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false); 
     const [isReplenishOpened, setIsReplenishOpened] = useState<boolean>(false);
@@ -72,42 +72,11 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const [isSubcatsOpened, setIsSubcatsOpened] = useState<boolean>(false);
     const [isRequestOpened, setIsRequestOpened] = useState<boolean>(false);
 
-    const dispatch = useDispatch();
     const snacks = useSelector((state: RootState) => state.snackbar.snacksArr);
     const userData = useSelector((state: RootState) => state.user.userInfo);
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
-    useEffect(() => {
-        const getUserData = async () => {
-            await getData('/user/me', true)
-                .then((data: UserI) => {
-                    dispatch(setUserInfo({
-                        ...data,
-                        photo: baseURL+'/uploads/'+data.photo
-                    }));
-
-                    document.cookie = `is_admin=${data.is_admin}`;
-                })
-
-        }
-
-        if(window.localStorage.getItem('access_token')) getUserData();
-
-        getData('/categories?empty_filter=true', true)
-        .then(data => {
-            setCategories(data);
-            setActiveProductData({
-                name: data[0].title,
-                items: data[0].subcategories.map((subcat: SubcategoryI) => {
-                    return {
-                        text: subcat.title,
-                        path: '/catalog/'+ subcat.id
-                    }
-                }),
-                category: data[0].id
-            })
-        });        
-    }, []);
+    const categories = useContext(CategoriesContext)
 
     const {
         username, 
@@ -263,7 +232,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                             <img src={TelegamIcon} alt="наш whatsapp" />
                         </a>
                     </div>
-                    <div className="search header__search">
+                    <div className="search header__search header__search_desktop">
                         <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
                         <input 
                             onInput={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
@@ -334,6 +303,19 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                     </div>
                                 </Link>
                         }
+                    </div>
+                </div>
+                <div className="container header__container header__container_mobile">
+                    <div className="search header__search">
+                        <img src={SearchIcon} alt="поиск" className="search__icon header__search-icon" />
+                        <input 
+                            onInput={(e) => setSearchTerm((e.target as HTMLInputElement).value)}
+                            onBlur={() => setSearchTerm('')}
+                            placeholder="Поиск" 
+                            type="text" 
+                            className="search__input header__search-input" 
+                        />
+                        <SearchList term={debouncedTerm}/>
                     </div>
                 </div>
                 <div className="container header__container">

@@ -1,4 +1,4 @@
-import {FC, useEffect, useRef, useState} from "react";
+import {FC, useContext, useEffect, useRef, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import RootPage from "../rootPage/rootPage";
@@ -25,7 +25,8 @@ import Loader from "../../components/loader/loader";
 import Product from "../../components/product/product";
 import Review from "../../components/review/review";
 
-import { CategoryI, PartnerI, ProductI, ReviewI } from "../../interfaces";
+import { CategoriesContext } from "../../context";
+import {  PartnerI, ProductI, ReviewI } from "../../interfaces";
 import { getData } from "../../services/services";
 
 import 'swiper/css';
@@ -46,11 +47,12 @@ const MainPage: FC<MainPageProps> = () => {
     const nextRef = useRef<HTMLButtonElement>(null);
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
-
-    const [categories, setCategories] = useState<CategoryI[]>([]);
+    
     const [reviews, setReviews] = useState<ReviewI[]>([]);
     const [products, setProducts] = useState<ProductI[]>([]);
     const [partners, setPartners] = useState<PartnerI[]>([]);
+
+    const categories = useContext(CategoriesContext);
     
     const pagination = {
         clickable: true,
@@ -62,8 +64,8 @@ const MainPage: FC<MainPageProps> = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        getData('/categories?empty_filter=true')
-        .then(data => setCategories(data));
+        // getData('/categories?empty_filter=true')
+        // .then(data => setCategories(data));
 
         getData('/products?rating_sort=true')
         .then(data => setProducts(data.splice(0, 5)));
@@ -76,7 +78,7 @@ const MainPage: FC<MainPageProps> = () => {
     }, [])
 
     
-    document.title = "LoftSoft";
+    document.title = "LoftSoft - магазин лицензионного ПО";
 
     return (
         <RootPage>
@@ -427,7 +429,7 @@ const MainPage: FC<MainPageProps> = () => {
                             className="reviews__items"
                         >
                             {
-                                reviews && reviews.reverse().map(({id, product, user, user_photo, rate, text, images, created_datetime}, i) => {
+                                reviews && reviews.reverse().splice(0, 10).map(({id, product, user, user_photo, rate, text, images, created_datetime}, i) => {
                                     return (
                                         <SwiperSlide>
                                             <Review 
