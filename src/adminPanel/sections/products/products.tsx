@@ -94,59 +94,62 @@ const Products: FC<ProductsPropsI> = () => {
                     <input onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())} type="text" placeholder="Поиск" className="search__input" />
                 </div>
                 {
-                    subcategories.length ? subcategories.map(({id, products, category_id}, i) => {
+                    subcategories.length ? subcategories.map(({id, title, products, category_id}, i) => {
                         return products.length ? ( 
-                            <ul key={id} className="admin__list list subcategories__list">
-                                <DragDropContext 
-                                    onDragStart={() => setDraggableList(i)} 
-                                    onDragEnd={onDragEnd}
-                                >
-                                    <Droppable droppableId="droppable">
-                                        {
-                                            (provided: any) => (
-                                                <div {...provided.droppableProps} ref={provided.innerRef}>
-                                                {
-                                                    products.length ? products.filter(prod => prod.title.toLocaleLowerCase().includes(searchQuery))
-                                                    .map(({id, title, parameters, product_photos}, i) => {
-                                                        return ( 
-                                                            <Draggable key={id} draggableId={''+id} index={i}>
-                                                                {(provided: any) => (
-                                                                    <div
-                                                                        ref={provided.innerRef}
-                                                                        {...provided.draggableProps}
-                                                                        
-                                                                    >
-                                                                        <AdminListItem
-                                                                            dndHandler={
-                                                                                <img src={DragIcon} {...provided.dragHandleProps} alt="перетащить" className="admin__list-drag" draggable="false"/>  
+                            <>
+                                <h5 className="subcategories__list-title">{title}</h5>
+                                <ul key={id} className="admin__list list subcategories__list">
+                                    <DragDropContext 
+                                        onDragStart={() => setDraggableList(i)} 
+                                        onDragEnd={onDragEnd}
+                                    >
+                                        <Droppable droppableId="droppable">
+                                            {
+                                                (provided: any) => (
+                                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                                    {
+                                                        products.length ? products.filter(prod => prod.title.toLocaleLowerCase().includes(searchQuery))
+                                                        .map(({id, title, parameters, product_photos}, i) => {
+                                                            return ( 
+                                                                <Draggable key={id} draggableId={''+id} index={i}>
+                                                                    {(provided: any) => (
+                                                                        <div
+                                                                            ref={provided.innerRef}
+                                                                            {...provided.draggableProps}
+                                                                            
+                                                                        >
+                                                                            <AdminListItem
+                                                                                dndHandler={
+                                                                                    <img src={DragIcon} {...provided.dragHandleProps} alt="перетащить" className="admin__list-drag" draggable="false"/>  
 
-                                                                            }
-                                                                            id={id}
-                                                                            key={id}
-                                                                            title={title}
-                                                                            length={parameters.length}
-                                                                            countItems="параметров"
-                                                                            photo={product_photos[0]?.photo}
-                                                                            categoryTitle={categories.filter(cat => cat.id === category_id)[0]?.title}
-                                                                            optionsClickHandler={() => {
-                                                                                navigate(`edit/${id}`)
-                                                                            }}
-                                                                            deleteItem={deleteProduct}
-                                                                        />
-                                                                    </div>
-                                                                )}
-                                                            </Draggable>         
-                                                        )
-                                                    }) : null
-                                                }
-                                                {provided.placeholder}
-                                                </div>
-                                            )  
-                                        }
-                                    </Droppable>
-                                
-                                </DragDropContext>
-                            </ul>
+                                                                                }
+                                                                                id={id}
+                                                                                key={id}
+                                                                                title={title}
+                                                                                length={parameters.length}
+                                                                                countItems="параметров"
+                                                                                photo={product_photos[0]?.photo}
+                                                                                categoryTitle={categories.filter(cat => cat.id === category_id)[0]?.title}
+                                                                                optionsClickHandler={() => {
+                                                                                    navigate(`edit/${id}`)
+                                                                                }}
+                                                                                deleteItem={deleteProduct}
+                                                                            />
+                                                                        </div>
+                                                                    )}
+                                                                </Draggable>         
+                                                            )
+                                                        }) : null
+                                                    }
+                                                    {provided.placeholder}
+                                                    </div>
+                                                )  
+                                            }
+                                        </Droppable>
+                                    
+                                    </DragDropContext>
+                                </ul>
+                            </>
                         ) : null
                     }) : <Loader additionalClass="subcategories__loader"/>
                 }

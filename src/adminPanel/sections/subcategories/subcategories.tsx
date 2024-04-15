@@ -267,62 +267,65 @@ const Subcategories: FC<SubcategoriesPropsI> = () => {
                     </button>
                 </div>
                 {
-                    categories.length ? categories.map(({id, subcategories, photo}, i) => {
+                    categories.length ? categories.map(({id, title, subcategories, photo}, i) => {
                         const categoryId = id;
                         return subcategories.length ? (
-                            <ul key={id} className="list subcategories__list admin__list">
-                                <DragDropContext onDragStart={() => setDraggableList(i)} backend={TouchBackend} onDragEnd={onDragEnd}>
-                                    <Droppable droppableId="droppable">
-                                        {
-                                            (provided: any) => (
-                                                <div {...provided.droppableProps} ref={provided.innerRef}>
-                                                    {
-                                                        
-                                                        subcategories.filter(subcat => subcat.title.toLowerCase().includes(searchQuery))
-                                                        .map(({id, title, products, category_id}, i) => {
-                                                            return <Draggable key={id} draggableId={id+''} index={i}>
-                                                                {(provided: any) => (
-                                                                    <div
-                                                                        ref={provided.innerRef}
-                                                                        {...provided.draggableProps}
-                                                                        
-                                                                    >
-                                                                        <AdminListItem
-                                                                            dndHandler={
-                                                                                <img src={DragIcon} {...provided.dragHandleProps} alt="перетащить" className="admin__list-drag"/>  
-                    
-                                                                            }
-                                                                            categoryTitle={categories.filter(cat => cat.id === categoryId)[0]?.title}
-                                                                            id={id}
-                                                                            key={id}
-                                                                            title={title}
-                                                                            length={products.length}
-                                                                            countItems="товаров"
-                                                                            photo={photo}
-                                                                            optionsClickHandler={() => {
-                                                                                setSubcategoryData({
-                                                                                    id,
-                                                                                    title,
-                                                                                    categoryId: category_id,
-                                                                                    category: ''
-                                                                                });
-                                                                                setSubcategoryAction('edit');
-                                                                                setIsPopupOpened(true);
-                                                                            }}
-                                                                            deleteItem={deleteSubcategory}
-                                                                        />
-                                                                    </div>
-                                                                )}
-                                                            </Draggable>
-                                                        })
-                                                    }
-                                                    {provided.placeholder}
-                                                </div>
-                                            )
-                                        }
-                                    </Droppable>
-                                </DragDropContext>
-                            </ul>
+                            <>
+                                <h5 className="subcategories__list-title">{title}</h5>
+                                <ul key={id} className="list subcategories__list admin__list">
+                                    <DragDropContext onDragStart={() => setDraggableList(i)} backend={TouchBackend} onDragEnd={onDragEnd}>
+                                        <Droppable droppableId="droppable">
+                                            {
+                                                (provided: any) => (
+                                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                                        {
+                                                            
+                                                            subcategories.filter(subcat => subcat.title.toLowerCase().includes(searchQuery))
+                                                            .map(({id, title, products, category_id}, i) => {
+                                                                return <Draggable key={id} draggableId={id+''} index={i}>
+                                                                    {(provided: any) => (
+                                                                        <div
+                                                                            ref={provided.innerRef}
+                                                                            {...provided.draggableProps}
+                                                                            
+                                                                        >
+                                                                            <AdminListItem
+                                                                                dndHandler={
+                                                                                    <img src={DragIcon} {...provided.dragHandleProps} alt="перетащить" className="admin__list-drag"/>  
+                        
+                                                                                }
+                                                                                categoryTitle={categories.filter(cat => cat.id === categoryId)[0]?.title}
+                                                                                id={id}
+                                                                                key={id}
+                                                                                title={title}
+                                                                                length={products.length}
+                                                                                countItems="товаров"
+                                                                                photo={photo}
+                                                                                optionsClickHandler={() => {
+                                                                                    setSubcategoryData({
+                                                                                        id,
+                                                                                        title,
+                                                                                        categoryId: category_id,
+                                                                                        category: ''
+                                                                                    });
+                                                                                    setSubcategoryAction('edit');
+                                                                                    setIsPopupOpened(true);
+                                                                                }}
+                                                                                deleteItem={deleteSubcategory}
+                                                                            />
+                                                                        </div>
+                                                                    )}
+                                                                </Draggable>
+                                                            })
+                                                        }
+                                                        {provided.placeholder}
+                                                    </div>
+                                                )
+                                            }
+                                        </Droppable>
+                                    </DragDropContext>
+                                </ul>
+                            </>
                         ) : null
                     }) : <Loader additionalClass="subcategories__loader"/>
                 }

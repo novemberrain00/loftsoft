@@ -43,14 +43,14 @@ const AdminListItem: FC<AdminListItemPropsI> = ({
                         <img src={EditIcon} alt={title} />
                     </h5>
                     <div className="admin__list-info-bottom">
-                        {
+                        {/* {
                             categoryTitle ?
                                 <div className="admin__list-category">
                                     {categoryTitle}
                                     <img src={ArrowIcon} alt={categoryTitle} />
                                 </div> 
                             : null
-                        }
+                        } */}
                         <div className="admin__list-amount">
                             <span className="admin__list-amount-value">{length}</span>
                             <span className="admin__list-amount-key">{countItems}</span>           
