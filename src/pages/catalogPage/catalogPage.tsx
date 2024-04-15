@@ -106,7 +106,6 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
 
     return (
         <RootPage>
-            <main className="content catalog">
                 <div className="container content__container catalog__container">
                     <div className="catalog__banner block">
                         <div className="catalog__banner-top">
@@ -235,7 +234,6 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                         </div>
                     </div>
                 </div>
-            </main>
         </RootPage>
     );
 }
