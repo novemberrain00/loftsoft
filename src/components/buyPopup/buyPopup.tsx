@@ -190,7 +190,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
             ...straightOrder,
             email: userEmail || ''
         }))
-    }, [userEmail])
+    }, [userEmail]);
 
     return isOpened ?     
     (

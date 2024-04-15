@@ -8,10 +8,20 @@
 
     &__closer {
         height: 24px;
-        margin-left: 10%;
 
-        &:hover {
-            cursor: pointer;
+        &-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            margin-left: auto;
+            background-color: #EA6161;
+            border-radius: 100%;
+
+            &:hover {
+                cursor: pointer;
+            }
         }
     }
 

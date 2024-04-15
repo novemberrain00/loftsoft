@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef, useContext } from "react";
+import { FC, useEffect, useState } from "react";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -10,7 +10,7 @@ import PlusIcon from "../../../assets/images/icons/plus.svg";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 import Popup from "../../../components/categoryPopup/categoryPopup";
-import { getCookie, getData, postData, uploadFile } from "../../../services/services";
+import { getCookie, getData, postData } from "../../../services/services";
 
 import { CategoryI, SubcategoryI } from "../../../interfaces";
 import AdminListItem from "../../../components/adminListItem/adminListItem";

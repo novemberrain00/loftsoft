@@ -14,6 +14,24 @@ const Overlay: FC<OverlayI> = ({children, closeHandler}) => {
             setTimeout(() => closeHandler(false), 300) 
         }
     };
+
+    const overlayClasses = (document.querySelector('.overlay') as HTMLElement)?.classList
+
+    useEffect(() => {
+        
+        if(!overlayClasses.contains('overlay_disappeared')) {
+            (document.querySelector('html') as HTMLElement).style.overflowY = 'hidden';
+        } else {
+            (document.querySelector('html') as HTMLElement).style.height = 'auto';
+            (document.querySelector('html') as HTMLElement).style.overflowY = 'initial'; 
+        }
+
+        return () => {
+            (document.querySelector('html') as HTMLElement).style.height = 'auto';
+            (document.querySelector('html') as HTMLElement).style.overflowY = 'initial';
+
+        }
+    }, [overlayClasses]);
     
 
     return (

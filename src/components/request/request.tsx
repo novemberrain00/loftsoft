@@ -172,7 +172,9 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
 
     useEffect(() => setAlertMessage(''), [isOpened])
 
-    useEffect(() => setCurRequest(requests[activeRequest]), [activeRequest])
+    useEffect(() => setCurRequest(requests[activeRequest]), [activeRequest]);
+
+    useEffect(() => setCurRequest({...curRequest, contact: ''}), [curRequest.contact_type])
 
     return isOpened ? (
         <>

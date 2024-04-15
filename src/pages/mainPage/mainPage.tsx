@@ -64,9 +64,6 @@ const MainPage: FC<MainPageProps> = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        // getData('/categories?empty_filter=true')
-        // .then(data => setCategories(data));
-
         getData('/products?rating_sort=true')
         .then(data => setProducts(data.splice(0, 5)));
 

@@ -124,9 +124,6 @@
     &__form {
         &-inputs {
             display: flex;
-        }
-
-        &-inputs {
             margin: 20px 0 20px;
             gap: 23px;
         }
@@ -134,10 +131,10 @@
         &-input {
             color: rgba(0, 0, 0, 0.50);
             font-family: Onest;
-            font-size: 18px;
+            font-size: 14px;
             font-style: normal;
             font-weight: 700;
-            padding: 18px 15px;
+            padding: 14px 15px;
             box-sizing: border-box;
             width: 100%;
             border-radius: 10px;
@@ -174,6 +171,10 @@
             align-items: center;
             gap: 30px;   
         }
+
+        &-icon {
+            width: 15px;
+        }
     }
 
     &__checkbox-label {
@@ -208,8 +209,7 @@
     .purchase {
         &__form {
             &-input {
-                padding: 20px 23px;
-                font-size: 14px;
+                font-size: 12px;
                 border-radius: 10px;
             }
 

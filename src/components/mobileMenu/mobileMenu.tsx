@@ -1,9 +1,9 @@
-import { FC, MouseEvent, useEffect, useState } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { useSelector } from 'react-redux';
 
-import SearchIcon from '../../assets/images/icons/search_grey.svg';
 import CartIcon from '../../assets/images/icons/cart_grey.svg';
 import ChatIcon from '../../assets/images/icons/chat_grey.svg';
+import HistoryIcon from '../../assets/images/icons/update_grey.svg';
 import MobileMenuIcon from '../../assets/images/icons/mobile-menu-icon.svg';
 import AccountIcon from '../../assets/images/icons/account.svg';
 
@@ -54,7 +54,7 @@ const MobileMenu: FC<MobileMenuPropsI> = ({
                             e.preventDefault()
                             historyOpener(true)
                         }} className="menu__list-link">
-                            <img src={SearchIcon} className="menu__list-icon" alt="поиск" />
+                            <img src={HistoryIcon} className="menu__list-icon" alt="история покупок" />
                         </a>
                     </li>
                     <li className="menu__list-item menu__list-cart">

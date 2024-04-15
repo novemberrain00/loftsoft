@@ -7,7 +7,7 @@ import Path from "../../components/path/path";
 
 import BlueStar from '../../assets/images/icons/star_blue.svg';
 
-import { convertToLatin, getData, postData } from "../../services/services";
+import { convertToLatin, getData } from "../../services/services";
 
 import { ProductI } from "../../interfaces";
 import Parameter from "../../components/parameter/parameter";

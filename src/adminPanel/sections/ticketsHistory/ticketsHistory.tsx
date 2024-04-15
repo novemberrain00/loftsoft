@@ -3,7 +3,7 @@ import { FC, useEffect, useState, MouseEvent } from "react";
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
 import BackArrow from "../../../assets/images/icons/arrow_left.svg";
-import CloseTicketIcon from "../../../assets/images/icons/close.svg";
+import CloseTicketIcon from "../../../assets/images/icons/close_white.svg";
 
 import { Link, useNavigate } from "react-router-dom";
 import { getData, postData, timestampToTime } from "../../../services/services";
@@ -58,8 +58,9 @@ const TicketsHistory: FC<TicketsHistoryPropsI> = () => {
                                             </Link>
                                             <h4 className="ticket__name">{user.username}</h4>
                                         </div>
-                                        <a href="#" onClick={(e: MouseEvent) => closeTicket(e, id)} className="ticket__delete desktop-block">удалить навсегда</a>
-                                        <img onClick={(e: MouseEvent) => closeTicket(e, id)} src={CloseTicketIcon} alt="закрыть" className="ticket__closer" />
+                                        <div onClick={(e: MouseEvent) => closeTicket(e, id)} className="ticket__closer-wrapper">
+                                            <img src={CloseTicketIcon} alt="закрыть" className="ticket__closer" />
+                                        </div>
                                     </div>
                                 </div>
                             )

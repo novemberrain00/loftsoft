@@ -40,7 +40,7 @@ const AdminListItem: FC<AdminListItemPropsI> = ({
                 <div className="admin__list-info">
                     <h5 className="admin__list-info-title">
                         {title}
-                        <img src={EditIcon} alt="Windows 10 " />
+                        <img src={EditIcon} alt={title} />
                     </h5>
                     <div className="admin__list-info-bottom">
                         {

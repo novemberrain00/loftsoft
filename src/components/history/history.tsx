@@ -29,16 +29,6 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler}) => {
         .then((data: ReplenishI[]) => setReplenishes(data));
     }, []);
 
-    useEffect(() => {
-        if(isOpened) {
-            document.body.style.overflow = 'hidden';
-            document.body.style.height = '100vh';
-        } else {
-            document.body.style.overflow = 'initial';
-            document.body.style.height = 'auto';
-        }
-    }, [isOpened])
-
     return isOpened ? (
         <Overlay closeHandler={closeHandler}>
             <div className="history">

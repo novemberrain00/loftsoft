@@ -1,5 +1,4 @@
 import {FC, useState, useEffect, useContext} from 'react';
-import { useClipboard } from 'use-clipboard-copy';
 import { Link } from 'react-router-dom';
 
 import { CategoryI, LinkI, SnackI, SubcategoryI, UserI } from '../../interfaces';
@@ -63,6 +62,8 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
         category: 0
     });
 
+    const dispatch = useDispatch();
+
     const [seachTerm, setSearchTerm] = useState<string>('');
     const [isHistoryShowed, setIsHistoryShowed] = useState<boolean>(false);
     const [isProfileOpened, setIsProfileOpened] = useState<boolean>(false); 
@@ -79,6 +80,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const categories = useContext(CategoriesContext)
 
     const {
+        id,
         username, 
         photo,
         balance,
@@ -88,26 +90,27 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const debouncedTerm = useDebounce(seachTerm, 300);
 
     useEffect(() => {
+        const getUserData = async () => {
+          await getData('/user/me', true)
+              .then((data: UserI) => {
+                  dispatch(setUserInfo({
+                      ...data,
+                      photo: baseURL+'/uploads/'+data.photo
+                  }));
+    
+                  document.cookie = `is_admin=${data.is_admin}`;
+              })
+        }
+    
+        if(window.localStorage.getItem('access_token') && id === null) getUserData();  
+      }, [])
+
+    useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
 
     return ( 
         <>
-            <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>
-            {
-                window.innerWidth <= 756 &&
-                    <MobileMenu 
-                        historyOpener={setIsHistoryShowed} 
-                        profileOpener={setIsProfileOpened}
-                        isDropdownOpened={isDropdownOpened}
-                        chatOpener={setIsChatOpened}
-                        menuOpener={setIsDropdownOpened}
-                        replenishOpener={setIsReplenishOpened}
-                    />
-            }
-            
-            <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
-            <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
             <Dropdown 
                 text="Каталог товаров"
                 classList="header__menu-item header__menu-link link"
@@ -187,10 +190,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                 </ul>
                             </div>
                         )
-                    }
-                    
-                    
-                    
+                    }     
                 </div>
             </Dropdown>
             <header className="header header_mobile">
@@ -199,6 +199,14 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                         <Link to="/">
                             <img src={MobileLogo} alt="LoftSoft" className="mobile-logo"/>
                         </Link>
+                        <div className="header__media">
+                        <a href="#" className="header__media-link">
+                            <img src={WhatsappIcon} alt="наш телеграм" />
+                        </a>
+                        <a href="#" className="header__media-link">
+                            <img src={TelegamIcon} alt="наш whatsapp" />
+                        </a>
+                    </div>
                         <HeaderNavItem text='Отзывы' path='/reviews'/>
                         <HeaderNavItem text='Правила' path='/terms'/>
                     </ul>
@@ -263,12 +271,9 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                     if(!isProfileOpened) {
                                         setIsProfileOpened(true)
                                     } else {
-
                                         const target = e.target as HTMLElement;
                                         const profileElement = document.querySelector('.profile') as Node;
                                         const editorElement = document.querySelector('.editor') as Node;
-
-                                        console.log(target)
 
                                         if(!profileElement.contains(target) && !editorElement?.contains(target)) {
                                             (profileElement as HTMLElement)?.classList.add('profile_disappeared')
@@ -469,6 +474,21 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                 snacks.map(({text}:SnackI, i:number) => <Snack text={text} key={i+''}/>)
                             }
                         </SnackbarContainer>
+                        <ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened}/>
+                        {
+                            window.innerWidth <= 756 &&
+                                <MobileMenu 
+                                    historyOpener={setIsHistoryShowed} 
+                                    profileOpener={setIsProfileOpened}
+                                    isDropdownOpened={isDropdownOpened}
+                                    chatOpener={setIsChatOpened}
+                                    menuOpener={setIsDropdownOpened}
+                                    replenishOpener={setIsReplenishOpened}
+                                />
+                        }
+                        
+                        <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
+                        <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
                     </footer>
                 )
             }
