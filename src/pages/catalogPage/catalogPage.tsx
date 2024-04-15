@@ -23,9 +23,9 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     const {subcategory} = useParams();
 
     const [filters, setFilters] = useState({ // 0 - по возрастанию, 1 - по убыванию
-        price: 1,
-        rating: 1,
-        sale: 1
+        price: 0,
+        rating: 0,
+        sale: 0
 
     });
     const [categories, setCategories] = useState<CategoryI[]>([]);
@@ -67,7 +67,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                 return
             } else {
                 console.log('lol2')
-                await getData(`/products?price_sort=${filters.price}&rating_sort=${filters.rating}&sale_sort=${filters.sale}&limit=20&offset=0`)
+                await getData(`/products?${filters.price < 2 ? `price_sort=${filters.price}` : ''}&${filters.rating < 2 ? `rating_sort=${filters.rating}&` : ''}&sale_sort=${filters.sale}&limit=20&offset=0`)
                 .then((data: ProductI[]) => setProducts(data))
             }
 
@@ -149,7 +149,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                             })}
                                             className={
                                                 `block catalog__filter-value 
-                                                ${filters.price === 0 ? 'catalog__filter-value_active' : ''} 
+                                                ${filters.price === 1 ? 'catalog__filter-value_active' : ''} 
                                                 ${filters.price === 2 ? 'catalog__filter-value_disabled' : ''}`
                                             }
                                         >
@@ -168,7 +168,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                             className={
                                                 `
                                                     block catalog__filter-value 
-                                                    ${filters.rating === 0 ? 'catalog__filter-value_active' : ''} 
+                                                    ${filters.rating === 1 ? 'catalog__filter-value_active' : ''} 
                                                     ${filters.rating === 2 ? 'catalog__filter-value_disabled' : ''}
                                                 `
                                             }
@@ -186,7 +186,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                             className={
                                                 `
                                                     block catalog__filter-value 
-                                                    ${filters.sale === 0 ? 'catalog__filter-value_active' : ''} 
+                                                    ${filters.sale === 1 ? 'catalog__filter-value_active' : ''} 
                                                     ${filters.sale === 2 ? 'catalog__filter-value_disabled' : ''}
                                                 `
                                             }
