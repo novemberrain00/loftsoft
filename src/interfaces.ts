@@ -95,6 +95,7 @@ export interface CategoryI {
     order_id: number,
     subcategories: SubcategoryI[],
     subcategories_count: number
+    colors: string[]
   }
 
 export interface CartItemI {

@@ -2,26 +2,26 @@ import { FC, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { SubcategoryI } from "../../interfaces";
 
-import { convertToLatin } from "../../services/services";
 import './catalogSection.scss';
 
 interface CatalogSectionProps {
     name: string
     icon: string
-    background: string
+    colors: string[]
     category: string
     subcategories: SubcategoryI[]
 }
  
-const CatalogSection: FC<CatalogSectionProps> = ({name, icon,subcategories,  background, category}) => {
+const CatalogSection: FC<CatalogSectionProps> = ({name, icon,subcategories,  colors}) => {
     const [isProductsListOpened, setIsProductsListOpened] = useState(false);
 
     const {subcategory} = useParams();
-    
+
     return ( 
         <div className="catalog__section">
             <div 
-                className={`block catalog__section-header ${isProductsListOpened ? `catalog__section-header_${background}` : ''}`} 
+                style={{background: colors.length ? `linear-gradient(93deg, ${colors[0]} 0%, ${colors[1]} 100%)` : ''}}
+                className="block catalog__section-header"
                 onClick={() => setIsProductsListOpened(!isProductsListOpened)}
             >
                 <svg style={{transform: isProductsListOpened? 'rotate(180deg)' : 'initial'}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -32,7 +32,7 @@ const CatalogSection: FC<CatalogSectionProps> = ({name, icon,subcategories,  bac
                     <path d="M1.66668 6.68742L3.14584 5.20825L10 12.0624L16.8542 5.20825L18.3333 6.68742L10 15.0208L1.66668 6.68742Z" fill={isProductsListOpened ? '#fff' : '#000'}/>
                     </g>
                 </svg>
-                <h3 className="text catalog__section-name" style={{color: isProductsListOpened ? '#fff' : '#000'}}>{name}</h3>
+                <h3 className="text catalog__section-name" style={{color: '#000'}}>{name}</h3>
                 <img src={icon} alt="Разное" className="catalog__section-icon"/>
             </div>
             <div className={`block catalog__section-products ${isProductsListOpened ? 'catalog__section-products_opened' : ''}`}>

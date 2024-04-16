@@ -23,31 +23,6 @@
         svg {
             transition: .6s;
         }
-
-        &_blue {
-            background: linear-gradient(93deg, #00A4F5 0%, #004BDA 100%);
-            transition: .7s;
-        }
-
-        &_orange {
-            background: linear-gradient(93deg, #F58400 0%, #DA4E00 100%);
-        }
-
-        &_green {
-            background: linear-gradient(93deg, #00C9F5 0%, #00DA30 100%);;
-        }
-
-        &_purple {
-            background: linear-gradient(93deg, #A700F5 0%, #0099DA 100%);
-        }
-
-        &_red {
-            background: linear-gradient(93deg, #F50000 0%, #DA0090 100%);
-        }
-
-        &_yellow {
-            background: linear-gradient(93deg, #F55800 0%, #DAC400 100%);
-        }
     }
 
     &:last-child {
@@ -55,6 +30,7 @@
     }
 
     &-name {
+        color: #fff;
         transition: .6s;
     }
 

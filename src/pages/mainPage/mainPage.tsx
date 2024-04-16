@@ -48,7 +48,7 @@ const MainPage: FC<MainPageProps> = () => {
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     
-   const reviews = useContext(ReviewsContext);
+    const reviews = useContext(ReviewsContext);
     const [products, setProducts] = useState<ProductI[]>([]);
     const [partners, setPartners] = useState<PartnerI[]>([]);
 

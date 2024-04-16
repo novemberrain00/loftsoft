@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from "react";
+import { FC, useState, useEffect, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import RootPage from "../rootPage/rootPage";
@@ -14,6 +14,7 @@ import { convertToLatin, getData } from "../../services/services";
 import { CategoryI, ProductI, SubcategoryI } from "../../interfaces";
 
 import './catalogPage.scss';
+import { CategoriesContext } from "../../context";
 
 interface CatalogPagePropsI {
     
@@ -53,6 +54,14 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
         });
     }
 
+    const categoriesArr = useContext(CategoriesContext);
+
+    useEffect(() => {
+        setCategories([...categoriesArr])
+    }, [categoriesArr])
+
+
+
     useEffect(() => {
         const fetchData = async () => { 
             if(subcategory) {
@@ -91,11 +100,11 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
     
         window.addEventListener('scroll', handleScroll);
 
-        getData('/categories?empty_filter=true')
-            .then(data => {
-                setCategories(data)
-                setPathString(data);
-            });
+        // getData('/categories?empty_filter=true')
+        //     .then(data => {
+        //         setCategories(data)
+        //         setPathString(data);
+        //     });
     
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -202,14 +211,14 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                             <h3 className="catalog__sidebar-header block">Каталог</h3>
                             <div className="catalog__sidebar-items">
                                 {
-                                    categories.length ? categories.map(({id, title, photo, subcategories}, i) => {
+                                    categories.length ? categories.map(({id, title, photo, subcategories, colors}, i) => {
                                         return <CatalogSection 
                                             key={id} 
                                             name={title}
                                             category={convertToLatin(title)}
                                             icon={baseURL + '/uploads/'+ photo} 
                                             subcategories={subcategories}
-                                            background='blue'
+                                            colors={colors}
                                         />
                                     }) : <Loader additionalClass="catalog__sidebar-loader"/>
                                 }

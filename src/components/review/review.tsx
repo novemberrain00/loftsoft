@@ -73,9 +73,16 @@ const Review: FC<ReviewI> = ({
                     slide={selectedImageIndex}
                     onClose={() => {
                         const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
-                        const menu = document.querySelector('.menu') as HTMLElement;
                         const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
-                        menu.style.zIndex = '10';
+                        const header = document.querySelectorAll('.header')[1] as HTMLElement;
+                                    
+                        header.style.zIndex = '100';
+                        
+                        const menu = document.querySelector('.menu') as HTMLElement;
+                        if(menu) {
+                            menu.style.zIndex = '10';
+                        }
+
                         if(chatWrapper) chatWrapper.style.zIndex = '50';
 
                     
@@ -98,11 +105,14 @@ const Review: FC<ReviewI> = ({
                                 onClick={() => {
                                     const elem = document.querySelector('.reviews__items .swiper-wrapper') as HTMLElement;
                                     const chatWrapper = document.querySelector('.chat-wrapper') as HTMLElement;
+                                    const header = document.querySelectorAll('.header')[1] as HTMLElement;
+                                    header.style.zIndex = '1';
+
                                     elem.classList.add('swiper-wrapper_moved', 'reviews__items_disabled');
-                                    if(chatWrapper) chatWrapper.style.zIndex = '0';
+                                    if(chatWrapper) chatWrapper.style.zIndex = '3';
 
                                     const menu = document.querySelector('.menu') as HTMLElement;
-                                    menu.style.zIndex = '0';
+                                    if(menu)  menu.style.zIndex = '0';
                                     
                                     setLastCarouselTransform(elem.style.transform);             
                                         const margin = +elem.style.transform.split('').splice(12, elem.style.transform.indexOf(',')-14).join('') + 'px';                   

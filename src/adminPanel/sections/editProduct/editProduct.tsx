@@ -95,8 +95,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         txtFiles: 'idle'
     });
 
-    
-
     const createOption = () => {
         if(!curOption.title.length) {
             setAlertMessages({
@@ -419,7 +417,6 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
         }
 
         if(product_photos.length) {
-
             if(product_photos[0]) {
                 await uploadFile(product_photos[0][0]).then(async (data) => {
                     await fetch(baseURL + `/photo/${productData.initialPhotos[0].id}`, {
@@ -437,7 +434,10 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 })
             }
 
-            if(!product_photos[1]?.length) return;
+            if(!product_photos[1]?.length) {
+                navigate('/admin/products');
+                return
+            };
     
             Array.from(product_photos[1]).forEach(async (item, i) => {
                 const curPhoto = productData.initialPhotos[i+1];
@@ -463,9 +463,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         })
                     })
                 })
-                }
-
-                
+                } 
                 
             })
         }

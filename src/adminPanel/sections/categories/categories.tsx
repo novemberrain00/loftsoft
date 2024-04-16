@@ -2,21 +2,18 @@ import { FC, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import RefreshIcon from "../../../assets/images/icons/refresh.svg";
-
-import DragIcon from "../../../assets/images/icons/drag-dots.svg";
 import SearchIcon from "../../../assets/images/icons/search.svg";
 import PlusIcon from "../../../assets/images/icons/plus.svg";
-import DownloadIcon from "../../../assets/images/icons/download_blue.svg";
+import DownloadIcon from "../../../assets/images/icons/download.svg";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
-import Popup from "../../../components/categoryPopup/categoryPopup";
 import { getCookie, getData, postData, uploadFile } from "../../../services/services";
 import { CategoryI } from "../../../interfaces";
-
-import AdminListItem from "../../../components/adminListItem/adminListItem";
 import Loader from "../../../components/loader/loader";
 
 import './categories.scss'; 
+import AdminCategory from "../../../components/adminHeader/adminCategory/adminCategory";
+import Popup from "../../../components/categoryPopup/categoryPopup";
 
 interface CategoriesPropsI {
     
@@ -80,53 +77,25 @@ const Categories: FC<CategoriesPropsI> = () => {
 
         const uploadedImg = await uploadFile(categoryData.photo[0]).then(data => data.upload)
 
-        if(categoryAction === 'create') {
-            await postData('/categories', {
-                title: categoryData.title.trim(),
-                photo: uploadedImg
-            }, true)
-            .then((data: CategoryI) => {
-                setCategories([
-                    ...categories,
-                    data
-                ]);
-    
-                setCategoryData({
-                    id: -1,
-                    title: '',
-                    photo: []
-                });
-    
-                setIsPopupOpened(false);
-                setAlertMessage('');
-            });
-        } else {
-            await fetch(`${baseURL}/category/${categoryData.id}`, {
-                method: "PATCH",
-                body: JSON.stringify({
-                    title: categoryData.title,
-                    photo: uploadedImg
-                }),
-                headers: {
-                    "Accept": "application/json",
-                    "Authorization": 'Bearer ' + getCookie('access_token') as string,
-                    "Content-Type": "application/json"
-                }
-            })
-            .then((data) => data.json())
-            .then((data: CategoryI) => {
-                const categoriesArrRef = categories;
-                console.log(data)
-                categoriesArrRef[categoriesArrRef.indexOf(categories.filter(cat => cat.id === categoryData.id)[0])] = {
-                    ...categoriesArrRef[categoriesArrRef.indexOf(categories.filter(cat => cat.id === categoryData.id)[0])],
-                    title: categoryData.title,
-                    photo: data.photo
-                }
+        await postData('/categories', {
+            title: categoryData.title.trim(),
+            photo: uploadedImg
+        }, true)
+        .then((data: CategoryI) => {
+            setCategories([
+                ...categories,
+                data
+            ]);
 
-                setCategories(categoriesArrRef);
-                setIsPopupOpened(false);
-            })
-        }
+            setCategoryData({
+                id: -1,
+                title: '',
+                photo: []
+            });
+
+            setIsPopupOpened(false);
+            setAlertMessage('');
+        });
     }
 
     const deleteCategory = async (id: number) => {
@@ -134,7 +103,7 @@ const Categories: FC<CategoriesPropsI> = () => {
             method: 'DELETE',
             headers: {
                 Accept: "application/json",
-                Authorization: 'Bearer ' + getCookie('access_token') as string,
+                Authorization: 'Bearer ' + window.localStorage.getItem('access_token') as string,
               }
         })
         .then(() => {
@@ -167,7 +136,7 @@ const Categories: FC<CategoriesPropsI> = () => {
                 </button>
             </AdminHeader>
             <Popup isPopupOpened={isPopupOpened} setIsPopupOpened={setIsPopupOpened}>
-                <h3 className="popup__title title">{categoryAction === 'create' ? 'Создание' : 'Редактирование'} категории</h3>
+                <h3 className="popup__title title">Создание категории</h3>
                 <div className="popup__body">
                     <label htmlFor="create-category-13039" className="input popup__input">
                         <span className="input__label">Название</span>
@@ -198,7 +167,7 @@ const Categories: FC<CategoriesPropsI> = () => {
                         {categoryData.photo[0]?.name || 'Перенесите сюда файл'}
                     </label>
                     <span className="popup__alert text">{alertMessage}</span>
-                    <button className="btn popup__btn" onClick={() => createCategory()}>{categoryAction === 'create' ? 'Создать' : 'Применить'}</button>
+                    <button className="btn popup__btn" onClick={() => createCategory()}>Создать</button>
                 </div>
             </Popup>
             <div className="admin__block subcategories">
@@ -208,7 +177,6 @@ const Categories: FC<CategoriesPropsI> = () => {
                         <input onInput={(e) => setSearchQuery((e.target as HTMLInputElement).value)} type="text" placeholder="Поиск" className="search__input" />
                     </div>
                     <button onClick={() => {
-                        setCategoryAction('create');
                         setIsPopupOpened(true);
                     }} className="btn admin__btn">
                         <img src={PlusIcon} alt="Создать подкатегорию" />
@@ -220,33 +188,23 @@ const Categories: FC<CategoriesPropsI> = () => {
                         <Droppable droppableId="droppable">
                             {(provided: any) => (
                                 <div {...provided.droppableProps} ref={provided.innerRef}>
-                                    {categories.length ? categories.map(({id, title, subcategories, photo}, i) => (
+                                    {categories.length ? categories.map(({id, title, subcategories, colors, photo}, i) => (
                                         <Draggable key={id} draggableId={''+id} index={i}>
                                             {(provided: any) => (
                                                 <div
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                 >
-                                                    <AdminListItem
-                                                        dndHandler={
-                                                            <img src={DragIcon} {...provided.dragHandleProps} alt="перетащить" className="admin__list-drag"/>  
-                                                        }
+                                                    <AdminCategory
+                                                        i={i}
                                                         id={id}
-                                                        key={id}
                                                         title={title}
-                                                        length={subcategories.length}
-                                                        countItems="подкатегорий"
+                                                        length={subcategories?.length}
                                                         photo={photo}
-                                                        optionsClickHandler={() => {
-                                                            setCategoryData({
-                                                                id,
-                                                                title,
-                                                                photo: []
-                                                            });
-                                                            setCategoryAction('edit');
-                                                            setIsPopupOpened(true);
-                                                        }}
-                                                        deleteItem={deleteCategory}
+                                                        provided={provided}
+                                                        colors={colors}
+                                                        setCategories={setCategories}
+                                                        deletItem={deleteCategory}
                                                     />
                                                 </div>
                                             )}

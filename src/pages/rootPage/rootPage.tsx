@@ -1,14 +1,13 @@
 import {FC, useState, useEffect, useContext} from 'react';
 import { Link } from 'react-router-dom';
 
-import { CategoryI, LinkI, SnackI, SubcategoryI, UserI } from '../../interfaces';
+import { LinkI, SnackI,  UserI } from '../../interfaces';
 
 import LogoImg from '../../assets/images/logo/logo.svg';
 import LogoMobileImg from '../../assets/images/logo/logo_mobile.svg';
 import CartIcon from '../../assets/images/icons/shopping_cart.svg';
 import UpdateIcon from '../../assets/images/icons/update.svg';
 import SearchIcon from '../../assets/images/icons/search.svg';
-import CopyIcon from '../../assets/images/icons/copy.svg';
 import BlueSquareIcon from '../../assets/images/icons/blue-square.svg';
 import AccountIcon from '../../assets/images/icons/account.svg';
 import BackIcon from '../../assets/images/icons/arrow-left_black.svg';
@@ -56,13 +55,14 @@ interface ActiveProductDataI {
 }
 
 const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
+    const dispatch = useDispatch();
+    
     const [activeProductData, setActiveProductData] = useState<ActiveProductDataI>({
         name: '',
         items: [],
         category: 0
     });
 
-    const dispatch = useDispatch();
 
     const [seachTerm, setSearchTerm] = useState<string>('');
     const [isHistoryShowed, setIsHistoryShowed] = useState<boolean>(false);
@@ -90,6 +90,23 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
     const debouncedTerm = useDebounce(seachTerm, 300);
 
     useEffect(() => {
+        if(!categories.length) return;
+        
+        setActiveProductData({
+            name: categories[0]?.title,
+            items: categories[0]?.subcategories.map(subcat => {
+                return {
+                    text: subcat.title,
+                    path: '/catalog/'+ subcat.id
+                }
+            }),
+            category: categories[0]?.id
+        })
+    }, [categories])
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+
         const getUserData = async () => {
           await getData('/user/me', true)
               .then((data: UserI) => {
@@ -103,11 +120,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
         }
     
         if(window.localStorage.getItem('access_token') && id === null) getUserData();  
-      }, [])
-
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+      }, []);
 
     return ( 
         <>
