@@ -122,6 +122,8 @@ const AdminCategory: FC<AdminCategoryPropsI> = ({i, id, title, length, photo, pr
                 <div className="category-editor__option-bottom">
                     <input 
                         onBlur={(e) => {
+                            if(categoryData.colors.length === 2) return;
+                            
                             const colorsRef = categoryData.colors as string[];
                             colorsRef.push((e.target as HTMLInputElement).value.trim().toLocaleLowerCase())
 
@@ -136,11 +138,22 @@ const AdminCategory: FC<AdminCategoryPropsI> = ({i, id, title, length, photo, pr
                         className="category-editor__option-input" 
                     />
                     {
-                        categoryData.colors.map(color => <span 
+                        categoryData.colors.map((color, i) => (
+                        <span 
                             style={{backgroundColor: color}} 
                             key={color} 
+                            onClick={() => {
+                                const colorsRef = categoryData.colors;
+                                categoryData.colors.splice(i, 1);
+                                setCategoryData({
+                                    ...categoryData,
+                                    colors: colorsRef
+                                })
+                            }}
                             className="category-editor__option-color"
-                            ></span>
+                        >
+                        </span>
+                        )
                         )
                     }
                     
