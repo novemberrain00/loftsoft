@@ -5,11 +5,21 @@
     width: 400px;
     box-sizing: border-box;
 
+    &__closer {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     &__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin: 0 0 20px;
+        font-family: Roboto;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
     }
 
     &__input {

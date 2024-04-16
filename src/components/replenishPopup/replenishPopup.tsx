@@ -42,7 +42,7 @@ const ReplenishPopup: FC<ReplenishPopupPropsI> = ({isOpened, closeHandler}) => {
             <div className="replenish">
                 <h2 className="replenish__header">
                     Пополните баланс
-                    <img src={CloseIcon} alt="закрыть" className="replinish__closer"/>
+                    <img src={CloseIcon} onClick={() => closeHandler(false)} alt="закрыть" className="replenish__closer"/>
                 </h2>
                 <label htmlFor="replenish-value" className="input replenish__input">
                     <span className="input__label">Сумма пополнения</span>

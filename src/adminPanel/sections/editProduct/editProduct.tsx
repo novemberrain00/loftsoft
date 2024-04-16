@@ -390,7 +390,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                         has_sale,
                         sale_price,
                         give_type,
-                        description
+                        description: description || ''
                     })
                 });
     
@@ -410,7 +410,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                     has_sale,
                     sale_price,
                     give_type,
-                    description,
+                    description: description || '',
                     data
                 }, true)
             }
@@ -544,7 +544,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                 price: price.trim(),
                 has_sale,
                 sale_price,
-                description,
+                description: description || '',
                 data,
                 give_type
             }
@@ -857,7 +857,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                             />
                         </label>
                         <div className="checkbox-container popup__checkbox-container">
-                            <input  defaultChecked={curParam.has_sale} onClick={(e) => {setCurParam({
+                            <input defaultChecked={curParam.has_sale} onClick={(e) => {setCurParam({
                                 ...curParam,
                                 has_sale: (e.target as HTMLInputElement).checked
                             })}} type="checkbox" className="checkbox" id="checkbox-59102"/>
@@ -1165,6 +1165,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                             return (
                                                 <div key={key} className="editor__params-row">
                                                     {i+1 < 10 ? '0'+(i+1) : i+1}
+                                                    
                                                     <span className="editor__params-key">{key}</span>
                                                 </div>
                                             )

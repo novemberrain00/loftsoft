@@ -279,7 +279,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                             type="text" 
                             className="purchase__form-input"
                         />
-                        <input  
+                        <textarea  
                             onInput={(e) => {
                                 setCurRequest({
                                     ...curRequest, 
@@ -289,7 +289,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                             value={curRequest.description}
                             style={{marginTop: '20px'}}
                             placeholder="Описание товара" 
-                            type="text" 
+                            rows={1}
                             className="purchase__form-input"
                         />
                     </form>

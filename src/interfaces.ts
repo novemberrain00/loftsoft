@@ -22,44 +22,44 @@ export interface ShortUserI {
 }
 
 export interface ProductI {
-    id: number,
-    title: string,
-    description: string,
-    card_price: string,
-    card_has_sale: boolean,
-    card_sale_price: string,
-    order_id: number,
+    id: number
+    title: string
+    description: string
+    card_price: string
+    card_has_sale: boolean
+    card_sale_price: string
+    order_id: number
     options: Array<{
-        id?: number,
-        title: string,
-        value: string,
-        is_pk?: boolean,
+        id?: number
+        title: string
+        value: string
+        is_pk?: boolean
         product_id?: number
-    }>,
+    }>
     parameters: Array<
         {
-            id: number,
-            title: string,
-            price: string,
-            has_sale: boolean,
-            sale_price: string,
-            order_id?: number,
-            product_id?: number,
-            data?: string[],
-            give_type: string,
-            description: string | null,
+            id: number
+            title: string
+            price: string
+            has_sale: boolean
+            sale_price: string
+            order_id?: number
+            product_id?: number
+            data?: string[]
+            give_type: string
+            description: string | null
             sale_percent?: string
         }
-    >,
-    subcategory_id: number,
+    >
+    subcategory_id: number
     product_photos: Array<
         {
-            id: number,
-            photo: string,
-            main: boolean,
+            id: number
+            photo: string
+            main: boolean
             product_id: number
         }
-    >,
+    >
     sale_percent: number
     
 }
@@ -78,22 +78,22 @@ export interface UserI {
 }
 
 export interface SubcategoryI {
-    id: number,
-    created_datetime: string,
-    title: string,
-    order_id: number,
-    products: ProductI[],
-    category_id: number,
+    id: number
+    created_datetime: string
+    title: string
+    order_id: number
+    products: ProductI[]
+    category_id: number
     product_count: number
 }
 
 export interface CategoryI {
-    id: number,
-    created_datetime: string,
-    title: string,
-    photo: string,
-    order_id: number,
-    subcategories: SubcategoryI[],
+    id: number
+    created_datetime: string
+    title: string
+    photo: string
+    order_id: number
+    subcategories: SubcategoryI[]
     subcategories_count: number
     colors: string[]
   }
@@ -101,41 +101,35 @@ export interface CategoryI {
 export interface CartItemI {
     product: {
         id: number
-        title: string,
-        description: string,
-        card_price: string,
-        card_has_sale: boolean,
-        card_sale_price: string,
-        order_id: number,
-        subcategory_id: number,
+        title: string
+        description: string
+        card_price: string
+        card_has_sale: boolean
+        card_sale_price: string
+        order_id: number
+        subcategory_id: number
         product_photos: [
         {
-            id: number,
-            photo: string,
-            main: boolean,
-            product_id: number
-        },
-        {
-            id: number,
-            photo: string,
-            main: boolean,
+            id: number
+            photo: string
+            main: boolean
             product_id: number
         }
-        ],
+        ]
         sale_percent: number
-    },
+    }
     parameter: {
-        id: number,
-        title: string,
-        price: string,
-        has_sale: boolean,
-        sale_price: string,
-        order_id: number,
-        product_id: number,
-        give_type: string,
+        id: number
+        title: string
+        price: string
+        has_sale: boolean
+        sale_price: string
+        order_id: number
+        product_id: number
+        give_type: string
         description: string | null
         sale_percent?: string
-    },
+    }
     quantity: number
 }
 
@@ -153,33 +147,34 @@ export interface ReviewI {
 }
 
 export interface PostProductI {
-    id: number,
-    title: string,
-    description: string,
-    card_price: string,
+    id: number
+    title: string
+    description: string
+    card_price: string
     options: Array<{
-        id?: number,
-        title: string,
-        value: string,
-        is_pk?: boolean,
+        id?: number
+        title: string
+        value: string
+        is_pk?: boolean
         product_id?: number
-    }>,
+    }>
     parameters: Array<
         {
-            id: number,
-            title: string,
-            price: string,
-            has_sale: boolean,
-            sale_price: string,
-            order_id?: number,
-            product_id?: number,
-            data: string[],
+            id: number
+            title: string
+            price: string
+            has_sale: boolean
+            sale_price: string
+            order_id?: number
+            product_id?: number
+            data: string[]
+            files?: string[]
             give_type: string
-            description: string,
+            description: string
         }
-    >,
-    subcategory_id: number,
-    product_photos: FileList[],
+    >
+    subcategory_id: number
+    product_photos: FileList[]
     initialPhotos: any[]
 }
 
@@ -194,7 +189,7 @@ export interface ParamDataItemI {
 }
 
 export interface PostPromocodeI {
-    id: number,
+    id: number
     name: string
     activations_count: string
     sale_percent: string

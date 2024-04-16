@@ -502,7 +502,7 @@ const RootPage: FC<RootPagePropsI> = ({isFooterHidden, children}) => {
                                 />
                         }
                         
-                        <History isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
+                        <History replenishesOpener={setIsReplenishOpened} isOpened={isHistoryShowed} closeHandler={setIsHistoryShowed}/>
                         <Request isOpened={isRequestOpened} closeHandler={setIsRequestOpened}/>
                     </footer>
                 )
