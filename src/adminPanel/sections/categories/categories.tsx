@@ -7,16 +7,16 @@ import PlusIcon from "../../../assets/images/icons/plus.svg";
 import DownloadIcon from "../../../assets/images/icons/download.svg";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
-import { getCookie, getData, postData, uploadFile } from "../../../services/services";
+import { getData, postData, uploadFile } from "../../../services/services";
 import { CategoryI } from "../../../interfaces";
 import Loader from "../../../components/loader/loader";
 
-import './categories.scss'; 
-import AdminCategory from "../../../components/adminHeader/adminCategory/adminCategory";
+import AdminCategory from "../../../components/adminCategory/adminCategory";
 import Popup from "../../../components/categoryPopup/categoryPopup";
 
+import './categories.scss'; 
+
 interface CategoriesPropsI {
-    
 }
 
 interface NewCategoryI {

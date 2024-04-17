@@ -196,7 +196,8 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
             <FsLightbox
                 toggler={toggler}
                 slide={activeSlideIndex}
-                sources={[...curImages.map(attach => <img src={baseURL + '/uploads/' + attach.file} alt="Не удалось загрузить изображение"/>)]}
+                key={Math.random()}
+                sources={[...curImages.map(attach => <img key={attach.id} src={baseURL + '/uploads/' + attach.file} alt="Не удалось загрузить изображение"/>)]}
             />
             {
                 isChatOpened ? 

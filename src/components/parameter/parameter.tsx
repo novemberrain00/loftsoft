@@ -11,7 +11,6 @@ import { setOrder } from "../../redux/straightOrderSlice";
 import { Link } from "react-router-dom";
 
 import './parameter.scss';
-import useDebounce from "../../hooks/useDebounce";
 
 interface ParameterPropsI {
     id: number
@@ -56,8 +55,6 @@ const Parameter: FC<ParameterPropsI> = ({
                 } 
             })
         }
-
-        console.log(quantity)
         
         await postData('/cart/add', {
             product_id: productId,
@@ -96,7 +93,6 @@ const Parameter: FC<ParameterPropsI> = ({
                         if(quantity > 0) { 
                             const newQuantity = quantity-1;
                             setQuantity(newQuantity)    
-                            postToCart(newQuantity);
                         }
                     }}
                 >
@@ -113,12 +109,10 @@ const Parameter: FC<ParameterPropsI> = ({
                         setQuantity(newQuantity)
                         
                     }}
-                    onBlur={() => postToCart(quantity)}
                 />
                 <button className="product-page__switch-btn" disabled={!isDataPosted} onClick={() => {
                     const newQuantity = quantity+1;
-                    setQuantity(newQuantity)    
-                    postToCart(newQuantity)
+                    setQuantity(newQuantity)   
                 }}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <path d="M6 1L6 10.2857" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -139,12 +133,9 @@ const Parameter: FC<ParameterPropsI> = ({
                 }} 
                 className="btn product-page__btn"
             >Приобрести</button>
-            <Link to="/profile/cart">
-                <a href="/" className={`link product-page__var-cart ${quantity === 0 ? 'product-page__var-cart_disabled' : ''}`}>
-                    <img src={BlueCartIcon} alt="в корзину" />
-                </a>
-            </Link>
-            
+            <span onClick={() => postToCart(quantity)} className={`link product-page__var-cart ${quantity === 0 ? 'product-page__var-cart_disabled' : ''}`}>
+                <img src={BlueCartIcon} alt="в корзину" />
+            </span>
         </div>
     </div>
     )

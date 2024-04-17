@@ -94,6 +94,8 @@ const Ticket: FC<TicketPropsI> = () => {
         }
     }, [id]);
 
+    useEffect(() => console.log(curImages), [curImages])
+
     return (
         <>
             <AdminHeader title={`Тикет №${id}`}>
@@ -106,7 +108,8 @@ const Ticket: FC<TicketPropsI> = () => {
                 <FsLightbox 
                     toggler={toggler}
                     slide={activeSlideIndex}
-                    sources={[...curImages.map(attach => <img src={baseURL + '/uploads/' + attach.file} alt="Не удалось загрузить изображение"/>)]}
+                    key={curImages.length}
+                    sources={[...curImages.map(attach => <img key={attach.id} src={baseURL + '/uploads/' + attach.file} alt="Не удалось загрузить изображение"/>)]}
                 />
                 <div className="ticket-page__messages">
                     {

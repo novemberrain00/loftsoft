@@ -1,15 +1,16 @@
 import { FC, useContext, useState } from "react";
-import AdminListItem from "../../adminListItem/adminListItem";
+import AdminListItem from "../adminListItem/adminListItem";
 
-import DragIcon from "../../../assets/images/icons/drag-dots.svg";
-import CloseIcon from "../../../assets/images/icons/close.svg";
-import UploadIcon from "../../../assets/images/icons/upload.svg";
-import CheckIcon from "../../../assets/images/icons/check.svg";
+import DragIcon from "../../assets/images/icons/drag-dots.svg";
+import CloseIcon from "../../assets/images/icons/close.svg";
+import UploadIcon from "../../assets/images/icons/upload.svg";
+import CheckIcon from "../../assets/images/icons/check.svg";
+import TrashIcon from "../../assets/images/icons/trash.svg";
 
-import { uploadFile } from "../../../services/services";
-import { CategoryI } from "../../../interfaces";
+import { uploadFile } from "../../services/services";
+import { CategoryI } from "../../interfaces";
 
-import { CategoriesContext } from "../../../context";
+import { CategoriesContext } from "../../context";
 import './adminCategory.scss';
 
 interface AdminCategoryPropsI {
@@ -137,25 +138,34 @@ const AdminCategory: FC<AdminCategoryPropsI> = ({i, id, title, length, photo, pr
                         type="text" 
                         className="category-editor__option-input" 
                     />
-                    {
-                        categoryData.colors.map((color, i) => (
-                        <span 
-                            style={{backgroundColor: color}} 
-                            key={color} 
-                            onClick={() => {
-                                const colorsRef = categoryData.colors;
-                                categoryData.colors.splice(i, 1);
-                                setCategoryData({
-                                    ...categoryData,
-                                    colors: colorsRef
-                                })
-                            }}
-                            className="category-editor__option-color"
-                        >
-                        </span>
-                        )
-                        )
-                    }
+                    <div className="category-editor__option-colors">
+                        {
+                            categoryData.colors.map((color, i) => (
+                            <div className="category-editor__option-color-wrapper">
+                                <img 
+                                    onClick={() => {
+                                        const colorsRef = categoryData.colors;
+                                        categoryData.colors.splice(i, 1);
+                                        setCategoryData({
+                                            ...categoryData,
+                                            colors: colorsRef
+                                        })
+                                    }}
+                                    className="category-editor__option-icon"
+                                    src={TrashIcon} 
+                                    alt="удалить цвет" 
+                                />
+                                <span 
+                                    style={{backgroundColor: color}} 
+                                    key={color} 
+                                    className="category-editor__option-color"
+                                >
+                                </span>
+                            </div>
+                            )
+                            )
+                        }
+                    </div>
                     
                 </div>
             </div>

@@ -36,6 +36,10 @@
         opacity: 1;
         transition: .1s;
 
+        &:hover {
+            cursor: pointer;
+        }
+
         &_disabled {
             opacity: 0;
         }
