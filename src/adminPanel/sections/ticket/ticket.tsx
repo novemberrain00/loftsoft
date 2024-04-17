@@ -3,11 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import SendIcon from '../../../assets/images/icons/send_rounded.svg';
 import BackArrow from '../../../assets/images/icons/arrow_left.svg';
+import Checkicon from '../../../assets/images/icons/check_blue.svg';
+import AttachmentIcon from '../../../assets/images/icons/attachment-img.svg'
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
 import { Attachment, SupportTicketI } from "../../../interfaces";
-import { getData, postData, timestampToTime } from "../../../services/services";
+import { getData, postData, timestampToTime, uploadFile } from "../../../services/services";
 
 import './ticket.scss'; 
 import FsLightbox from "fslightbox-react";
@@ -19,6 +21,7 @@ const Ticket: FC<TicketPropsI> = () => {
     const [ticket, setTicket] = useState<SupportTicketI>({} as SupportTicketI);
     const [message, setMessage] = useState<string>('');
     const [curImages, setCurImages] = useState<Attachment[]>([]);
+    const [attachments, setAttachments] = useState<string[]>([]);
     const [toggler, setToggler] = useState(false);
     const [activeSlideIndex, setActiveSlideIndex] = useState(1);
 
@@ -27,7 +30,7 @@ const Ticket: FC<TicketPropsI> = () => {
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     const sendMessage = async () => {
-        if(!message.length) return;
+        if(!message.length && !attachments.length) return;
 
         const messagesRef = ticket.messages;
         messagesRef.push({
@@ -35,7 +38,7 @@ const Ticket: FC<TicketPropsI> = () => {
             role: 'admin',
             text: message,
             created_at:  new Date(Date.now()).toISOString(),
-            attachments: []
+            attachments
         });
 
         setTicket({
@@ -44,14 +47,16 @@ const Ticket: FC<TicketPropsI> = () => {
         });
 
         setMessage('');
-            setTimeout(() => {
-                document.body.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
-            }, 0);
+        setAttachments([])
+
+        setTimeout(() => {
+            document.body.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" })
+        }, 0);
 
         await postData('/tickets/send', {
             id,
             text: message,
-            attachments: []
+            attachments
         }, true)
         .then((data: SupportTicketI) => {
             setTicket(data);
@@ -120,16 +125,22 @@ const Ticket: FC<TicketPropsI> = () => {
                                         {text}
 
                                         {
-                                            attachments.length ? attachments.map(({id, file}, i) => {
+                                            attachments.length ? (attachments as Attachment[]).map(({id, file}, i) => {
                                                 return (
-                                                    <img key={id} src={baseURL + '/uploads/' + file} onClick={() => {
-                                                        setCurImages(attachments)
-                                                        setToggler(!toggler)
-                                                        setActiveSlideIndex(i+1)
-                                                    }} alt="Не удалось загрузить изображение" className="ticket-page__message-attachment"/>
+                                                    <img 
+                                                        key={id} 
+                                                        src={baseURL + '/uploads/' + file} 
+                                                        onClick={() => {
+                                                            setCurImages(attachments as Attachment[])
+                                                            setToggler(!toggler)
+                                                            setActiveSlideIndex(i+1)
+                                                        }} 
+                                                        alt="Не удалось загрузить изображение" 
+                                                        className="ticket-page__message-attachment"
+                                                    />
                                                 )
                                             }) : null
-                                        }    
+                                        }   
                                     </div>
                                     <div className="ticket-page__message-bottom">
                                         {role === 'user' ? <span>{ticket.user.email}</span> : null}
@@ -141,18 +152,55 @@ const Ticket: FC<TicketPropsI> = () => {
                     }
                 </div>
                 <form action="post" className="ticket-page__form">
-                    <textarea 
-                        onInput={(e) => setMessage((e.target as HTMLInputElement).value)} 
-                        placeholder="Введите ваше сообщение" 
-                        className="ticket-page__input"
-                        value={message}
-                    ></textarea>
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        sendMessage();  
-                    }} className="btn ticket-page__sender">
-                        <img src={SendIcon} alt="отправить" />
-                    </button>
+                    <div className="ticket-page__form-files">
+                        {
+                            attachments.length ? attachments.map(attach => {
+                                return ( 
+                                    <div className="ticket-page__form-attachment">
+                                        <span className="ticket-page__form-icon">
+                                            <img src={AttachmentIcon} alt="прикрепленное изображение"/>
+                                        </span>
+                                        <a href={baseURL + '/uploads/' + attach} target="blank" className="ticket-page__form-link">
+                                            {attach}
+                                        </a>
+                                    </div>
+                                )
+                            }) : null
+                        }
+                    </div>
+                    <div className="ticket-page__form-bottom">
+                        <textarea 
+                            onInput={(e) => setMessage((e.target as HTMLInputElement).value)} 
+                            placeholder="Введите ваше сообщение" 
+                            className="ticket-page__input"
+                            value={message}
+                        ></textarea>
+                        <label htmlFor="ticket-page-file" className="ticket-page__file">
+                            <input
+                                onInput={(e) => {
+                                    Array.from((e.target as HTMLInputElement).files as FileList).forEach(file => {
+                                        uploadFile(file).then((data) => {
+                                            const attachmentsRef = attachments;
+                                            attachments.push(data.upload);
+
+                                            setAttachments([...attachmentsRef]);
+                                        })
+                                    })
+                                }}
+                                multiple
+                                type="file" 
+                                id="ticket-page-file" 
+                                className="ticket-page__file-input" 
+                            />
+                            <img src={Checkicon} alt="прикрепить файлы" />
+                        </label>
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            sendMessage();  
+                        }} className="btn ticket-page__sender">
+                            <img src={SendIcon} alt="отправить" />
+                        </button>
+                    </div>
                 </form>
             </div>
         </>

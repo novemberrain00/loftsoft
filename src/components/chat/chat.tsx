@@ -234,11 +234,11 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                                             }
                                             
                                             {
-                                                attachments.length ? attachments.map((attach, index) => {
+                                                attachments.length ? (attachments as Attachment[]).map((attach, index) => {
                                                     return <img 
                                                         key={attach.id} 
                                                         onClick={() => {
-                                                            setCurImages(attachments)
+                                                            setCurImages(attachments as Attachment[])
                                                             setToggler(!toggler)
                                                             setActiveSlideIndex(index+1)
                                                         }}

@@ -26,6 +26,8 @@ interface SuccessPaymentPagePropsI {
  
 const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
     const [orderData, setOrderData] = useState<PurchaseI>({} as PurchaseI);
+    const [isGiveTypeHand, setIsGiveTypeHand] = useState(true);
+
     const [isSenderOpened, setIsSenderOpened] = useState(false);
     const {id} = useParams();
 
@@ -39,6 +41,12 @@ const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
     }, []);
 
     document.title = "Поздравляем с покупкой";
+
+    useEffect(() => {
+        orderData?.order_data?.forEach(prod => {
+            if(prod.give_type !== 'hand') setIsGiveTypeHand(false);
+        });
+    }, [orderData.order_data])
 
     return (
         <RootPage>
@@ -56,15 +64,31 @@ const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
                         </div>
                         <img src={ArrowRounded} alt="Спасибо за покупку" className="success__header-img" />
                         {
-                            uri ? 
+                            isGiveTypeHand ? (
+                                <span className="success__header-mark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20" fill="none">
+                                    <path d="M16.5625 3.75H3.4375C2.57456 3.75 1.875 4.44956 1.875 5.3125V14.6875C1.875 15.5504 2.57456 16.25 3.4375 16.25H16.5625C17.4254 16.25 18.125 15.5504 18.125 14.6875V5.3125C18.125 4.44956 17.4254 3.75 16.5625 3.75Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M4.375 6.25L10 10.625L15.625 6.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    Заказ доступен по почте
+                                </span>
+                            ) : null
+                        }
+                        {
+                            !isGiveTypeHand && uri ? (
                                 <a href={baseURL + '/uploads/' + uri} download className="btn success__header-button">
                                     <img src={DownloadIcon} alt="загрузить" />
                                     Скачать
-                                </a> : 
+                                </a>
+                            ) : null
+                        }
+                        {
+                            !isGiveTypeHand && !uri ? (
                                 <span className="success__header-mark">
                                     <img src={ArrowDownIcon} alt="См. Ниже" />
                                     См. ниже
                                 </span>
+                            ) : null     
                         }
                     </div>
                     <div className="block success__products">
@@ -74,6 +98,7 @@ const SuccessPaymentPage: FC<SuccessPaymentPagePropsI> = () => {
                                 order_data?.length && order_data.map(({id, title, items, give_type }) => {
                                     return (
                                        <PurchaseItem
+                                            key={id}
                                             id={id}
                                             title={title}
                                             items={items}

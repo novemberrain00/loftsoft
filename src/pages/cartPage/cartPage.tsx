@@ -12,6 +12,7 @@ import SBPIcon from '../../assets/images/icons/sbp.svg';
 import WalletIcon from '../../assets/images/icons/wallet_blue.svg';
 
 import EmptyCartImg from '../../assets/images/img/cart/empty.jpg';
+import EmptyCartMobileImg from '../../assets/images/img/cart/empty_mobile.png';
 
 import { RootState } from "../../store";
 
@@ -198,10 +199,11 @@ const CartPage: FC<CartPagePropsI> = () => {
                             </> :
                             <>
                                 <div className="cart__order-header cart__order-header_vertical">
-                                    <h2 className="title cart__order-title">В корзине пока нет товаров</h2>
-                                    <h3 className="cart__order-subtitle">Но вы можете добавить их из нашего каталога</h3>
+                                    <h2 className="title cart__order-title">Ваш заказ пуст</h2>
+                                    <h3 className="cart__order-subtitle">Но вы можете добавить товары из нашего каталога</h3>
                                 </div>
                                 <img src={EmptyCartImg} alt="В корзине пока нет товаров" className="cart__order-img" />
+                                <img src={EmptyCartMobileImg} alt="В корзине пока нет товаров" className="cart__order-img_mobile" />
                                 <Link to="/catalog">
                                     <button className="btn cart__btn">
                                         <img src={DotsIcon} alt="Добавить товары" />

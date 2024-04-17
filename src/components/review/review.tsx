@@ -79,16 +79,15 @@ const Review: FC<ReviewI> = ({
                         header.style.zIndex = '100';
                         
                         const menu = document.querySelector('.menu') as HTMLElement;
-                        if(menu) {
-                            menu.style.zIndex = '10';
-                        }
+                        if(menu)  menu.style.zIndex = '10';
 
                         if(chatWrapper) chatWrapper.style.zIndex = '50';
 
-                    
-                        elem.classList.remove('swiper-wrapper_moved');
-                        elem.style.transform = lastCarouselTransform;
-                        elem.style.marginLeft = '0px'
+                        if(elem) {
+                            elem.classList.remove('swiper-wrapper_moved');
+                            elem.style.transform = lastCarouselTransform;
+                            elem.style.marginLeft = '0px';
+                        }
                     }}
                     sources={images && [...images.map(img => <img src={baseURL + '/uploads/' + img} key={img} alt={`изображение - ${img}`} id={img} />)]}
                 />
@@ -108,20 +107,18 @@ const Review: FC<ReviewI> = ({
                                     const header = document.querySelectorAll('.header')[1] as HTMLElement;
                                     header.style.zIndex = '1';
 
-                                    elem.classList.add('swiper-wrapper_moved', 'reviews__items_disabled');
+                                    if(elem) elem.classList.add('swiper-wrapper_moved', 'reviews__items_disabled');
                                     if(chatWrapper) chatWrapper.style.zIndex = '3';
 
                                     const menu = document.querySelector('.menu') as HTMLElement;
                                     if(menu)  menu.style.zIndex = '0';
                                     
-                                    setLastCarouselTransform(elem.style.transform);             
+                                    if(elem) {
+                                        setLastCarouselTransform(elem.style.transform);             
                                         const margin = +elem.style.transform.split('').splice(12, elem.style.transform.indexOf(',')-14).join('') + 'px';                   
                                         elem.style.marginLeft = margin;
-                                    setTimeout(() => {
-                                        
-                                    }, 50)
                                     
-
+                                    }
                 
                                     setSelectedImageIndex(i+1);
                                     setToggler(!toggler);

@@ -205,7 +205,7 @@ export interface Message {
     role: string
     text: string
     created_at: string
-    attachments: Attachment[]
+    attachments: Attachment[] | string[]
 }
 
 export interface SupportTicketI {

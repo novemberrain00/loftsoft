@@ -625,6 +625,10 @@ a {
 		width: 680px;
 	}
 
+	.content {
+		padding-top: 180px;
+	}
+
 	.text {
 		font-size: 14px;
 	}
@@ -715,11 +719,22 @@ a {
 }
 
 @media screen and (max-width: 756px) {
+	.content {
+		padding-top: 140px;
+	}	
+
 	.banner {
 		&_main {
 			padding: 44px 38px 36px;
 			height: 350px;
-			background: none;
+		}
+
+		&__title {
+			font-size: 32px !important;
+	
+			&_marked {
+				font-size: 32px !important;
+			}
 		}
 	}
 
@@ -744,6 +759,9 @@ a {
 			height: 390px;
 			box-shadow: none;
 			padding: 0;
+			border-radius: 0;
+			background-size: 61%;
+			background-position: 90% 0;
 		}
 	}
 
