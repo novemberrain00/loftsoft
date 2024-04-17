@@ -2,16 +2,16 @@ import { ChangeEvent, FC, MouseEvent, useEffect, useState } from "react";
 
 import AdminHeader from "../../../components/adminHeader/adminHeader";
 
-import BackIcon from "../../../assets/images/icons/back.svg";
 import CloseIcon from "../../../assets/images/icons/close_blue.svg";
 import CloseTicketIcon from "../../../assets/images/icons/close.svg";
 import UpdateIcon from "../../../assets/images/icons/update_blue.svg";
 import TrashIcon from "../../../assets/images/icons/trash.svg";
 
 import { SupportTicketI } from "../../../interfaces";
-import './start.scss';
 import { getData, postData } from "../../../services/services";
 import { Link } from "react-router-dom";
+
+import './start.scss';
 
 interface StartPropsI {
     
