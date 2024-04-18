@@ -27,12 +27,14 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler, replenishesOpener})
     const navigate = useNavigate()
 
     useEffect(() => {
-        getData('/user/orders', true) 
-        .then((data: OrderI[]) => setOrders(data));
+        if(window.localStorage.getItem('access_token')) {
+            getData('/user/orders', true) 
+            .then((data: OrderI[]) => setOrders(data));
 
-        getData('/user/replenishes', true)
-        .then((data: ReplenishI[]) => setReplenishes(data));
-    }, []);
+            getData('/user/replenishes', true)
+            .then((data: ReplenishI[]) => setReplenishes(data));
+        }
+    }, [window.localStorage.getItem('access_token')]);
 
     return isOpened ? (
         <Overlay closeHandler={closeHandler}>
@@ -73,7 +75,7 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler, replenishesOpener})
                         </div>: ''
                     }
                     {
-                        !orders.length && !activeTab ? (
+                        !orders.length && !activeTab && window.localStorage.getItem('access_token')? (
                             <div className="history__auth">
                                 <h3 className="title history__auth-title">У вас пока не было покупок</h3>
                                 <h4 className="history__auth-subtitle text">Посмотрите товары, которые мы приготовили для вас!</h4>
@@ -107,7 +109,7 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler, replenishesOpener})
                         )
                     }
                     {
-                        !replenishes.length && activeTab ? (
+                        !replenishes.length && activeTab && window.localStorage.getItem('access_token') ? (
                             <div className="history__auth">
                                 <h3 className="title history__auth-title">У вас пока не было пополнений</h3>
                                 <h4 className="history__auth-subtitle text">Вы можете пополнить свой баланс в личном кабинете</h4>
@@ -120,27 +122,25 @@ const History: FC<HistoryPropsI> = ({isOpened, closeHandler, replenishesOpener})
                                 </button>
                             </div>
 
-                        ) : (
+                        ) : 
                             <ul className={`list history__items ${!window.localStorage.getItem('access_token') && 'history__items_blured'} ${activeTab  ? "history__items_active" : ''}`}>
                                 {
-                                    window.localStorage.getItem('access_token') ? 
-                                        replenishes.length ? replenishes.map(({id, result_price, payment_type, created_datetime}) => {
-                                            return (
-                                                <li key={id} className="history__item">
-                                                    <div className="history__item-info">
-                                                        <h3 className="history__item-title history__item-title_blue title">{result_price} ₽</h3>
-                                                        <span className="history__item-char">ID: {id}</span>
-                                                        <span className="history__item-char">Метод: {payment_type}</span>
-                                                    </div>
-                                                    <span className="history__item-date">{timestampToTime(created_datetime)}</span>
-                                                </li>
-                                            )
-                                        }) : null
-
-                                    : ''
+                                    
+                                    replenishes.length ? replenishes.map(({id, result_price, payment_type, created_datetime}) => {
+                                        return (
+                                            <li key={id} className="history__item">
+                                                <div className="history__item-info">
+                                                    <h3 className="history__item-title history__item-title_blue title">{result_price} ₽</h3>
+                                                    <span className="history__item-char">ID: {id}</span>
+                                                    <span className="history__item-char">Метод: {payment_type}</span>
+                                                </div>
+                                                <span className="history__item-date">{timestampToTime(created_datetime)}</span>
+                                            </li>
+                                        )
+                                    }) : ''
                                 }
                             </ul>
-                        )
+                        
                     }
                     
                 </div>

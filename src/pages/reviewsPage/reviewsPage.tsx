@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import RootPage from "../rootPage/rootPage";
 
 import BlueStarIcon from '../../assets/images/icons/star_blue_sharp.svg';
@@ -6,10 +6,11 @@ import PlusIcon from '../../assets/images/icons/plus.svg';
 
 import Review from "../../components/review/review";
 import ReviewSender from "../../components/reviewSender/reviewSender";
-import Overlay from "../../components/overlay/overlay";
 
-import { getData } from "../../services/services";
+import { ReviewsContext } from "../../context";
 import './reviewsPage.scss';
+import { ReviewI } from "../../interfaces";
+import { getData } from "../../services/services";
 
 interface ReviewsPagePropsI {
     
@@ -17,11 +18,10 @@ interface ReviewsPagePropsI {
  
 const ReviewsPage: FC<ReviewsPagePropsI> = () => {
     const [isSenderOpened, setIsSenderOpened] = useState(false);
-    const [reviews, setReviews] = useState([]);
-
+    const [reviews, setReviews] = useState<ReviewI[]>([]);
+    
     useEffect(() => {
-        getData('/reviews')
-        .then(data => setReviews(data))
+        getData('/reviews').then(data => setReviews(data))
     }, [])
 
     document.title = "Отзывы";

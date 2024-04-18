@@ -96,8 +96,10 @@ const ReviewSender: FC<ReviewSenderPropsI> = ({isOpened, closeHandler}) => {
     }
 
     useEffect(() => {
-        postData('/reviews/available', {}, true)
-        .then(data => setProducts(data));
+        if(window.localStorage.getItem('access_token')) {
+            postData('/reviews/available', {}, true)
+            .then(data => setProducts(data));
+        }
     }, []);
 
     useEffect(() => {

@@ -48,10 +48,10 @@ const MainPage: FC<MainPageProps> = () => {
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
     
-    const reviews = useContext(ReviewsContext);
     const [products, setProducts] = useState<ProductI[]>([]);
     const [partners, setPartners] = useState<PartnerI[]>([]);
-
+    const [reviews, setReviews] = useState<ReviewI[]>([]);
+    
     const categories = useContext(CategoriesContext);
     
     const pagination = {
@@ -66,6 +66,9 @@ const MainPage: FC<MainPageProps> = () => {
     useEffect(() => {
         getData('/products?rating_sort=true')
         .then(data => setProducts(data.splice(0, 5)));
+
+        getData('/reviews')
+        .then(data => setReviews(data));
 
         getData('/partners', true)
         .then(data => setPartners(data));

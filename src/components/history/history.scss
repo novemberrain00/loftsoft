@@ -81,8 +81,8 @@
         display: none;
         flex-direction: column;
         gap: 10px;
-        max-height: 725px;
-        height: 55vh;
+        max-height: 55vh;
+        height: auto;
         overflow: auto;
 
         &::-webkit-scrollbar {
@@ -104,6 +104,7 @@
         border: 1px solid #ccc;
         padding: 20px;
         border-radius: 20px;
+
 
         &-title {
             font-size: 16px;
