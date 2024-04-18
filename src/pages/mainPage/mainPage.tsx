@@ -25,8 +25,8 @@ import Loader from "../../components/loader/loader";
 import Product from "../../components/product/product";
 import Review from "../../components/review/review";
 
-import { CategoriesContext, ReviewsContext } from "../../context";
-import {  PartnerI, ProductI, ReviewI } from "../../interfaces";
+import { CategoriesContext } from "../../context";
+import {  CategoryI, PartnerI, ProductI, ReviewI } from "../../interfaces";
 import { getData } from "../../services/services";
 
 import 'swiper/css';
@@ -64,17 +64,21 @@ const MainPage: FC<MainPageProps> = () => {
     const navigate = useNavigate();
     
     useEffect(() => {
-        getData('/products?rating_sort=true')
-        .then(data => setProducts(data.splice(0, 5)));
+        const fetchData = async () => {
+            await getData('/products?rating_sort=true')
+            .then(data => setProducts(data.splice(0, 5)));
 
-        getData('/reviews')
-        .then(data => setReviews(data));
+            await getData('/reviews')
+            .then(data => setReviews(data));
 
-        getData('/partners', true)
-        .then(data => setPartners(data));
+            await getData('/partners', true)
+            .then(data => setPartners(data));
+        }
+
+        fetchData();
     }, [])
 
-    
+    console.log(reviews)
     document.title = "LoftSoft - магазин лицензионного ПО";
 
     return (
@@ -425,7 +429,7 @@ const MainPage: FC<MainPageProps> = () => {
                             className="reviews__items"
                         >
                             {
-                                reviews && reviews.reverse().splice(0, 10).map(({id, product, user, user_photo, rate, text, images, created_datetime}, i) => {
+                                reviews ? reviews.reverse().splice(0, 10).map(({id, product, user, user_photo, rate, text, images, created_datetime}, i) => {
                                     return (
                                         <SwiperSlide>
                                             <Review 
@@ -442,7 +446,7 @@ const MainPage: FC<MainPageProps> = () => {
                                             />
                                         </SwiperSlide>
                                     )
-                                })
+                                }) : null
                             }
                     </Swiper>
                     <div className="reviews__bottom container content__container">

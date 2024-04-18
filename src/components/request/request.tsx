@@ -8,6 +8,9 @@ import TgIcon from "../../assets/images/icons/tg_round.svg";
 import WhatsAppIcon from "../../assets/images/icons/whatsapp_round.svg";
 import EmailIcon from "../../assets/images/icons/email.svg";
 import SuccessIcon from "../../assets/images/icons/request-success.svg";
+import TgBlackIcon from "../../assets/images/icons/tg_black.svg";
+import MailBlackIcon from "../../assets/images/icons/mail_black.svg";
+import WhatsappBlackIcon from "../../assets/images/icons/whatsapp_black.svg";
 
 import { RequestI } from "../../interfaces";
 import { postData } from "../../services/services";
@@ -44,6 +47,10 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
         description: ""
     });
     const [alertMessage, setAlertMessage] = useState('');
+    const [lastRequestContact, setLastRequestContact] = useState({
+        contactType: '',
+        contact: ''
+    });
 
     const createRequest = (e: MouseEvent) => {
         e.preventDefault();
@@ -81,6 +88,13 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
     const sendRequests = async (e: MouseEvent) => {
         e.preventDefault();
         if(!requests.length) return;
+
+        if(requests.length === 1) {
+            setLastRequestContact({
+                contactType: requests[0].contact_type,
+                contact: requests[0].contact
+            })
+        }
 
         let isDataOk = true;
         requests.forEach(({full_name, contact, contact_type, count, description}, i) => {
@@ -153,6 +167,15 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
         }
     }
 
+    const overlayCloseHandler = () => {
+        setIsSuccessShowed(false)
+        setLastRequestContact({
+            contactType: '',
+            contact: ''
+        })
+        closeHandler(false)
+    }
+
     useEffect(() => {
         setCurRequest({
             contact_type: "email",
@@ -180,12 +203,22 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
         <>
         {
             isSuccessShowed ?
-            <Overlay closeHandler={closeHandler}>
+            <Overlay closeHandler={() => overlayCloseHandler()}>
                 <div className="request request-success">
                     <div className="request__header">
                         <h3 className="request-success__title">Запрос отправлен</h3>
                         <h5 className="request-success__subtitle">
-                            Дождитесь ответа на {requests.length > 1 ? 'указанные данные' : requests[0].contact}
+                            Дождитесь ответа на <br />
+                            {
+                                !lastRequestContact.contact.length ? 
+                                    'указанные данные': 
+                                    <span className="request-success__contact">
+                                        {lastRequestContact.contactType === 'email' ? <img src={MailBlackIcon} alt="email"/> : ''}
+                                        {lastRequestContact.contactType === 'telegram' ? <img src={TgBlackIcon} alt="tg"/> : ''}
+                                        {lastRequestContact.contactType === 'whatsapp' ? <img src={WhatsappBlackIcon} alt="whatsapp"/> : ''}
+                                        {lastRequestContact.contact}
+                                    </span>
+                            }
                         </h5>
                     </div>
                     <img src={SuccessIcon} alt="Запрос отправлен" className="request-success__img"/>
@@ -199,7 +232,7 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                     }} className="request__footer-link request-success__link">Готово</a>
                 </div>
             </Overlay> : 
-            <Overlay closeHandler={closeHandler}>
+            <Overlay closeHandler={() => overlayCloseHandler()}>
                 <div className="request">
                     <header className="request__header">
                         <h3 className="request__title title">Запросить товар</h3>
