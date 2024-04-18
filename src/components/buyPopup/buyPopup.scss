@@ -47,7 +47,7 @@
         &-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 10px;
             font-family: Onest;
             font-size: 16px;
             font-weight: 500;
@@ -64,6 +64,10 @@
 
             &:last-child {
                 padding-bottom: 14px;
+            }
+
+            img {
+                width: 20px;
             }
         }
 

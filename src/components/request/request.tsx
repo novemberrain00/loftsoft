@@ -11,8 +11,8 @@ import SuccessIcon from "../../assets/images/icons/request-success.svg";
 
 import { RequestI } from "../../interfaces";
 import { postData } from "../../services/services";
-import "./request.scss";
 import { RootState } from "../../store";
+import "./request.scss";
 
 interface RequestPropsI {
     isOpened: boolean
@@ -184,7 +184,9 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                 <div className="request request-success">
                     <div className="request__header">
                         <h3 className="request-success__title">Запрос отправлен</h3>
-                        <h5 className="request-success__subtitle">Дождитесь ответа на указанные данные</h5>
+                        <h5 className="request-success__subtitle">
+                            Дождитесь ответа на {requests.length > 1 ? 'указанные данные' : requests[0].contact}
+                        </h5>
                     </div>
                     <img src={SuccessIcon} alt="Запрос отправлен" className="request-success__img"/>
                     <p className="text text_large request-success__text">
