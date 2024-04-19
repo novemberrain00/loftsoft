@@ -239,7 +239,7 @@
         &__products {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
+            gap: 15px;
             margin-top: 30px;
             padding: 0 30px;
         }
@@ -250,7 +250,7 @@
             &-items {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-column-gap: 25px;
+                grid-column-gap: 15px;
                 grid-row-gap: 45px;
             }
 
@@ -284,7 +284,7 @@
 @media screen and (max-width: 765px) {
     .catalog {
         &__section {
-            max-width: 290px;
+            max-width: 260px;
 
             &-header {
                 padding: 15px;
@@ -316,7 +316,6 @@
 @media screen and (max-width: 675px) {
     .catalog {
         &__section {
-            max-width: 290px;
             width: 100%;
 
             &-header {

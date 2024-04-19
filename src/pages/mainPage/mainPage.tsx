@@ -25,7 +25,7 @@ import Loader from "../../components/loader/loader";
 import Product from "../../components/product/product";
 import Review from "../../components/review/review";
 
-import { CategoriesContext } from "../../context";
+import { CategoriesContext, ReviewsContext } from "../../context";
 import {  CategoryI, PartnerI, ProductI, ReviewI } from "../../interfaces";
 import { getData } from "../../services/services";
 
@@ -37,12 +37,7 @@ import 'swiper/css/navigation';
 import '../../lib/swiper/swiper.scss';
 import './mainPage.scss';
 
-
-interface MainPageProps {
-    
-}
- 
-const MainPage: FC<MainPageProps> = () => {
+const MainPage: FC = () => {
     const prevRef = useRef<HTMLButtonElement>(null);
     const nextRef = useRef<HTMLButtonElement>(null);
 
@@ -66,19 +61,19 @@ const MainPage: FC<MainPageProps> = () => {
     useEffect(() => {
         const fetchData = async () => {
             await getData('/products?rating_sort=true')
-            .then(data => setProducts(data.splice(0, 5)));
-
-            await getData('/reviews')
-            .then(data => setReviews(data));
+            .then((data: ProductI[]) => setProducts(data.splice(0, 5)));
 
             await getData('/partners', true)
-            .then(data => setPartners(data));
+            .then((data: PartnerI[]) => setPartners(data));
+
+            await getData('/reviews', true)
+            .then((data: ReviewI[]) => setReviews(data));
         }
 
         fetchData();
     }, [])
 
-    console.log(reviews)
+
     document.title = "LoftSoft - магазин лицензионного ПО";
 
     return (
@@ -144,7 +139,7 @@ const MainPage: FC<MainPageProps> = () => {
                                     <div className="discount-value sale__value">-40%</div>
                                 </div>
                             </div>
-                            <div className=" block promo__advantages">
+                            <div className="block promo__advantages">
                                 <h2 className="title promo__advantages-title">НАШИ ПРЕИМУЩЕСТВА</h2>
                                 <h3 className="subtitle promo__advantages-subtitle">Перед конкурентами</h3>
                                 <div>
@@ -401,7 +396,6 @@ const MainPage: FC<MainPageProps> = () => {
                             swiper.params.navigation.prevEl = prevRef.current;
                             swiper.params.navigation.nextEl = nextRef.current;
                             swiper.params.scrollbar.dragSize = '500%';
-                            console.log(swiper.params.scrollbar)
                         }}
                         centeredSlides={false}
                         breakpoints={{ //минимальная ширина

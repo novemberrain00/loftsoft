@@ -97,6 +97,10 @@
 
 @media screen and (max-width: 1280px) {
 	.reviews .swiper {
+		&::after, &::before {
+			display: none;
+		}
+
 		&-scrollbar {
 			width: 680px;
 			margin: 0 auto 20px;

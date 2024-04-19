@@ -97,8 +97,6 @@
 
 @media screen and (max-width: 1727px) {
     .product {
-        width: 270px;
-
         &__price {
             &-old {
                 font-size: 11px;
@@ -117,6 +115,11 @@
     }
 }
 
+@media screen and (max-width: 756px) {
+    .product {
+        width: 260px;
+    }
+}
 
 @media screen and (max-width: 480px) {
     .product {

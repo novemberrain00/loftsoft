@@ -12,15 +12,15 @@ export const ReviewsContext = createContext<ReviewI[]>([]);
 
 const ContextProvider: FC<ContextProviderProps> = ({children}) => {
     const [categories, setCategories] = useState<CategoryI[]>([]);
-    // const [reviews, setReviews] = useState<ReviewI[]>([]);
+    const [reviews, setReviews] = useState<ReviewI[]>([]);
   
     useEffect(() => {
         const fetchData = async () => {
+            await getData('/reviews')
+                .then((data: ReviewI[]) => setReviews(data));
+
             await getData('/categories?empty_filter=true')
                 .then((data: CategoryI[]) => setCategories(data));
-
-            // await getData('/reviews')
-            //     .then((data: ReviewI[]) => setReviews(data));
         }
 
 
@@ -28,11 +28,11 @@ const ContextProvider: FC<ContextProviderProps> = ({children}) => {
     }, [])
     
     return (
-        // <ReviewsContext.Provider value={reviews}>
+        <ReviewsContext.Provider value={reviews}>
             <CategoriesContext.Provider value={categories}>
                 {children}
             </CategoriesContext.Provider>
-        // </ReviewsContext.Provider>
+        </ReviewsContext.Provider>
     );
 }
  

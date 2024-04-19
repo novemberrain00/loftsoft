@@ -9,8 +9,6 @@ import ReviewSender from "../../components/reviewSender/reviewSender";
 
 import { ReviewsContext } from "../../context";
 import './reviewsPage.scss';
-import { ReviewI } from "../../interfaces";
-import { getData } from "../../services/services";
 
 interface ReviewsPagePropsI {
     
@@ -18,11 +16,8 @@ interface ReviewsPagePropsI {
  
 const ReviewsPage: FC<ReviewsPagePropsI> = () => {
     const [isSenderOpened, setIsSenderOpened] = useState(false);
-    const [reviews, setReviews] = useState<ReviewI[]>([]);
-    
-    useEffect(() => {
-        getData('/reviews').then(data => setReviews(data))
-    }, [])
+
+    const reviews = useContext(ReviewsContext);
 
     document.title = "Отзывы";
 

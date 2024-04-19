@@ -46,7 +46,6 @@ const Review: FC<ReviewI> = ({
     useEffect(() => {
         document.querySelectorAll('.fslightbox-absoluted').forEach(slide => {
             slide.addEventListener('touchmove', (e) => {
-                console.log('lol')
                 e.stopPropagation()
             })
 

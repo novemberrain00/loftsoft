@@ -41,7 +41,7 @@ import ReplenishPopup from '../../components/replenishPopup/replenishPopup'
 import Request from '../../components/request/request'
 import './rootPage.scss'
 import DiscountInput from '../../components/discountInput/discountInput'
-import { CategoriesContext, ReviewsContext } from '../../context'
+import { CategoriesContext } from '../../context'
 
 interface RootPagePropsI {
 	isFooterHidden?: boolean
