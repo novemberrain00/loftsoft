@@ -134,6 +134,14 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                 return;
             }
 
+            if(!/^(\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}|8\d{10})$/.test(contact) && contact_type === 'whatsapp') {
+                setAlertMessage(`Некорректный номер. Запрос №${i+1}`);
+                isDataOk = false;
+                return;
+            }
+
+            
+
             if(!description.length) {
                 setAlertMessage(`Введите описание. Запрос №${i+1}`);
                 isDataOk = false;
