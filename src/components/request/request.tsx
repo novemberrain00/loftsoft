@@ -284,18 +284,51 @@ const Request: FC<RequestPropsI> = ({isOpened, closeHandler}) => {
                                 </li>
                             </ul>
                         </div>
-                        <input  
-                            onInput={(e) => {
-                                setCurRequest({
-                                    ...curRequest, 
-                                    contact: (e.target as HTMLInputElement).value
-                                })
-                            }}
-                            value={curRequest.contact}
-                            placeholder="Контакт" 
-                            type="text" 
-                            className="purchase__form-input"
-                        />
+                       {
+                            curRequest.contact_type === 'email' &&
+                                <input  
+                                    onInput={(e) => {
+                                        setCurRequest({
+                                            ...curRequest, 
+                                            contact: (e.target as HTMLInputElement).value
+                                        })
+                                    }}
+                                    value={curRequest.contact}
+                                    placeholder='loftsoft@loftsoft.store'
+                                    type="text" 
+                                    className="purchase__form-input"
+                                />
+                        }
+                        {
+                            curRequest.contact_type === 'telegram' &&
+                                <input  
+                                    onInput={(e) => {
+                                        setCurRequest({
+                                            ...curRequest, 
+                                            contact: (e.target as HTMLInputElement).value
+                                        })
+                                    }}
+                                    value={curRequest.contact}
+                                    placeholder='@telegram'
+                                    type="text" 
+                                    className="purchase__form-input"
+                                />
+                        }
+                        {
+                            curRequest.contact_type === 'whatsapp' &&
+                                <input  
+                                    onInput={(e) => {
+                                        setCurRequest({
+                                            ...curRequest, 
+                                            contact: (e.target as HTMLInputElement).value
+                                        })
+                                    }}
+                                    value={curRequest.contact}
+                                    placeholder='+79999999999'
+                                    type="text" 
+                                    className="purchase__form-input"
+                                />
+                        }
                         <input  
                             onInput={(e) => {
                                 setCurRequest({

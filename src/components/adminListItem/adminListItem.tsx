@@ -3,7 +3,6 @@ import { FC } from "react";
 import EditIcon from "../../assets/images/icons/edit.svg";
 import OptionsIcon from "../../assets/images/icons/options.svg";
 import TrashIcon from "../../assets/images/icons/trash.svg";
-import ArrowIcon from "../../assets/images/icons/dropdown_white.svg";
 
 import './adminListItem.scss';
 

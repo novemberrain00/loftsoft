@@ -30,6 +30,7 @@ const MobileMenu: FC<MobileMenuPropsI> = ({
         replenishOpener, 
         isDropdownOpened,
     }) => {
+        
     const userData = useSelector((state: RootState) => state.user.userInfo);
     const userCart= useSelector((state: RootState) => state.user.userInfo.shop_cart);
 

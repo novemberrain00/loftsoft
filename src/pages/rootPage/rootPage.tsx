@@ -426,10 +426,8 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 							</div>
 							<div className='footer__descr'>
 								Магазин лицензий для цифровых продуктов <br />
-								<Link to='/'>
-									<a href='/' className='link link_blue'>
-										www.loftsoft.com
-									</a>
+								<Link to='/' className='link link_blue'>
+									www.loftsoft.com
 								</Link>
 							</div>
 							<img
@@ -442,31 +440,23 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 							<nav className='footer__menu'>
 								<ul className='footer__menu-list list'>
 									<li className='footer__menu-item'>
-										<Link to='/'>
-											<a href='/' className='footer__menu-link link'>
-												Главная страница
-											</a>
+										<Link to='/'  className='footer__menu-link link'>
+											Главная страница
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/'>
-											<a href='/' className='footer__menu-link link'>
-												Стать поставщиком
-											</a>
+										<Link to='/' className='footer__menu-link link'>
+											Стать поставщиком
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/'>
-											<a href='/' className='footer__menu-link link'>
-												Реферальная программа
-											</a>
+										<Link to='/' className='footer__menu-link link'>
+											Реферальная программа
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/reviews'>
-											<a href='/' className='footer__menu-link link'>
-												Оставить отзыв
-											</a>
+										<Link to='/reviews' className='footer__menu-link link'>
+											Оставить отзыв
 										</Link>
 									</li>
 								</ul>
@@ -474,31 +464,31 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 							<nav className='footer__menu'>
 								<ul className='footer__menu-list list'>
 									<li className='footer__menu-item'>
-										<Link to='/terms'>
-											<a href='/' className='footer__menu-link link'>
+										<Link to='/terms/korrektirovki-i-pravila'>
+											<span className='footer__menu-link link'>
 												Как купить
-											</a>
+											</span>
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/terms'>
-											<a href='/' className='footer__menu-link link'>
+										<Link to='/terms/casto-zadavaemye-voprosy'>
+											<span  className='footer__menu-link link'>
 												FAQ
-											</a>
+											</span>
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
 										<Link to='/terms'>
-											<a href='/' className='footer__menu-link link'>
+											<span className='footer__menu-link link'>
 												Правила возврата
-											</a>
+											</span>
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
 										<Link to='/terms'>
-											<a href='/' className='footer__menu-link link'>
+											<span className='footer__menu-link link'>
 												Правила магазина
-											</a>
+											</span>
 										</Link>
 									</li>
 								</ul>

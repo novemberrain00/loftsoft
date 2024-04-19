@@ -1,14 +1,14 @@
-import { FC, MouseEvent, useState } from "react";
+import { FC, MouseEvent, useEffect, useState } from "react";
 import RootPage from "../rootPage/rootPage";
 
-import './termsPage.scss';
 import { TabI } from "../../interfaces";
+import './termsPage.scss';
 
 interface TermsPagePropsI {
-    
+    tab?: number
 }
  
-const TermsPage: FC<TermsPagePropsI> = () => {
+const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
     const [activeTab, setActiveTab] = useState(0);
 
     const [tabs, setTabs] = useState<TabI[]>(
@@ -62,7 +62,7 @@ const TermsPage: FC<TermsPagePropsI> = () => {
             )
         },
         {
-            title: 'Происхождение аккаунтов',
+            title: 'Условия возврата/обмена',
             anchor: 2,
             content: (
                 <section className="terms__section block">
@@ -74,25 +74,37 @@ const TermsPage: FC<TermsPagePropsI> = () => {
             )
         },
         {
-            title: 'Часто задаваемые вопросы',
-            anchor: 2,
+            title: 'Происхождение аккаунтов',
+            anchor: 3,
             content: (
                 <section className="terms__section block">
-                    <h2 className="title terms__section-title">Корректировки и правла</h2>
+                    <h2 className="title terms__section-title">Происхождение аккаунтов</h2>
                     <p className="text text_small terms__section-text">
-                        Зпавпаыаы
+                        Происхождение аккаунтов
                     </p>
                 </section>
             )
         },
         {
-            title: 'Безопасность конфиденциальности',
-            anchor: 3,
+            title: 'Часто задаваемые вопросы',
+            anchor: 4,
             content: (
                 <section className="terms__section block">
-                    <h2 className="title terms__section-title">Корректировки и правла</h2>
+                    <h2 className="title terms__section-title">Часто задаваемые вопросы</h2>
                     <p className="text text_small terms__section-text">
-                       аыаыаы
+                        Часто задаваемые вопросы
+                    </p>
+                </section>
+            )
+        }, 
+        {
+            title: 'Безопасность конфиденциальности',
+            anchor: 5,
+            content: (
+                <section className="terms__section block">
+                    <h2 className="title terms__section-title">Безопасность конфиденциальности</h2>
+                    <p className="text text_small terms__section-text">
+                        Безопасность конфиденциальности
                     </p>
                 </section>
             )
@@ -100,7 +112,10 @@ const TermsPage: FC<TermsPagePropsI> = () => {
         
     ])
 
-    document.title = "Пользовательское сошлашение";
+    useEffect(() => setActiveTab(tab || 0), [tab])
+
+    document.title = "Пользовательское сошлашение"
+    
     return (
         <RootPage>
             <main className="terms">
@@ -110,17 +125,25 @@ const TermsPage: FC<TermsPagePropsI> = () => {
                         <div className="terms__categories">
                             {
                                 tabs.length && tabs.map((tab) => {
-                                    return <a href="#" onClick={(e: MouseEvent) => {
-                                        e.preventDefault()
-                                        setActiveTab(tab.anchor)
-                                    }} className="link terms__category text text_small">{tab.title}</a>
+                                    return (
+                                    <a 
+                                        href="#" 
+                                        onClick={(e: MouseEvent) => {
+                                            e.preventDefault()
+                                            setActiveTab(tab.anchor)
+                                        }} 
+                                        className="link terms__category text text_small"
+                                    >
+                                        {tab.title}
+                                    </a>
+                                    )
                                 })
                             }
                         </div>
                     </aside>
                     {
-                        tabs.length && tabs.map(tab => {
-                            return activeTab === tab.anchor && tab.content
+                        tabs.length && tabs.map(({anchor, content}) => {
+                            return (activeTab || tab) === anchor && content
                         })
                     }
                 </div>

@@ -84,6 +84,10 @@
         &-icon {
             display: block;
             width: 20px;
+
+            &:hover {
+                cursor: pointer;
+            }
         }
 
         &-color {
@@ -91,7 +95,15 @@
             height: 26px;
             border-radius: 100%;
             background: #fff;
-            border: 2px solid #2667FF;
+            box-sizing: border-box;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &_active {
+                border: 2px solid #2667FF;
+            }
 
             &-wrapper {
                 display: flex;

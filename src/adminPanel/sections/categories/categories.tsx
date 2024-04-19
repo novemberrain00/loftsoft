@@ -36,7 +36,6 @@ const Categories: FC<CategoriesPropsI> = () => {
     const [categoriesInitialList, setCategoriesInitialList] = useState<CategoryI[]>([]);
     const [alertMessage, setAlertMessage] = useState<string>('');
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [categoryAction, setCategoryAction] = useState<'create' | 'edit'>('create');
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
@@ -202,7 +201,7 @@ const Categories: FC<CategoriesPropsI> = () => {
                                                         length={subcategories?.length}
                                                         photo={photo}
                                                         provided={provided}
-                                                        colors={colors}
+                                                        colors={colors.length ? colors : ['#ffffff', '#ffffff']}
                                                         setCategories={setCategories}
                                                         deletItem={deleteCategory}
                                                     />

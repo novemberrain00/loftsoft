@@ -30,6 +30,7 @@ const AdminCategory: FC<AdminCategoryPropsI> = ({i, id, title, length, photo, pr
 
     const categories = useContext(CategoriesContext);
     const [isEditorOpened, setIsEditorOpened] = useState(false);
+    const [selectedColorIndex, setSelectedColorIndex] = useState(0);
     const [categoryData, setCategoryData] = useState({
         photo,
         title,
@@ -122,47 +123,31 @@ const AdminCategory: FC<AdminCategoryPropsI> = ({i, id, title, length, photo, pr
                 <h6 className="category-editor__option-title">Цвет:</h6>
                 <div className="category-editor__option-bottom">
                     <input 
-                        onBlur={(e) => {
-                            if(categoryData.colors.length === 2) return;
-                            
-                            const colorsRef = categoryData.colors as string[];
-                            colorsRef.push((e.target as HTMLInputElement).value.trim().toLocaleLowerCase())
+                        onInput={(e) => {
+                            const colorsArrRef = colors
+                            colorsArrRef[selectedColorIndex] = (e.target as HTMLInputElement).value
 
                             setCategoryData({
-                                ...categoryData, 
-                                colors: colorsRef as never[]
+                                ...categoryData,
+                                colors: [...colorsArrRef]
                             })
-
-
                         }} 
+                        value={colors[selectedColorIndex]}
                         type="text" 
                         className="category-editor__option-input" 
                     />
                     <div className="category-editor__option-colors">
                         {
                             categoryData.colors.map((color, i) => (
-                            <div className="category-editor__option-color-wrapper">
-                                <img 
-                                    onClick={() => {
-                                        const colorsRef = categoryData.colors;
-                                        categoryData.colors.splice(i, 1);
-                                        setCategoryData({
-                                            ...categoryData,
-                                            colors: colorsRef
-                                        })
-                                    }}
-                                    className="category-editor__option-icon"
-                                    src={TrashIcon} 
-                                    alt="удалить цвет" 
-                                />
-                                <span 
-                                    style={{backgroundColor: color}} 
-                                    key={color} 
-                                    className="category-editor__option-color"
-                                >
-                                </span>
-                            </div>
-                            )
+                                <div key={color+i} className="category-editor__option-color-wrapper">
+                                    <span 
+                                        onClick={() => setSelectedColorIndex(i)}
+                                        style={{backgroundColor: color}} 
+                                        className={`category-editor__option-color ${selectedColorIndex === i ? 'category-editor__option-color_active' : ''}`}
+                                    >
+                                    </span>
+                                </div>
+                                )
                             )
                         }
                     </div>
