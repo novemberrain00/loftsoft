@@ -1,3 +1,13 @@
+@keyframes TermFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+} 
+
 .terms {
     &__container {
         display: grid;
@@ -7,6 +17,7 @@
     }
 
     &__sidebar {
+        width: 290px;
         padding: 41px 25px 141px;
     }
 
@@ -35,6 +46,7 @@
     }
 
     &__section {
+        animation: TermFadeIn .4s ease forwards;
         padding: 38px 35px;
 
         &-title {

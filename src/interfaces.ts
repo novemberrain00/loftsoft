@@ -1,8 +1,14 @@
-import { MutableRefObject } from "react"
+import { ReactNode } from "react"
 
 export interface LinkI {
     text: string
     path: string
+}
+
+export interface TabI {
+    title: string
+    anchor: number
+    content: string | ReactNode
 }
 
 export interface SnackI {
