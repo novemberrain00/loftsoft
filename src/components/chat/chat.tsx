@@ -21,6 +21,7 @@ import { setUserInfo } from "../../redux/userSlice";
 
 import './chat.scss';
 import FsLightbox from "fslightbox-react";
+import { Link } from "react-router-dom";
 
 interface ChatPropsI {
     isChatOpened: boolean
@@ -311,15 +312,12 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                     <div 
                         className={`chat__menu-overlay ${isMenuOpened ? 'chat__menu-overlay_opened' : ''}`}
                         onClick={(e: MouseEvent) => menuCloseHandler(e)}
+                        onTouchStart={(e: any) => touchStartHandler(e)} 
+                        onTouchMove={(e: any) => touchMoveHandler(e)}
+                        onTouchEnd={() => touchEndHandler()} 
                     >
                         <nav style={{transform: `translateY(${isMenuOpened ? '0%' : '100%'})`}} className="chat__menu">
-                            <div
-                                onTouchStart={(e: any) => touchStartHandler(e)} 
-                                onTouchMove={(e: any) => touchMoveHandler(e)}
-                                onTouchEnd={() => touchEndHandler()} 
-                                
-                                className="chat__menu-header"
-                            >
+                            <div className="chat__menu-header">
                                 <span className="chat__menu-closer"></span>
                             </div>
                             <div className="chat__menu-body">
@@ -351,16 +349,16 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
                                         </a>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="/" className="chat__menu-link">
-                                            <img src={RulesIcon} alt="Правила магазина" className="chat__menu-icon" />
-                                            Правила магазина
-                                        </a>
+                                            <Link to="/terms" className="chat__menu-link">
+                                                <img src={RulesIcon} alt="Правила магазина" className="chat__menu-icon" />
+                                                Правила магазина
+                                            </Link>
                                     </li>
                                     <li className="chat__menu-item">
-                                        <a href="/" className="chat__menu-link">
+                                        <Link to="/terms" className="chat__menu-link">
                                             <img src={BackIcon} alt="Правила возврата" className="chat__menu-icon" />
                                             Правила возврата
-                                        </a>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>

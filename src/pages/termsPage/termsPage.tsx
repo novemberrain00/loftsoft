@@ -132,7 +132,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
                                             e.preventDefault()
                                             setActiveTab(tab.anchor)
                                         }} 
-                                        className="link terms__category text text_small"
+                                        className={`link terms__category ${activeTab === tab.anchor ? 'terms__category_active' : ''} text text_small`}
                                     >
                                         {tab.title}
                                     </a>

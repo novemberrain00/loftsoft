@@ -32,11 +32,12 @@
         padding: 15px 22px !important;
         border-radius: 15px;
         background: #F2F2F2;
+        transition: .2s;
 
         &:hover, &_active {
             cursor: pointer;
             background: #2667FF;
-            color: #fff;
+            color: #fff !important; 
         }
     }
 
