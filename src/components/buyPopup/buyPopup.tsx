@@ -292,7 +292,7 @@ const BuyPopup: FC<BuyPopupPropsI> = ({isOpened, closeHandler}) => {
                         </div>
                     </div>
                     <div className="purchase__form-footer">
-                        <span className="purchase__form-price">К оплате: {(straightOrder.price * straightOrder.count) || 0} ₽</span>
+                        <span className="purchase__form-price">К оплате: {Math.floor(straightOrder.price * straightOrder.count) || 0} ₽</span>
                         <span className="purchase__form-alert">{alertMessage}</span>
                         <div className="checkbox-container">
                             <input onChange={(e) => setIsAgreementChecked((e.target as HTMLInputElement).checked)} type="checkbox" className="checkbox purchase__checkbox" id="checkbox-4566"/>
