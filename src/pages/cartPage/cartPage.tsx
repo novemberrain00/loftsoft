@@ -79,7 +79,7 @@ const CartPage: FC<CartPagePropsI> = () => {
     }
 
     const createOrder = async () => {
-        if(!email.length || !email.includes('@')) {
+        if(!email?.length || !email?.includes('@')) {
             setIsEmailEntered(false);
             return
         }
