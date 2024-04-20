@@ -172,7 +172,7 @@
 
         &-img {
             display: block;
-            width: 64%;
+            width: 58%;
             margin: -30px auto 0;
 
             &_mobile {
@@ -382,6 +382,16 @@
             background: #FFF;
         }
     }
+}
+
+@media screen and (max-width: 1727px) {
+    .cart {
+        &__order {
+            &-img {
+                width: 64%;
+            }
+        }
+    }   
 }
 
 @media screen and (max-width: 1280px) {

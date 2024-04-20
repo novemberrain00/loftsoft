@@ -50,7 +50,9 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
     }
 
     const sendMessage = async () => {
+
         if(!window.localStorage.getItem('access_token')) {
+
             await postData('/user/register', {
                 username: `user-${Math.random().toString(36).substring(2, 14)}`
             })
@@ -188,8 +190,6 @@ const Chat: FC<ChatPropsI> = ({ isChatOpened, setIsChatOpened }) => {
             }
         };
     }, [isChatOpened]);
-
-    useEffect(() => console.log(activeSlideIndex), [activeSlideIndex])
 
     return (
         <div className="chat-wrapper">

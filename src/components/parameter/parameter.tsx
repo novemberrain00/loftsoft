@@ -35,7 +35,7 @@ const Parameter: FC<ParameterPropsI> = ({
         description, 
         buyPopupOpener
     }) => {
-    const [quantity, setQuantity] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(1);
     const [isDataPosted, setIsDataPosted] = useState<boolean>(true);
 
     const userInfo = useSelector((state: RootState) => state.user.userInfo);
@@ -71,7 +71,7 @@ const Parameter: FC<ParameterPropsI> = ({
     } 
 
     useEffect(() => {
-        const curQuantity = userInfo.shop_cart.filter(par => par.parameter.id === id)[0]?.quantity || 0
+        const curQuantity = userInfo.shop_cart.filter(par => par.parameter.id === id)[0]?.quantity || 1
         setQuantity(curQuantity)
     }, []);
 
