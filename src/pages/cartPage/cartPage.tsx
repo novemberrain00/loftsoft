@@ -291,7 +291,7 @@ const CartPage: FC<CartPagePropsI> = () => {
                             </div>
                         </div>
                         <div className="cart__sidebar-footer">
-                            <span className="cart__sidebar-price">К оплате:  {totalPrice * (1 - salePercent / 100)} ₽</span>
+                            <span className="cart__sidebar-price">К оплате:  {Math.floor(totalPrice * (1 - salePercent / 100))} ₽</span>
                             <span className="cart__sidebar-discount">Сумма скидок по заказу: {totalDiscount} ₽</span>
                             {salePercent ? <span className="cart__sidebar-discount">Промокод: -{totalPrice * salePercent / 100} ₽</span> : null}
                             <button onClick={() => createOrder()} className="cart__btn cart__sidebar-btn btn">
