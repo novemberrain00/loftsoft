@@ -7,9 +7,8 @@ import { postData } from "../../services/services";
 import { setUserInfo } from "../../redux/userSlice";
 import { RootState } from "../../store";
 
-import './cartItem.scss';
 import { Link } from "react-router-dom";
-import useDebounce from "../../hooks/useDebounce";
+import './cartItem.scss';
 
 interface CartItemPropsI {
     id: number
@@ -74,7 +73,7 @@ const CartItem: FC<CartItemPropsI> = ({id, title, hasSale, price, salePrice, img
                     <div className="cart__item-bottom">
                         <div className="cart__switch">
                             <button disabled={!isDataPosted} className="cart__switch-btn" onClick={() => {
-                                if(quantity > 0) { 
+                                if(quantity > 1) { 
                                     const quantity = newQuantity-1;
                                     setNewQuantity(quantity);
                                     postToCart(quantity);

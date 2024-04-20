@@ -87,10 +87,10 @@ const Parameter: FC<ParameterPropsI> = ({
             {hasSale && <span className="product-page__discount-value discount-value">-{salePercent}%</span>}
             <div className="product-page__switch">
                 <button 
-                    className={`product-page__switch-btn ${quantity === 0 ? 'product-page__switch-btn_disabled' : ''}`} 
+                    className={`product-page__switch-btn ${quantity === 1 ? 'product-page__switch-btn_disabled' : ''}`} 
                     disabled={!isDataPosted} 
                     onClick={() => {
-                        if(quantity > 0) { 
+                        if(quantity > 1) { 
                             const newQuantity = quantity-1;
                             setQuantity(newQuantity)    
                         }
@@ -133,7 +133,7 @@ const Parameter: FC<ParameterPropsI> = ({
                 }} 
                 className="btn product-page__btn"
             >Приобрести</button>
-            <span onClick={() => postToCart(quantity)} className={`link product-page__var-cart ${quantity === 0 ? 'product-page__var-cart_disabled' : ''}`}>
+            <span onClick={() => postToCart(quantity)} className="link product-page__var-cart ">
                 <img src={BlueCartIcon} alt="в корзину" />
             </span>
         </div>
