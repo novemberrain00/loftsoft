@@ -56,10 +56,12 @@ const Parameter: FC<ParameterPropsI> = ({
             })
         }
         
+        const curQuantity =  userInfo?.shop_cart?.filter(item => item.parameter.id === id)[0]?.quantity || 0
+
         await postData('/cart/add', {
             product_id: productId,
             parameter_id: id,
-            count: quantity
+            count: quantity + curQuantity
           }, true)
           .then(data => {
             setIsDataPosted(true)
