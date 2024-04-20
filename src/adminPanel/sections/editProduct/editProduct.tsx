@@ -1165,7 +1165,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                             return (
                                                 <div key={key} className="editor__params-row">
                                                     {i+1 < 10 ? '0'+(i+1) : i+1}
-                                                    <img src="" alt="" />
+                                                    <img src={TrashIcon} onClick={() => removeKey(key)} alt="удалить" className="editor__params-icon"/>
                                                     <span className="editor__params-key">{key}</span>
                                                 </div>
                                             )
@@ -1317,6 +1317,7 @@ const EditProduct: FC<EditProductPropsI> = ({title}) => {
                                             return (
                                                 <div key={key} className="editor__params-row">
                                                     {i+1 < 10 ? '0'+(i+1) : i+1}
+                                                    <img src={TrashIcon} onClick={() => removeKey(key)} alt="удалить" className="editor__params-icon"/>
                                                     <span className="editor__params-key">{key}</span>
                                                 </div>
                                             )
