@@ -123,7 +123,6 @@ const Parameter: FC<ParameterPropsI> = ({
                 </button>
             </div>
             <button 
-                disabled={!isDataPosted} 
                 onClick={() => {
                     dispatch(setOrder({
                         ...straightOrder,
