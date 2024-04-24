@@ -34,8 +34,8 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
     document.title = "Оплата";
 
     const checkOrder = async () => {
-        const route = window.location.href.includes('order') ? `/order/${id}/check` : `/user/balance/replenish/${replenishment.replenishment.number}`;
-        
+        const route = window.location.href.includes('order') ? `/order/${id}/check` : `/user/balance/replenish/${id}`;
+
         await getData(route, true)
         .then(data => {
             if(data?.status?.includes("waiting")) {
@@ -82,6 +82,11 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
         }));
 
         const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
+
+        if(!replenishment.replenishment.number.length) {
+            navigate('/')
+        }
+
         getData(route, true)
         .then(data => {
             if(!totalPrice) {
