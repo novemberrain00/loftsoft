@@ -83,7 +83,7 @@ const PaymentPage: FC<PaymentPagePropsI> = () => {
 
         const route = replenishment.replenishment.number.length ? `/user/balance/replenish/${replenishment.replenishment.number}` : `/order/${id}/check`
 
-        if(!replenishment.replenishment.number.length) {
+        if(!replenishment.replenishment.number.length && !id) {
             navigate('/')
         }
 
