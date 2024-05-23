@@ -50,6 +50,10 @@ const deleteData = async (url: string) => {
   });
 }
 
+const getSlug = async (obj: 'product' | 'category' | 'subcategory', id: number) => {
+  return await getData(`/get_slug?obj=${obj}&id=${id}`)
+}
+
 const uploadFile = async (img: Blob) => {
   const body = new FormData();
   body.append("file", img);
@@ -115,4 +119,4 @@ const timestampToTime =(timestamp: string): string => {
     return `${hours}:${paddedMinutes}`;
 }
 
-export { getData, postData, getCookie, uploadFile, updateCurrentUser, convertToLatin, deleteData, timestampToTime };
+export { getData, postData, getCookie, uploadFile, updateCurrentUser, convertToLatin, deleteData, timestampToTime, getSlug };

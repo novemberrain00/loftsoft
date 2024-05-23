@@ -1,12 +1,4 @@
-@keyframes TermFadeIn {
-    from {
-        opacity: 0;
-    }
 
-    to {
-        opacity: 1;
-    }
-} 
 
 .terms {
     &__container {
@@ -39,6 +31,19 @@
             background: #2667FF;
             color: #fff !important; 
         }
+
+        &_new {
+            border: 2px dashed rgba(0, 0, 0, 0.30) !important;
+
+            &:hover {
+                background-color: #F2F2F2;
+                color: #000 !important;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
     }
 
     &__title {
@@ -46,22 +51,17 @@
         font-weight: 400 !important;
     }
 
-    &__section {
-        animation: TermFadeIn .4s ease forwards;
-        padding: 38px 35px;
+    h1 {
+        font-weight: 400 !important;
+        font-size: 32px !important;
+        margin-bottom: 41px !important;
+    }
 
-        &-title {
-            font-weight: 400 !important;
-            font-size: 32px !important;
-            margin-bottom: 41px !important;
-        }
+    p {
+    overflow: auto;
 
-        &-text {
-            overflow: auto;
-
-            &::-webkit-scrollbar {
-                width: 16px;
-            }
+        &::-webkit-scrollbar {
+            width: 16px;
         }
     }
 

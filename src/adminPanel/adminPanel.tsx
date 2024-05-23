@@ -122,6 +122,13 @@ const AdminPanel: FC<AdminPanelPropsI> = ({children}) => {
                                     <a href="/" className="admin__menu-link">Платежная система</a>
                                 </Link>
                             </li>
+                            <li className="admin__menu-item">
+                                <Link onClick={() => {
+                                    dispatch(closeSidebar())
+                                }} to="/admin/rules">
+                                    <a href="/" className="admin__menu-link">Правила</a>
+                                </Link>
+                            </li>
                         </ul>
                         <h3 className="admin__sidebar-subtitle">Чаты</h3>
                         <ul className="list admin__menu">

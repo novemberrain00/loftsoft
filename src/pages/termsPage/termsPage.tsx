@@ -16,6 +16,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
         {
             title: 'Основные положения',
             anchor: 0,
+            slug: '',
             content: (
                 <section className="terms__section block">
                             <h2 className="title terms__section-title">Заявка на оформление замены товара</h2>
@@ -52,6 +53,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
         {
             title: 'Корректировки и правила',
             anchor: 1,
+            slug: '',
             content: (
                 <section className="terms__section block">
                     <h2 className="title terms__section-title">Корректировки и правла</h2>
@@ -64,6 +66,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
         {
             title: 'Условия возврата/обмена',
             anchor: 2,
+            slug: '',
             content: (
                 <section className="terms__section block">
                     <h2 className="title terms__section-title">Условия возврата/обмена</h2>
@@ -76,6 +79,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
         {
             title: 'Происхождение аккаунтов',
             anchor: 3,
+            slug: '',
             content: (
                 <section className="terms__section block">
                     <h2 className="title terms__section-title">Происхождение аккаунтов</h2>
@@ -88,6 +92,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
         {
             title: 'Часто задаваемые вопросы',
             anchor: 4,
+            slug: '',
             content: (
                 <section className="terms__section block">
                     <h2 className="title terms__section-title">Часто задаваемые вопросы</h2>
@@ -100,6 +105,7 @@ const TermsPage: FC<TermsPagePropsI> = ({tab}) => {
         {
             title: 'Безопасность конфиденциальности',
             anchor: 5,
+            slug: '',
             content: (
                 <section className="terms__section block">
                     <h2 className="title terms__section-title">Безопасность конфиденциальности</h2>

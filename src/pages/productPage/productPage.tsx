@@ -7,34 +7,42 @@ import Path from "../../components/path/path";
 
 import BlueStar from '../../assets/images/icons/star_blue.svg';
 
-import { convertToLatin, getData } from "../../services/services";
+import { convertToLatin, getData, getSlug } from "../../services/services";
 
-import { ProductI } from "../../interfaces";
+import { ProductI, SubcategoryI } from "../../interfaces";
 import Parameter from "../../components/parameter/parameter";
 
 import BuyPopup from "../../components/buyPopup/buyPopup";
 import './productPage.scss';
 
 interface ProductPagePropsI {
+    id: number
 }
  
 const ProductPage: FC<ProductPagePropsI> = () => {
     const [productData, setProductData] = useState<ProductI>({} as ProductI);
     const [toggler, setToggler] = useState<boolean>(false);
+    const [subcategories, setSubcategories] = useState<SubcategoryI[]>([]);
     const [subcategoryName, setSubcategoryName] = useState<string>('');
     const [isBuyPopupOpened, setIsBuyPopupOpened] = useState<boolean>(false);
     const [activeSlideIndex, setActiveSlideIndex] = useState(1);
 
-    const { product, subcategory } = useParams();
+    const { subcategorySlug } = useParams();
+    const subcategoryId = subcategories.filter(async (subcat: SubcategoryI) => {
+        return await getSlug('subcategory', subcat.id) === subcategorySlug
+    })[0].id;
 
     const baseURL = process.env.REACT_APP_DEV_SERVER_URL;
 
     useEffect(() => {
         const getProductData = async () => {
-            await getData(`/product/${product}`)
+            await getData(`/subcategories`)
+            .then(data => setSubcategories(data));
+
+            await getData(`/product/${id}`)
             .then(data => setProductData(data));
 
-            await getData(`/subcategory/${subcategory}`)
+            await getData(`/subcategory/${subcategoryId}`)
             .then(data => {
                 setSubcategoryName(data.title);
             })
@@ -70,7 +78,7 @@ const ProductPage: FC<ProductPagePropsI> = () => {
                             },
                             {
                                 text: subcategoryName,
-                                path: `/catalog/${convertToLatin(subcategory as string)}`
+                                path: `/catalog/${subcategorySlug}`
                             },
                             {
                                 text: title,

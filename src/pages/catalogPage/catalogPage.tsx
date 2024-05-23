@@ -10,7 +10,7 @@ import CatalogSection from "../../components/catalogSection/catalogSection";
 import DiscountInput from "../../components/discountInput/discountInput";
 import Loader from "../../components/loader/loader";
 
-import { convertToLatin, getData } from "../../services/services";
+import { convertToLatin, getData, getSlug } from "../../services/services";
 import { CategoryI, ProductI, SubcategoryI } from "../../interfaces";
 
 import './catalogPage.scss';
@@ -53,6 +53,10 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
             subcategoryName
         });
     }
+
+    // const getSlug = async (obj: 'product' | 'category' | 'subcategory', id: number) => {
+    //     return await getData(`/get_slug?obj=${obj}&id=${id}`)
+    //   }
 
     const categoriesArr = useContext(CategoriesContext);
 
@@ -236,7 +240,7 @@ const CatalogPage: FC<CatalogPagePropsI> = () => {
                                         priceOld={product.card_price}
                                         priceNew={product.card_sale_price}
                                         discount={product.sale_percent}
-                                        url={`/catalog/${product.subcategory_id}/${product.id}`}
+                                        url={`/catalog/${getSlug('subcategory', product.subcategory_id)}/${getSlug('product', product.id)}`}
                                     />
                                 }) : <Loader/>
                             }

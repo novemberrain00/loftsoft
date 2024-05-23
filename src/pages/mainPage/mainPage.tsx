@@ -112,8 +112,8 @@ const MainPage: FC = () => {
                                                 <h4 className="title promo__catalog-title">{catTitle}</h4>
                                                 <div className="promo__catalog-products">
                                                     {
-                                                        subcategories.map(({id, title}, i) => {
-                                                            return <Link key={id} to={`/catalog/${id}`}>
+                                                        subcategories.map(({id, title, slug}, i) => {
+                                                            return <Link key={id} to={`/catalog/${slug}`}>
                                                                 <span  className="link promo__catalog-product">{title}</span>
                                                             </Link>
                                                         })
@@ -311,7 +311,8 @@ const MainPage: FC = () => {
                                     card_price, 
                                     card_sale_price, 
                                     sale_percent, 
-                                    subcategory_id
+                                    subcategory_id,
+                                    slug
                                 }) => {
                                     return <Product
                                         key={id}
@@ -322,7 +323,7 @@ const MainPage: FC = () => {
                                         priceNew={card_sale_price}
                                         priceOld={card_price}
                                         discount={sale_percent}
-                                        url={`/catalog/${subcategory_id}/${id}`}
+                                        url={`/catalog/${slug}`}
                                     />
                                 })
                             }

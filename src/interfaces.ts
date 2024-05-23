@@ -8,6 +8,8 @@ export interface LinkI {
 export interface TabI {
     title: string
     anchor: number
+    slug: string
+    isNew?: boolean
     content: string | ReactNode
 }
 
@@ -35,6 +37,7 @@ export interface ProductI {
     card_has_sale: boolean
     card_sale_price: string
     order_id: number
+    slug: string
     options: Array<{
         id?: number
         title: string
@@ -91,6 +94,7 @@ export interface SubcategoryI {
     products: ProductI[]
     category_id: number
     product_count: number
+    slug: string
 }
 
 export interface CategoryI {
@@ -102,6 +106,7 @@ export interface CategoryI {
     subcategories: SubcategoryI[]
     subcategories_count: number
     colors: string[]
+    slug: string
   }
 
 export interface CartItemI {

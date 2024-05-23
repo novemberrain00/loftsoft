@@ -292,7 +292,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 
 										if (!profileElement.contains(target) && !editorElement?.contains(target)) {
 											;(profileElement as HTMLElement)?.classList.add('profile_disappeared')
-											setTimeout(() => setIsProfileOpened(false), 600)
+											setTimeout(() => setIsProfileOpened(false), 200)
 										}
 									}
 								}}

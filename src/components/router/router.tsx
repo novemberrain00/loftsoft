@@ -26,8 +26,22 @@ import PaymentPage from '../../pages/paymentPage/paymentPage';
 import BillingData from '../../adminPanel/sections/billingData/billingData';
 import Ticket from '../../adminPanel/sections/ticket/ticket';
 import NotFoundPage from '../../pages/404/notFoundPage';
+import { CategoryI } from '../../interfaces';
+import { getData, getSlug } from '../../services/services';
+import Rules from '../../adminPanel/sections/rules/rules';
 
 const Router: FC = () => {
+    const [categories, setCategories] = useState<CategoryI[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await getData('/categories')
+            .then((data: CategoryI[]) => setCategories(data))
+        }
+
+        fetchData()
+    }, []);
+    
     return (
         <Routes>
             <Route path='/' element={<MainPage/>}/>
@@ -49,7 +63,23 @@ const Router: FC = () => {
 
             <Route path='/catalog' element={<CatalogPage/>}/>
             <Route path='/catalog/:subcategory' element={<CatalogPage/>}/>
-            <Route path='/catalog/:subcategory/:product' element={<ProductPage/>}/>
+
+            {
+                categories.map(cat => {
+                    return cat.subcategories.map(subcat => {
+                        
+                        return <>
+
+                            {
+                                subcat.products.map((product, i) => {
+                                    const { id } = product;
+                                    return <Route key={id} path={`/catalog/:subcategory/${getSlug('product', id)}`} element={<ProductPage id={id}/>}/>
+                                })
+                            }
+                        </>
+                    })
+                })
+            }
             
             <Route path='/admin' element={<AdminPanel children={<Main/>}/>}/>
             <Route path='/admin/categories' element={<AdminPanel children={<Categories/>}/>}/>
@@ -61,6 +91,7 @@ const Router: FC = () => {
             <Route path='/admin/promocodes' element={<AdminPanel children={<Promocodes/>}/>}/>
             <Route path='/admin/products' element={<AdminPanel children={<Products/>}/>}/>            
             <Route path='/admin/billing' element={<AdminPanel children={<BillingData/>}/>}/>            
+            <Route path='/admin/rules' element={<AdminPanel children={<Rules/>}/>}/>            
             
             <Route path='/admin/tickets' element={<AdminPanel children={<Start/>}/>}/>
             <Route path='/admin/tickets/history' element={<AdminPanel children={<TicketsHistory/>}/>}/>
