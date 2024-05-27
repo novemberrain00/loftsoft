@@ -478,14 +478,14 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/terms'>
+										<Link to='/terms/pravila-vozvrata-7'>
 											<span className='footer__menu-link link'>
 												Правила возврата
 											</span>
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/terms'>
+										<Link to='/terms/pravila-magazina-7'>
 											<span className='footer__menu-link link'>
 												Правила магазина
 											</span>
