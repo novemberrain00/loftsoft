@@ -13,6 +13,11 @@
         padding: 41px 25px 141px;
     }
 
+    &__section {
+        font-family: Onest;
+        padding: 12px 35px;
+    }
+
     &__categories {
         display: flex;
         flex-direction: column;
@@ -24,12 +29,17 @@
         padding: 15px 22px !important;
         border-radius: 15px;
         background: #F2F2F2;
+        border: none;
         transition: .2s;
 
         &:hover, &_active {
             cursor: pointer;
             background: #2667FF;
             color: #fff !important; 
+        }
+
+        &:focus {
+            outline: none;
         }
 
         &_new {
@@ -58,7 +68,7 @@
     }
 
     p {
-    overflow: auto;
+        overflow: auto;
 
         &::-webkit-scrollbar {
             width: 16px;

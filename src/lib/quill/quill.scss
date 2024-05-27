@@ -9,6 +9,7 @@
 } 
 
 .quill {
+    height: 630px;
     position: relative;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
 }
@@ -17,6 +18,10 @@
     padding: 38px 35px;
     animation: TermFadeIn .4s ease forwards;
     border: none !important;
+}
+
+.ql-editor {
+    height: 500px;
 }
 
 .ql-toolbar {

@@ -48,12 +48,9 @@ const Router: FC = () => {
             <Route path='/reviews' element={<ReviewsPage/>}/>
             <Route path='/auth' element={<AuthPage/>}/>
 
-            <Route path='/terms' element={<TermsPage tab={0}/>}/>
-            <Route path='/terms/korrektirovki-i-pravila' element={<TermsPage tab={1}/>}/>
-            <Route path='/terms/uslovija-vozvrata-obmena' element={<TermsPage tab={2}/>}/>
-            <Route path='/terms/proishozdenie-akkauntov' element={<TermsPage tab={3}/>}/>
-            <Route path='/terms/casto-zadavaemye-voprosy' element={<TermsPage tab={4}/>}/>
-            <Route path='/terms/bezopasnost-konfidencialnosti' element={<TermsPage tab={5}/>}/>
+            
+            <Route path='/terms/:url' element={<TermsPage/>}/>
+
             
             <Route path='/profile/cart' element={<CartPage/>}/>
             <Route path='/profile/cart/order/:id' element={<PaymentPage/>}/>

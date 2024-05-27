@@ -7,10 +7,10 @@ export interface LinkI {
 
 export interface TabI {
     title: string
-    anchor: number
+    id?: number
     slug: string
     isNew?: boolean
-    content: string | ReactNode
+    content: string 
 }
 
 export interface SnackI {
