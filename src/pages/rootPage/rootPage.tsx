@@ -215,7 +215,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 							</a>
 						</div>
 						<HeaderNavItem text='Отзывы' path='/reviews' />
-						<HeaderNavItem text='Правила' path='/terms' />
+						<HeaderNavItem text='Правила' path='/terms/pravila-magazina' />
 					</ul>
 					<div className='search header__search'>
 						<img src={SearchIcon} alt='поиск' className='search__icon header__search-icon' />
