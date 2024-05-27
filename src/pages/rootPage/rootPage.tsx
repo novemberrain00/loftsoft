@@ -215,7 +215,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 							</a>
 						</div>
 						<HeaderNavItem text='Отзывы' path='/reviews' />
-						<HeaderNavItem text='Правила' path='/terms/pravila-magazina' />
+						<HeaderNavItem text='Правила' path='/terms/pravila-magazina-7' />
 					</ul>
 					<div className='search header__search'>
 						<img src={SearchIcon} alt='поиск' className='search__icon header__search-icon' />
@@ -478,7 +478,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/terms/pravila-vozvrata-7'>
+										<Link to='/terms/pravila-vozvrata-3'>
 											<span className='footer__menu-link link'>
 												Правила возврата
 											</span>
