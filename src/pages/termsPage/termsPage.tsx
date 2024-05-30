@@ -5,6 +5,7 @@ import { TabI } from "../../interfaces";
 import { getData } from "../../services/services";
 import { useNavigate } from "react-router-dom";
 import './termsPage.scss';
+import Loader from "../../components/loader/loader";
 
 interface TermsPagePropsI {
 }
@@ -17,14 +18,12 @@ const TermsPage: FC<TermsPagePropsI> = () => {
 
     const url = window.location.pathname;
 
-    //useEffect(() => setActiveTab(tab || 0), [tab]);
-
     useEffect(() => {
         const fetchData = async () => {
             await getData('/faq')
             .then((data: TabI[]) => setTabs(data))
         }
-
+        
         fetchData()
     }, [])
 
@@ -38,7 +37,7 @@ const TermsPage: FC<TermsPagePropsI> = () => {
                         <h1 className="title terms__title">Пользовательское <br /> соглашение</h1>
                         <div className="terms__categories">
                             {
-                                tabs.length && tabs.map((tab) => {
+                                tabs.length ? tabs.map((tab) => {
                                     return (
                                     <a 
                                         href='#'
@@ -48,20 +47,20 @@ const TermsPage: FC<TermsPagePropsI> = () => {
                                             setActiveTab(tab.id || 0)
                                             navigate(`/terms/${tab.slug}`)
                                         }} 
-                                        className={`link terms__category ${activeTab === tab.id ? 'terms__category_active' : ''} text text_small`}
+                                        className={`link terms__category ${activeTab === tab.id || url.includes(tab.slug) ? 'terms__category_active' : ''} text text_small`}
                                     >
                                         {tab.title}
                                     </a>
                                     )
-                                })
+                                }) : <Loader/>
                             }
                         </div>
                     </aside>
                     {
-                        tabs.length && tabs.map(({id, content, slug}) => {
+                        tabs.length ? tabs.map(({id, content, slug}) => {
                             return url === `/terms/${slug}` ?
-                                 <div className="terms__section block" dangerouslySetInnerHTML={{ __html: content }} /> : ''
-                        })
+                                 <div className="terms__section block" key={id} dangerouslySetInnerHTML={{ __html: content }} /> : ''
+                        }) : <Loader/>
                     }
                 </div>
             </main>

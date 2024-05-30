@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 
-import { LinkI, SnackI, UserI } from '../../interfaces'
+import { LinkI, SnackI, TabI, UserI } from '../../interfaces'
 
 import LogoImg from '../../assets/images/logo/logo.svg'
 import LogoMobileImg from '../../assets/images/logo/logo_mobile.svg'
@@ -39,9 +39,9 @@ import useDebounce from '../../hooks/useDebounce'
 
 import ReplenishPopup from '../../components/replenishPopup/replenishPopup'
 import Request from '../../components/request/request'
-import './rootPage.scss'
 import DiscountInput from '../../components/discountInput/discountInput'
 import { CategoriesContext } from '../../context'
+import './rootPage.scss'
 
 interface RootPagePropsI {
 	isFooterHidden?: boolean
@@ -71,6 +71,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 	const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false)
 	const [isSubcatsOpened, setIsSubcatsOpened] = useState<boolean>(false)
 	const [isRequestOpened, setIsRequestOpened] = useState<boolean>(false)
+	const [termsFirstPage, setTermsFirstPage] = useState<string>('/pravila-magazina');
 
 	const snacks = useSelector((state: RootState) => state.snackbar.snacksArr)
 	const userData = useSelector((state: RootState) => state.user.userInfo)
@@ -99,6 +100,9 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 
 	useEffect(() => {
 		window.scrollTo(0, 0)
+
+		getData('/faq')
+		.then((data: TabI[]) => setTermsFirstPage(data[0]?.slug || ''))
 
 		const getUserData = async () => {
 			await getData('/user/me', true).then((data: UserI) => {
@@ -215,7 +219,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 							</a>
 						</div>
 						<HeaderNavItem text='Отзывы' path='/reviews' />
-						<HeaderNavItem text='Правила' path='/terms/pravila-magazina-7' />
+						<HeaderNavItem text='Правила' path={`/terms/${termsFirstPage}`} />
 					</ul>
 					<div className='search header__search'>
 						<img src={SearchIcon} alt='поиск' className='search__icon header__search-icon' />
@@ -409,7 +413,7 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 								</div>
 							</Dropdown>
 							<HeaderNavItem text='Отзывы' path='/reviews' />
-							<HeaderNavItem text='Правила' path='/terms' />
+							<HeaderNavItem text='Правила' path={`/terms/${termsFirstPage}`} />
 						</ul>
 					</nav>
 				</div>
@@ -478,14 +482,14 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/terms/pravila-vozvrata-3'>
+										<Link to='/terms/pravila-vozvrata'>
 											<span className='footer__menu-link link'>
 												Правила возврата
 											</span>
 										</Link>
 									</li>
 									<li className='footer__menu-item'>
-										<Link to='/terms/pravila-magazina-7'>
+										<Link to='/terms/pravila-magazina'>
 											<span className='footer__menu-link link'>
 												Правила магазина
 											</span>
@@ -501,9 +505,11 @@ const RootPage: FC<RootPagePropsI> = ({ isFooterHidden, children }) => {
 						</div>
 					</div>
 					<SnackbarContainer>
-						{snacks.map(({ text }: SnackI, i: number) => (
-							<Snack text={text} key={i + ''} />
-						))}
+						{
+							snacks.map(({ text }: SnackI, i: number) => (
+								<Snack text={text} key={i + ''} />
+							))
+						}
 					</SnackbarContainer>
 					<ReplenishPopup isOpened={isReplenishOpened} closeHandler={setIsReplenishOpened} />
 					{window.innerWidth <= 756 && (

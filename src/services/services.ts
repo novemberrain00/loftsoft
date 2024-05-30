@@ -29,6 +29,7 @@ const postData = async (url: string, data: object, isAuthRequired = false) => {
   return await fetch(`${baseURL}${url}`, {
       body: JSON.stringify(data),
       headers: headers as HeadersInit,
+      referrerPolicy: "unsafe-url" ,
       method: "POST"
   })
   .then(response =>  response.json())

@@ -30,7 +30,7 @@
         border-radius: 15px;
         background: #F2F2F2;
         border: none;
-        transition: .2s;
+        transition: .2s background;
 
         &:hover, &_active {
             cursor: pointer;
@@ -40,6 +40,18 @@
 
         &:focus {
             outline: none;
+        }
+
+        &-icon {
+            width: 30px;
+        }
+
+        &-drag {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: max-content;
+            margin-bottom: 18px;
         }
 
         &_new {
